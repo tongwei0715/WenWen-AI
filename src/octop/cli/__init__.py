@@ -1,1 +1,1 @@
-"""octop CLI package."""
+"""wenwen CLI package."""

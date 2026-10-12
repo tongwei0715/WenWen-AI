@@ -1,5 +1,5 @@
 /**
  * Shared empty-state mascot (served from ``dashboard/public``).
- * Prefer ``OctopEmptyMascot`` / ``EmptyState variant="mascot"`` over hardcoding.
+ * Prefer ``WenWenEmptyMascot`` / ``EmptyState variant="mascot"`` over hardcoding.
  */
-export const OCTOP_EMPTY_MASCOT_SRC = "/octop-mascot-empty.png";
+export const WENWEN_EMPTY_MASCOT_SRC = "/wenwen-mascot-empty.png";

@@ -1,17 +1,17 @@
 # CLI Reference
 
-`octop` is a single Click app installed as `octop` on `pip install octop`.
+`wenwen` is a single Click app installed as `wenwen` on `pip install wenwen-ai`.
 It is registered in `src/octop/cli/main.py`; commands are loaded
 lazily from `src/octop/cli/registry.py`.
 
 ```
-$ octop --help
-Usage: octop [OPTIONS] COMMAND [ARGS]...
+$ wenwen --help
+Usage: wenwen [OPTIONS] COMMAND [ARGS]...
 
-  Octop command-line interface.
+  WenWen AI command-line interface.
 
 Options:
-  -v, --version           Show the installed octop version.
+  -v, --version           Show the installed wenwen version.
   --user TEXT             Default --user for subcommands (admin acting on behalf
                           of a user). [env: OCTOP_USER]
   --agent TEXT            Default --agent for subcommands. [env: OCTOP_AGENT]
@@ -19,32 +19,32 @@ Options:
   -h, --help              Show this message and exit.
 
 Commands:
-  acp        Run Octop agent as ACP server (stdio).
+  acp        Run WenWen AI agent as ACP server (stdio).
   admin      Admin commands.
   agent      Agent lifecycle commands.
-  backup     Export and restore Octop backups.
-  bridge     Manage remote Octop bridge peers.
-  chat       [deprecated] Alias for `octop chats`.
+  backup     Export and restore WenWen AI backups.
+  bridge     Manage remote WenWen AI bridge peers.
+  chat       [deprecated] Alias for `wenwen chats`.
   chats      Chat REPL and session management.
   channel    Channel management commands.
   clean      Remove CLI state or wipe all of ~/.octop.
   completion Shell completion utilities.
   config     CLI state (base URL, defaults).
   cron       Cron job management commands.
-  init       Bootstrap an Octop server install.
+  init       Bootstrap an WenWen AI server install.
   models     Model catalog and active-model settings.
   plugin     Install and manage plugins.
   provider   Provider management (admin write).
   run        Run octop-server in the foreground.
   service    System service lifecycle (start/stop/restart/status).
   skills     Per-agent skill enable/disable.
-  update     Check for and install a newer Octop release.
+  update     Check for and install a newer WenWen AI release.
   user       User management commands.
-  version    Show the installed octop version.
+  version    Show the installed wenwen version.
 ```
 
 > **Tip.** Regenerate the per-subcommand listings below with
-> `make docs-cli` (each `octop <cmd> --help` is captured to stdout).
+> `make docs-cli` (each `wenwen <cmd> --help` is captured to stdout).
 
 ## Global options
 
@@ -57,27 +57,27 @@ Commands:
 
 ## Transport layers
 
-Octop commands pick one of these transports:
+WenWen AI commands pick one of these transports:
 
 | Layer | When | Login? | Examples |
 |-------|------|--------|----------|
 | **Offline** (local DB only) | Need to read/write `~/.octop` without a running server | No | `init`, `backup`, `plugin`, `agent list`, `chats list/get/create/update/delete`, `cron list`, `user *`, `admin overview/audit`, `models presets/list/active`, `bridge list/get` |
-| **Attach** (HTTP / WS) | Need a live `octop run` process (IM, streams, model pulls) | Yes (`octop user login`) | `chats send/repl`, `channel test/probe`, `models ollama-*`, `skills enable/disable`, `provider test` |
-| **Embedded** (in-process) | CLI boots `OctopServer` for a single command | No | `octop acp`, `octop chats repl`, `octop chats send` (defaults to embedded), `octop agent create/from-expert/start/stop/reload` |
+| **Attach** (HTTP / WS) | Need a live `wenwen run` process (IM, streams, model pulls) | Yes (`wenwen user login`) | `chats send/repl`, `channel test/probe`, `models ollama-*`, `skills enable/disable`, `provider test` |
+| **Embedded** (in-process) | CLI boots `OctopServer` for a single command | No | `wenwen acp`, `wenwen chats repl`, `wenwen chats send` (defaults to embedded), `wenwen agent create/from-expert/start/stop/reload` |
 | **Embedded (bridge)** | In-process `BridgeManager` (no full server); CLI cannot keep the WS after exit | No | `bridge probe/create/patch/delete/connect/disconnect/agents` |
 
 The dashboards and HTTP callers manage their own JWTs and do **not**
 share `~/.octop/cli_state.json`.
 
-## `octop init`
+## `wenwen init`
 
 Bootstrap a fresh install (DB migrations, JWT secret, first admin).
 Idempotent on the DB; pass `--force` to wipe `~/.octop` first.
 
 ```
-Usage: octop init [OPTIONS]
+Usage: wenwen init [OPTIONS]
 
-  Bootstrap an Octop server (~/.octop dir, DB migrations, JWT secret, first admin).
+  Bootstrap an WenWen AI server (~/.octop dir, DB migrations, JWT secret, first admin).
 
 Options:
   --admin-username TEXT       [env: OCTOP_ADMIN_USERNAME]
@@ -88,15 +88,15 @@ Options:
   -h, --help                  Show this message and exit.
 ```
 
-## `octop run`
+## `wenwen run`
 
 Start the FastAPI app in the foreground (delegates to
 `octop.launch.run_foreground_blocking`).
 
 ```
-Usage: octop run [OPTIONS]
+Usage: wenwen run [OPTIONS]
 
-  Start the Octop server (foreground; uvicorn).
+  Start the WenWen AI server (foreground; uvicorn).
 
 Options:
   --host TEXT                 Override OCTOP_BIND_HOST.
@@ -109,17 +109,17 @@ Options:
   -h, --help                  Show this message and exit.
 ```
 
-## `octop service`
+## `wenwen service`
 
-Install and manage the Octop system service. The backend is detected
+Install and manage the WenWen AI system service. The backend is detected
 automatically (systemd on Linux, launchd on macOS); the scope
 (`user` vs `system`) can be forced via `--scope` or
 `OCTOP_SERVICE_SCOPE`.
 
 ```
-Usage: octop service [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen service [OPTIONS] COMMAND [ARGS]...
 
-  Manage the Octop system service (systemd on Linux, launchd on macOS).
+  Manage the WenWen AI system service (systemd on Linux, launchd on macOS).
 
 Commands:
   start     Install (if missing) and start the service.
@@ -138,15 +138,15 @@ spawn). The main unit file is not rewritten unless it is missing or
 you pass `--force-install`. `restart` always runs `systemctl restart`
 even if writing the drop-in fails, so an upgrade that only restarts
 still comes back. To undo: delete the drop-in, then
-`systemctl daemon-reload && systemctl restart octop`.
+`systemctl daemon-reload && systemctl restart wenwen`.
 
-## `octop user`
+## `wenwen user`
 
 Local-DB user management. `login` requires a running server; the
 rest are offline.
 
 ```
-Usage: octop user [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen user [OPTIONS] COMMAND [ARGS]...
 
   User management commands (local DB; no server login required).
 
@@ -160,13 +160,13 @@ Commands:
   login     Login against a running server; stores JWT for optional remote HTTP attach.
 ```
 
-## `octop agent`
+## `wenwen agent`
 
 Lifecycle and templates. Most commands boot an embedded
 `OctopServer` to operate on the local DB without a remote round-trip.
 
 ```
-Usage: octop agent [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen agent [OPTIONS] COMMAND [ARGS]...
 
   Agent lifecycle commands.
 
@@ -186,14 +186,14 @@ Commands:
 agents on behalf of another user. `use` writes the agent id into
 `~/.octop/cli_state.json` so subsequent commands default to it.
 
-## `octop chats`
+## `wenwen chats`
 
 Thread CRUD + interactive REPL. The REPL and `send` use an embedded
-server (no separate `octop run` needed); `list` / `get` / `create` /
+server (no separate `wenwen run` needed); `list` / `get` / `create` /
 `update` / `delete` work fully offline against `~/.octop/octop.db`.
 
 ```
-Usage: octop chats [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen chats [OPTIONS] COMMAND [ARGS]...
 
   Thread list/history and interactive chat (CLI channel / local DB).
 
@@ -207,21 +207,21 @@ Commands:
   repl        Interactive chat REPL (embedded server + CLI gateway channel).
 ```
 
-`octop chat` is a deprecated alias that prints a stderr warning and
+`wenwen chat` is a deprecated alias that prints a stderr warning and
 forwards to `chats`.
 
-## `octop bridge`
+## `wenwen bridge`
 
 User-scoped Octop-to-Octop peer links (same surface as Dashboard **远程桥接**).
 `--user` / pinned `default_user` selects the local owner. `--peer-user` is
 the **remote** login. `probe` talks HTTP only; `create --connect` /
 `connect` / `agents` verify the Bridge WebSocket then close it — start
-`octop run` to keep a link alive (auto-reconnect).
+`wenwen run` to keep a link alive (auto-reconnect).
 
 ```
-Usage: octop bridge [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen bridge [OPTIONS] COMMAND [ARGS]...
 
-  Manage remote Octop bridge peers (add / edit / probe / connect).
+  Manage remote WenWen AI bridge peers (add / edit / probe / connect).
 
 Commands:
   list        List saved bridge connections.
@@ -240,14 +240,14 @@ Commands:
 is omitted. `create` always needs the remote password: pass
 `--peer-password` or type it at the hidden prompt.
 
-## `octop channel`
+## `wenwen channel`
 
 Local DB channel CRUD plus platform-specific bot creators. The
 `wecom` / `weixin` / `feishu-setup` subcommands drive the QR-code
 bot-creator flows; `config` is the offline config editor.
 
 ```
-Usage: octop channel [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen channel [OPTIONS] COMMAND [ARGS]...
 
   Channel management commands.
 
@@ -263,14 +263,14 @@ Commands:
   bind          Bind-group helper for WeCom / Weixin (QR login, etc.).
 ```
 
-## `octop cron`
+## `wenwen cron`
 
-Local DB cron management. `run-now` requires a running `octop run`
+Local DB cron management. `run-now` requires a running `wenwen run`
 because the actual fire is dispatched through the live
 `CronManager`.
 
 ```
-Usage: octop cron [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen cron [OPTIONS] COMMAND [ARGS]...
 
   Cron job management commands.
 
@@ -287,12 +287,12 @@ prompt verbatim; `--task-type agent` (default) runs the LLM and
 pushes the reply. `--prompt` is required, must be non-empty and ≤
 2000 characters.
 
-## `octop provider`
+## `wenwen provider`
 
 Local DB provider CRUD. `test` requires a running server.
 
 ```
-Usage: octop provider [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen provider [OPTIONS] COMMAND [ARGS]...
 
   Provider management commands (local DB).
 
@@ -303,12 +303,12 @@ Commands:
   test      Ping the provider (requires running server).
 ```
 
-## `octop models`
+## `wenwen models`
 
 Provider presets and active model management.
 
 ```
-Usage: octop models [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen models [OPTIONS] COMMAND [ARGS]...
 
   Model catalog and active-model settings.
 
@@ -322,14 +322,14 @@ Commands:
   ollama-rm     Remove a local Ollama model (requires a running server).
 ```
 
-## `octop skills`
+## `wenwen skills`
 
 Per-agent skill enable / disable. All subcommands need a running
 server (the dashboard's Skill Hub and bundled `~/.octop/skills/`
 library are queried at boot).
 
 ```
-Usage: octop skills [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen skills [OPTIONS] COMMAND [ARGS]...
 
   Manage agent skills (enable / disable / list).
 
@@ -340,13 +340,13 @@ Commands:
   config    Show / edit the per-agent skills config.
 ```
 
-## `octop admin`
+## `wenwen admin`
 
 Local DB admin operations. `rotate-jwt-secret` works without a
 running server (it edits the SQLite secret row directly).
 
 ```
-Usage: octop admin [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen admin [OPTIONS] COMMAND [ARGS]...
 
   Admin commands (local DB).
 
@@ -357,7 +357,7 @@ Commands:
   rotate-jwt-secret    Rotate the JWT secret directly via the local DB.
 ```
 
-## `octop captcha`
+## `wenwen captcha`
 
 Login captcha maintenance against the local database. Works fully offline
 (edits the SQLite settings row directly) — the escape hatch for when a
@@ -366,7 +366,7 @@ not allowlisted) locks everyone out of the dashboard, since the settings
 UI itself requires login to reach.
 
 ```
-Usage: octop captcha [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen captcha [OPTIONS] COMMAND [ARGS]...
 
   Login captcha maintenance against the local database.
 
@@ -376,14 +376,14 @@ Commands:
 
 Boot-env captcha (`OCTOP_CAPTCHA_*`) is not touched by `reset` — unset
 those in the environment file if they are the actual lockout cause.
-Restart `octop run` (if already running) for the change to apply.
+Restart `wenwen run` (if already running) for the change to apply.
 
-## `octop backup`
+## `wenwen backup`
 
-Export and restore Octop backups. Works fully offline.
+Export and restore WenWen AI backups. Works fully offline.
 
 ```
-Usage: octop backup [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen backup [OPTIONS] COMMAND [ARGS]...
 
   Backup and restore database + local agent workspaces.
 
@@ -393,16 +393,16 @@ Commands:
   auto       Automatic backup status and one-shot run.
 ```
 
-### `octop backup auto`
+### `wenwen backup auto`
 
-Automatic backups are scheduled **inside** a running `octop run` process
+Automatic backups are scheduled **inside** a running `wenwen run` process
 (via the same system-job mechanism as TLS renewal). Configure in
 `config.json` under `backup`, with env overrides
 `OCTOP_BACKUP_AUTO_ENABLED`, `OCTOP_BACKUP_SCHEDULE`,
 `OCTOP_BACKUP_RETENTION_COUNT`, or via the dashboard Backup settings.
 
 ```
-Usage: octop backup auto [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen backup auto [OPTIONS] COMMAND [ARGS]...
 
 Commands:
   status  Print automatic backup settings from config.json.
@@ -414,15 +414,15 @@ timezone). Automatic archives are named `octop-auto-backup-*.tar.gz`;
 retention only deletes those files and never touches manual
 `octop-backup-*.tar.gz` archives.
 
-## `octop update`
+## `wenwen update`
 
-Check for and install a newer Octop release from the configured
+Check for and install a newer WenWen AI release from the configured
 channel (PyPI by default).
 
 ```
-Usage: octop update [OPTIONS]
+Usage: wenwen update [OPTIONS]
 
-  Check for and install a newer Octop release.
+  Check for and install a newer WenWen AI release.
 
 Options:
   --check / --no-check     Only check; do not install.
@@ -430,19 +430,19 @@ Options:
   -h, --help               Show this message and exit.
 ```
 
-## `octop plugin`
+## `wenwen plugin`
 
 Install and manage third-party plugins (drop into `~/.octop/plugins/`).
 The same plugin manager powers the dashboard's "Plugins" page.
 
-Octop also **seeds bundled plugins** into `~/.octop/plugins/` during
-`octop init` and every `octop run` start. They are listed in Admin →
+WenWen AI also **seeds bundled plugins** into `~/.octop/plugins/` during
+`wenwen init` and every `wenwen run` start. They are listed in Admin →
 Plugins but stay **globally disabled** until you turn them on. An id
 already recorded in `config.json` → `bundled_plugins_seeded` is not
 copied again after uninstall.
 
 ```
-Usage: octop plugin [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen plugin [OPTIONS] COMMAND [ARGS]...
 
   Install and manage plugins.
 
@@ -453,16 +453,16 @@ Commands:
   reload     Reload all installed plugins without restart.
 ```
 
-## `octop acp`
+## `wenwen acp`
 
-Expose an Octop agent as a stdio JSON-RPC ACP server. Boots a
+Expose an WenWen AI agent as a stdio JSON-RPC ACP server. Boots a
 standalone `OctopServer` (reads `~/.octop`); does **not** require
-`octop run` to be running.
+`wenwen run` to be running.
 
 ```
-Usage: octop acp [OPTIONS]
+Usage: wenwen acp [OPTIONS]
 
-  Run Octop agent as ACP server (stdio).
+  Run WenWen AI agent as ACP server (stdio).
 
 Options:
   --agent TEXT   Agent to expose (default: OCTOP_AGENT or first agent).
@@ -473,13 +473,13 @@ Options:
 See [ACP integration](./acp.md) for the Zed setup example and the
 runner object schema.
 
-## `octop clean`
+## `wenwen clean`
 
 Reset CLI state or wipe the whole `~/.octop` tree. Destructive — read
 the help carefully.
 
 ```
-Usage: octop clean [OPTIONS]
+Usage: wenwen clean [OPTIONS]
 
   Remove CLI state or wipe all of ~/.octop.
 
@@ -489,13 +489,13 @@ Options:
   -h, --help            Show this message and exit.
 ```
 
-## `octop config`
+## `wenwen config`
 
 Inspect / edit `~/.octop/cli_state.json` (default base URL, user,
 agent).
 
 ```
-Usage: octop config [OPTIONS] COMMAND [ARGS]...
+Usage: wenwen config [OPTIONS] COMMAND [ARGS]...
 
   CLI state (base URL, defaults).
 
@@ -504,12 +504,12 @@ Commands:
   set-user   Pin the default --user.
 ```
 
-## `octop completion` / `octop version`
+## `wenwen completion` / `wenwen version`
 
 ```text
-$ octop completion show bash   # dump a shell snippet
-$ octop completion install     # append to ~/.zshrc / ~/.bashrc
-$ octop version                # print the installed octop version
+$ wenwen completion show bash   # dump a shell snippet
+$ wenwen completion install     # append to ~/.zshrc / ~/.bashrc
+$ wenwen version                # print the installed wenwen version
 ```
 
 ## CLI state file

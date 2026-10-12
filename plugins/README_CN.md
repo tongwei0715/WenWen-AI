@@ -1,12 +1,12 @@
-# Octop 插件示例
+# WenWen AI 插件示例
 
 [English](./README.md)
 
-本目录提供插件 demo，对应 Octop / octop-harness 支持的 `kind`，以及**前后端一体**的 UI 渲染示例。
+本目录提供插件 demo，对应 WenWen AI / octop-harness 支持的 `kind`，以及**前后端一体**的 UI 渲染示例。
 结构参考 [octop-toolkit](https://github.com/veenyi/octop-plugins/tree/main/octop-toolkit)。
 
-随 Octop 安装包一并分发的产品插件在 `src/octop/infra/agents/plugins/bundled/`。
-`octop init` 与 `octop run` 启动时会把缺失的插件复制到 `~/.octop/plugins/`，并在 `config.json` 里写成 **全局关闭**；管理员在 Dashboard 插件页打开后再给 Agent 用。卸载过的 id 不会自动装回。
+随 WenWen AI 安装包一并分发的产品插件在 `src/octop/infra/agents/plugins/bundled/`。
+`wenwen init` 与 `wenwen run` 启动时会把缺失的插件复制到 `~/.octop/plugins/`，并在 `config.json` 里写成 **全局关闭**；管理员在 Dashboard 插件页打开后再给 Agent 用。卸载过的 id 不会自动装回。
 
 ## 示例一览
 
@@ -70,11 +70,11 @@ Dashboard 通过 `GET /api/plugins/{id}/ui/…` 加载 `index.js`，调用 `setu
 
 ```bash
 # 从目录安装（开发时常用）
-octop plugin install ./plugins/demo-toolkit --force
-octop plugin install ./plugins/demo-greeting-skill --force
-octop plugin install ./plugins/demo-turn-logger --force
-octop plugin install ./plugins/demo-ui-card --force
-octop plugin list
+wenwen plugin install ./plugins/demo-toolkit --force
+wenwen plugin install ./plugins/demo-greeting-skill --force
+wenwen plugin install ./plugins/demo-turn-logger --force
+wenwen plugin install ./plugins/demo-ui-card --force
+wenwen plugin list
 ```
 
 或先打包再安装：
@@ -82,7 +82,7 @@ octop plugin list
 ```bash
 cd plugins
 zip -r demo-ui-card.zip demo-ui-card/
-octop plugin install ./demo-ui-card.zip --force
+wenwen plugin install ./demo-ui-card.zip --force
 ```
 
 **Dashboard：** Admin → Plugins → 安装。请粘贴 ZIP 的 **直接下载地址**

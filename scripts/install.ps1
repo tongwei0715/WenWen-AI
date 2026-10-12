@@ -1,8 +1,8 @@
-# Octop Installer for Windows (PowerShell)
+# WenWen AI Installer for Windows (PowerShell)
 # Usage: irm <url>/install.ps1 | iex
 #    or: .\install.ps1 [-Version X.Y.Z] [-FromSource] [-SourceDir DIR] [-Extras "browser"]
 #
-# Installs Octop into ~/.octop with a uv-managed Python environment.
+# Installs WenWen AI into ~/.octop with a uv-managed Python environment.
 
 & {
 param(
@@ -22,13 +22,13 @@ $OctopBin      = Join-Path $OctopHome "bin"
 $PythonVersion = "3.12"
 $OctopRepo     = if ($env:OCTOP_REPO) { $env:OCTOP_REPO } else { "https://github.com/TencentCloud/Octop.git" }
 
-function Write-Info { param([string]$Message) Write-Host "[octop] " -ForegroundColor Green  -NoNewline; Write-Host $Message }
-function Write-Warn { param([string]$Message) Write-Host "[octop] " -ForegroundColor Yellow -NoNewline; Write-Host $Message }
-function Stop-WithError { param([string]$Message) Write-Host "[octop] ERROR: $Message" -ForegroundColor Red; exit 1 }
+function Write-Info { param([string]$Message) Write-Host "[wenwen] " -ForegroundColor Green  -NoNewline; Write-Host $Message }
+function Write-Warn { param([string]$Message) Write-Host "[wenwen] " -ForegroundColor Yellow -NoNewline; Write-Host $Message }
+function Stop-WithError { param([string]$Message) Write-Host "[wenwen] ERROR: $Message" -ForegroundColor Red; exit 1 }
 
 if ($Help) {
     @"
-Octop Installer for Windows
+WenWen AI Installer for Windows
 
 Usage: .\install.ps1 [OPTIONS]
 
@@ -51,7 +51,7 @@ Environment:
     exit 0
 }
 
-Write-Host "[octop] Installing Octop into $OctopHome" -ForegroundColor Green
+Write-Host "[wenwen] Installing WenWen AI into $OctopHome" -ForegroundColor Green
 
 $policy = Get-ExecutionPolicy
 if ($policy -eq "Restricted") {
@@ -153,7 +153,7 @@ if (-not (Test-Path $VenvPython)) { Stop-WithError "Failed to create virtual env
 $pyVersion = & $VenvPython --version 2>&1
 Write-Info "Python environment ready ($pyVersion)"
 
-# TEMP: mcp 2.x breaks langchain-mcp-adapters; pin until published octop pulls octop-harness>=0.9.18.
+# TEMP: mcp 2.x breaks langchain-mcp-adapters; pin until published wenwen pulls octop-harness>=0.9.18.
 function Pin-McpCompat {
     Write-Info "Pinning mcp<2 (langchain-mcp-adapters compat; temporary)..."
     uv pip install "mcp>=1.27.1,<2" --python $VenvPython --quiet
@@ -183,7 +183,7 @@ $script:ConsoleAvailable = $false
 
 function Prepare-Console {
     param([string]$RepoDir)
-    $consoleDest = Join-Path $RepoDir "src\octop\dashboard"
+    $consoleDest = Join-Path $RepoDir "src\wenwen\dashboard"
     if (Test-Path (Join-Path $consoleDest "index.html")) {
         $script:ConsoleAvailable = $true
         return
@@ -235,8 +235,8 @@ if ($FromSource) {
     }
 } else {
     # PEP 508: extras must sit between name and version specifier
-    # (octop[browser]==x.y.z); octop==x.y.z[browser] is an invalid requirement.
-    $package = if ($Version) { "octop${ExtrasSuffix}==$Version" } else { "octop${ExtrasSuffix}" }
+    # (wenwen[browser]==x.y.z); wenwen==x.y.z[browser] is an invalid requirement.
+    $package = if ($Version) { "wenwen${ExtrasSuffix}==$Version" } else { "wenwen${ExtrasSuffix}" }
     Write-Info "Installing ${package} from PyPI..."
     $installArgs = @("--python", $VenvPython, "--quiet")
     if ($Version -match '(dev|a|b|rc)') { $installArgs += "--prerelease=explicit" }
@@ -246,11 +246,11 @@ if ($FromSource) {
 Pin-McpCompat
 Test-Install
 
-if (-not (Test-Path $VenvOctop)) { Stop-WithError "Installation failed: octop CLI not found in venv" }
-Write-Info "Octop installed successfully"
+if (-not (Test-Path $VenvOctop)) { Stop-WithError "Installation failed: wenwen CLI not found in venv" }
+Write-Info "WenWen AI installed successfully"
 
 if (-not $script:ConsoleAvailable) {
-    $check = & $VenvPython -c "import importlib.resources, octop; p=importlib.resources.files('octop')/'dashboard'/'index.html'; print('yes' if p.is_file() else 'no')" 2>&1
+    $check = & $VenvPython -c "import importlib.resources, wenwen; p=importlib.resources.files('wenwen')/'dashboard'/'index.html'; print('yes' if p.is_file() else 'no')" 2>&1
     if ($check -eq "yes") { $script:ConsoleAvailable = $true }
 }
 
@@ -312,7 +312,7 @@ $ErrorActionPreference = "Stop"
 $OctopHome = if ($env:OCTOP_HOME) { $env:OCTOP_HOME } else { Join-Path $HOME ".octop" }
 $RealBin = Join-Path $OctopHome "venv\Scripts\octop.exe"
 if (-not (Test-Path $RealBin)) {
-    Write-Error "Octop environment not found at $OctopHome\venv"
+    Write-Error "WenWen AI environment not found at $OctopHome\venv"
     exit 1
 }
 & $RealBin @args
@@ -325,7 +325,7 @@ set "OCTOP_HOME=%OCTOP_HOME%"
 if "%OCTOP_HOME%"=="" set "OCTOP_HOME=%USERPROFILE%\.octop"
 set "REAL_BIN=%OCTOP_HOME%\venv\Scripts\octop.exe"
 if not exist "%REAL_BIN%" (
-    echo Error: Octop environment not found at %OCTOP_HOME%\venv >&2
+    echo Error: WenWen AI environment not found at %OCTOP_HOME%\venv >&2
     exit /b 1
 )
 "%REAL_BIN%" %*
@@ -356,7 +356,7 @@ if ($env:Path -notlike "*$targetPath*") {
 }
 
 Write-Host ""
-Write-Host "Octop installed successfully!" -ForegroundColor Green
+Write-Host "WenWen AI installed successfully!" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Install location:  $OctopHome"
 Write-Host "  Python:            $pyVersion"
@@ -366,16 +366,16 @@ if ($script:ConsoleAvailable) {
     Write-Host "  Web UI:            not available" -ForegroundColor Yellow
 }
 Write-Host ""
-Write-Host "If 'octop' is not found in this session, run:"
+Write-Host "If 'wenwen' is not found in this session, run:"
 Write-Host "  `$env:Path = `"$targetPath;`$env:Path`"" -ForegroundColor White
 if ($pathSavedForNewSessions) {
     Write-Host "(Saved to User PATH; new terminals pick it up automatically.)"
 }
 Write-Host ""
 Write-Host "Then run:"
-Write-Host "  octop init" -ForegroundColor White
-Write-Host "  octop run" -ForegroundColor White
-Write-Host "  octop service start" -ForegroundColor White
+Write-Host "  wenwen init" -ForegroundColor White
+Write-Host "  wenwen run" -ForegroundColor White
+Write-Host "  wenwen service start" -ForegroundColor White
 Write-Host "  http://127.0.0.1:8088" -ForegroundColor White
 
 } @args

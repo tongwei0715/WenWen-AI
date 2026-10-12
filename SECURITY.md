@@ -18,9 +18,9 @@ We aim to acknowledge reports within **3 business days** and provide a fix timel
 
 ## Scope
 
-Octop is a self-hosted control plane. Operators are responsible for:
+WenWen AI is a self-hosted control plane. Operators are responsible for:
 
-- Securing the host and network exposure of `octop run`
+- Securing the host and network exposure of `wenwen run`
 - Rotating JWT secrets and admin credentials
 - Reviewing tool guard rules under `~/.octop/security/tool_guard/`
 - Protecting LLM API keys and IM channel credentials

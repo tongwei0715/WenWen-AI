@@ -1,4 +1,4 @@
-"""octop admin commands."""
+"""wenwen admin commands."""
 
 from __future__ import annotations
 

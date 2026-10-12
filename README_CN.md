@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/readme-banner-zh.png" alt="Octop Banner" width="600" />
+  <img src="docs/assets/readme-banner-zh.png" alt="WenWen AI Banner" width="600" />
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@
 
 ---
 
-**Octop** 是一个开源、自托管的 AI 助手。它不仅是工具，更是可并行运作的数字生命体。通过多 Agent 架构，它为团队、家庭和个人构建了既独立又协作的智能环境。并且这一切都运行在你的机器上——完全自托管的设计让隐私不再是妥协，而单进程启动的便捷性，则让强大的 Web 控制台、CLI 与 IM 集成触手可及。
+**WenWen AI** 是一个开源、自托管的 AI 助手。它不仅是工具，更是可并行运作的数字生命体。通过多 Agent 架构，它为团队、家庭和个人构建了既独立又协作的智能环境。并且这一切都运行在你的机器上——完全自托管的设计让隐私不再是妥协，而单进程启动的便捷性，则让强大的 Web 控制台、CLI 与 IM 集成触手可及。
 
 借助飞书、钉钉、QQ、微信、企业微信或 HTTP/SSE/WebSocket API 与任意 Agent 对话；通过**专家库**一键创建专业角色，通过 **Connector**（OAuth + MCP）接入外部服务，通过 **ACP** 与 IDE / 终端 AI 工具双向协作。
 
@@ -48,7 +48,7 @@
 | | 特性 | 说明 |
 |---|------|------|
 | 👥 | **多用户多 Agent 专家团** | 一人管理，全家共用；内置专家库与专家市场，按场景切换专业角色 |
-| 🤝 | **云端协作** | 将本机 Octop 连接到另一实例，可浏览对端专家并跨实例对话；对话记录保留在专家所在侧 |
+| 🤝 | **云端协作** | 将本机 WenWen AI 连接到另一实例，可浏览对端专家并跨实例对话；对话记录保留在专家所在侧 |
 | 🎭 | **MBTI 人格** | 16 种人格模板与互动测试，为每个 Agent 赋予鲜明性格 |
 | 🎯 | **AgentTeams** *（Beta）* | 协调者调度多位专家协作完成多步骤任务；[详见](docs/expert-teams.md) |
 | 🔒 | **更安全** | JWT 多用户隔离、工具审批、Shell 命令防护与敏感信息脱敏，数据留在本地 |
@@ -57,21 +57,21 @@
 | 🧠 | **可迁移记忆系统** | 基于 [Octop Memory](https://github.com/TencentCloud/octop-memory)，记忆随工作区迁移 |
 | 📚 | **知识库** | 基于文档的 RAG 检索；支持同实例共享语料，让回答锚定私有知识 |
 | 🧩 | **插件** | 支持第三方插件扩展；内置插件随安装注入，按需一键启用 |
-| ↔️ | **ACP 双向集成** | `octop acp` 增强 IDE 与终端 AI；对话中委派 OpenCode / Claude Code 等 |
+| ↔️ | **ACP 双向集成** | `wenwen acp` 增强 IDE 与终端 AI；对话中委派 OpenCode / Claude Code 等 |
 | 💻 | **终端 AI+** | 浏览器内交互式 Shell，AI 辅助命令执行与排障 |
 | 🌐 | **浏览器 AI+** | 基于 Chromium 的无头浏览器会话，支持网页自动化、截图与远程操控 |
 | 🖥️ | **远程桌面** | 控制台内实时看屏与键鼠操控，跨 Linux / Windows / macOS；适合远程办公、GUI 软件操作，无图形 Linux 可一键搭建隔离桌面 |
 | 🪟 | **桌面客户端** | Windows / macOS / Linux 原生应用，另有飞牛（FnOS）安装包，可与 Web 控制台并行使用 |
-| 🏠 | **可自托管** | 一条 `octop run` 即可运行控制台、CLI、IM 通道与定时任务，数据存于 `~/.octop/` |
+| 🏠 | **可自托管** | 一条 `wenwen run` 即可运行控制台、CLI、IM 通道与定时任务，数据存于 `~/.octop/` |
 
 ## 📌 概述
 
-Octop 是面向家庭与小团队的自托管 AI 助手平台。单进程同时提供 Web 控制台、CLI、IM 通道（飞书、钉钉、QQ、微信、企业微信等）与定时任务，共享 `~/.octop/` 下的控制面数据库（默认 SQLite；可选 PostgreSQL）。
+WenWen AI 是面向家庭与小团队的自托管 AI 助手平台。单进程同时提供 Web 控制台、CLI、IM 通道（飞书、钉钉、QQ、微信、企业微信等）与定时任务，共享 `~/.octop/` 下的控制面数据库（默认 SQLite；可选 PostgreSQL）。
 
-> Octop 的设计目标：让每一次对话、工作区与凭据都留在你自己的机器上，同时为每个用户配备一组可按场景切换的专业 Agent。
+> WenWen AI 的设计目标：让每一次对话、工作区与凭据都留在你自己的机器上，同时为每个用户配备一组可按场景切换的专业 Agent。
 
 <details>
-<summary>🐾 你能用 Octop 做什么</summary>
+<summary>🐾 你能用 WenWen AI 做什么</summary>
 
 - **个人助理** — 让专属 Agent 帮你写周报、整理资料、定日程，记忆随工作区长期保留。
 - **家庭共享** — 一个管理员账号，全家共用；按成员分配不同 Agent 与专家角色，也可共享专家与知识库。
@@ -98,20 +98,20 @@ Octop 是面向家庭与小团队的自托管 AI 助手平台。单进程同时�
 | **ACP** | agent-client-protocol |
 | **构建 / 质量** | hatchling · ruff · mypy · pytest |
 
-Octop 基于一系列 Octop Harness 工程实践构建——它将这些专注的运行时组合进同一个进程：
+WenWen AI 基于一系列 Octop Harness 工程实践构建——它将这些专注的运行时组合进同一个进程：
 
 - **[Octop Harness](https://github.com/TencentCloud/octop-harness)** — Agent 运行时：模型路由、工具、技能与对话检查点。
 - **[Octop Gateway](https://github.com/TencentCloud/octop-gateway)** — 多平台 IM 通道桥接，将各类入站消息归一为统一的处理管线。
 - **[Octop Memory](https://github.com/TencentCloud/octop-memory)** — 分层记忆与全文检索，让 Agent 的记忆随工作区一同迁移。
 - **[Octop Browser](https://github.com/TencentCloud/octop-browser)** — 基于 CDP 的浏览器自动化，支持持久化配置，用于网页类任务。
 
-Octop 不依赖外部消息队列或中间件，而是通过进程内的 `HarnessProcessor` 统一路由所有入口——Web UI、IM 与定时任务。最终呈现为一个可重启恢复的单进程：启动时整个状态都从控制面数据库重建（默认 `~/.octop/octop.db`，亦可配置 PostgreSQL）。
+WenWen AI 不依赖外部消息队列或中间件，而是通过进程内的 `HarnessProcessor` 统一路由所有入口——Web UI、IM 与定时任务。最终呈现为一个可重启恢复的单进程：启动时整个状态都从控制面数据库重建（默认 `~/.octop/octop.db`，亦可配置 PostgreSQL）。
 
 ## 🤔 功能特性
 
 ### 服务器与认证
 - 多用户 JWT 认证，支持管理员角色
-- 首次运行向导（`octop init`）
+- 首次运行向导（`wenwen init`）
 - 交互式 API 文档：`/api/docs`（默认关闭 — 在 `config.json` 中设置 `"enable_api_docs": true` 开启）
 
 ### 专家
@@ -129,24 +129,24 @@ Octop 不依赖外部消息队列或中间件，而是通过进程内的 `Harnes
 ### 使用入口
 - **Web 控制台** — 对话、专家 / 团队、连接器、通道、定时任务、知识库、插件、设置
 - **桌面客户端** — Windows / macOS / Linux 原生应用；飞牛（FnOS）安装包
-- **CLI** — `octop run`、`octop chats`、`octop acp`、管理命令
+- **CLI** — `wenwen run`、`wenwen chats`、`wenwen acp`、管理命令
 - **HTTP/SSE/WebSocket API** — 完整的程序化访问能力
 - **远程桌面** — 在控制台操控本机桌面会话
 
 ### 知识库与插件
 - **知识库** — 基于文档的 RAG 检索；支持同实例内共享语料
-- **插件** — 安装并管理第三方插件（`octop plugin`）；内置插件随安装注入，按需在控制台一键启用
+- **插件** — 安装并管理第三方插件（`wenwen plugin`）；内置插件随安装注入，按需在控制台一键启用
 
 ### ACP（Agent Client Protocol）
 
-Octop 支持两个方向的 ACP 集成：
+WenWen AI 支持两个方向的 ACP 集成：
 
-1. **入站** — 外部工具使用**你的** Octop Agent
+1. **入站** — 外部工具使用**你的** WenWen AI Agent
    ```bash
-   octop acp --agent main   # 为 Zed、OpenCode 等提供 stdio ACP 服务
+   wenwen acp --agent main   # 为 Zed、OpenCode 等提供 stdio ACP 服务
    ```
 
-2. **出站** — Octop 委派给外部编程 Agent
+2. **出站** — WenWen AI 委派给外部编程 Agent
    - 控制台 → **ACP**（`/acp`）：配置 Runner（按用户全局）
    - 为 Agent 启用 **acp_runner** 后，在对话中委派任务
 
@@ -172,9 +172,9 @@ Octop 支持两个方向的 ACP 集成：
 - [ ] **自进化能力** — 将日常对话自动沉淀为技能，让助手随使用不断成长。
 - [ ] **Managed Agents** — 平台托管的 Agent 生命周期（开通、伸缩与运维），无需自行维护完整自托管栈。
 - [ ] **Project** — 以项目为边界组织 Agent、文件与会话，围绕同一目标协作。
-- [ ] **云边端一体** — 本地运行 Octop，同时可将选定任务调度到云端执行：轻量工作留在本地，重活按需上云。
-- [ ] **插件市场** — 搭建插件市场，支持在 Octop 内发现、安装与更新第三方插件。
-- [ ] **对话式控制面** — 完善 Octop 自身 Skill，让对话即可覆盖当前控制台的完整能力：创建专家、配置通道、管理知识库，并支持开发插件。
+- [ ] **云边端一体** — 本地运行 WenWen AI，同时可将选定任务调度到云端执行：轻量工作留在本地，重活按需上云。
+- [ ] **插件市场** — 搭建插件市场，支持在 WenWen AI 内发现、安装与更新第三方插件。
+- [ ] **对话式控制面** — 完善 WenWen AI 自身 Skill，让对话即可覆盖当前控制台的完整能力：创建专家、配置通道、管理知识库，并支持开发插件。
 
 规划会随社区发展动态调整，以上仅供参考。
 
@@ -215,7 +215,7 @@ source ~/.zshrc   # Zsh
 source ~/.bashrc  # Bash
 ```
 
-安装脚本会将 `octop` 加入 PATH（`~/.octop/bin`）。可选附加组件：
+安装脚本会将 `wenwen` 加入 PATH（`~/.octop/bin`）。可选附加组件：
 
 ```bash
 # 下载 Playwright Chromium 用于浏览器自动化（若系统已有 Chrome / Chromium 则会跳过）
@@ -238,8 +238,8 @@ curl -fsSL https://finnie-1258344699.cos.ap-guangzhou.myqcloud.com/octop/install
 **备选 — PyPI**（若你已自行管理 Python 环境）：
 
 ```bash
-pip install octop
-# 可选本地 ONNX Embedding 模型缓存（设置 → 模型 → 本地）：pip install "octop[local-embedding]"
+pip install wenwen-ai
+# 可选本地 ONNX Embedding 模型缓存（设置 → 模型 → 本地）：pip install "wenwen[local-embedding]"
 # 仅下载目录模型到 ~/.octop/embedding_models；不用于对话，也不接入 Memory。
 # 浏览器自动化依赖已内置 Playwright；Chromium 可通过安装脚本 --extras browser、
 # 控制台，或执行：python -m playwright install chromium
@@ -254,7 +254,7 @@ uv sync --extra local-embedding
 ### 2. 初始化
 
 ```bash
-octop init
+wenwen init
 ```
 
 交互式向导会在 `~/.octop/` 下创建 SQLite 数据库、JWT 密钥，并引导你设置首个管理员账号。
@@ -263,16 +263,16 @@ octop init
 
 ```bash
 # 前台运行（API + Web 控制台）
-octop run
+wenwen run
 
 # 自定义主机与端口
-octop run --host 0.0.0.0 --port 8088
+wenwen run --host 0.0.0.0 --port 8088
 
 # 注册为系统服务（systemd / launchd / Windows 服务）
-octop service start
+wenwen service start
 ```
 
-打开 **http://127.0.0.1:8088**。Docker 若设置了合格的 `OCTOP_DEFAULT_PASSWORD`，首次启动会创建管理员（凭据写入 `/data/.octop/credential.txt`）；未设置或密码不合格则打开设置向导（向导口令在 `/data/.octop/octop-login.txt`）。交互式 `octop init` / 设置向导会让你自行设置密码（至少 8 位，且同时包含字母和数字）。
+打开 **http://127.0.0.1:8088**。Docker 若设置了合格的 `OCTOP_DEFAULT_PASSWORD`，首次启动会创建管理员（凭据写入 `/data/.octop/credential.txt`）；未设置或密码不合格则打开设置向导（向导口令在 `/data/.octop/octop-login.txt`）。交互式 `wenwen init` / 设置向导会让你自行设置密码（至少 8 位，且同时包含字母和数字）。
 
 ### Docker（推荐用于生产部署）
 
@@ -338,20 +338,20 @@ docker run -d \
 | 远程一键安装 | Windows | `irm …/octop/install.ps1 \| iex` 或 `install.bat` |
 | 本地脚本 | macOS / Linux | `bash scripts/install.sh` |
 | 本地脚本 | Windows | `scripts\install.bat` 或 `install.ps1` |
-| PyPI | 全平台 | `pip install octop`（可选 extras 如 `local-embedding`） |
+| PyPI | 全平台 | `pip install wenwen-ai`（可选 extras 如 `local-embedding`） |
 | Docker | 全平台 | `docker/docker-compose.yml` |
 
 所有安装脚本均在 `~/.octop/venv` 创建隔离环境，并通过 `~/.octop/bin/octop` 包装 CLI，不会影响系统 Python。
 
 ### 升级
 
-`octop update` 只替换 wheel / 二进制，你的 `~/.octop/` 数据库、工作区、密钥与 `config.json` 均会保留：
+`wenwen update` 只替换 wheel / 二进制，你的 `~/.octop/` 数据库、工作区、密钥与 `config.json` 均会保留：
 
 ```bash
-octop update          # 获取并安装最新版 Octop，若已注册系统服务则自动重启
+wenwen update          # 获取并安装最新版 WenWen AI，若已注册系统服务则自动重启
 ```
 
-数据库结构会在下次启动时自动迁移；仅当设置向导提示需要迁移时才运行 `octop init`。跨版本升级前请务必先备份（`octop backup`）。
+数据库结构会在下次启动时自动迁移；仅当设置向导提示需要迁移时才运行 `wenwen init`。跨版本升级前请务必先备份（`wenwen backup`）。
 
 ## ⚙️ 配置
 
@@ -359,27 +359,27 @@ octop update          # 获取并安装最新版 Octop，若已注册系统服�
 
 ```bash
 # LLM 供应商与模型
-octop models
-octop provider list
+wenwen models
+wenwen provider list
 
 # IM 通道
-octop channel list
-octop channel install
+wenwen channel list
+wenwen channel install
 
 # Skill（按 Agent）
-octop skills list --agent main
+wenwen skills list --agent main
 
 # 定时任务
-octop cron list
-octop cron create --help
+wenwen cron list
+wenwen cron create --help
 
 # 用户（管理员）
-octop user list
+wenwen user list
 ```
 
 ### 支持的 LLM 供应商
 
-OpenAI 兼容 API、DashScope（千问）、Ollama 等预设 — 在控制台或通过 `octop provider` 按 Agent 配置。
+OpenAI 兼容 API、DashScope（千问）、Ollama 等预设 — 在控制台或通过 `wenwen provider` 按 Agent 配置。
 
 ### 支持的通道
 
@@ -404,24 +404,24 @@ OpenAI 兼容 API、DashScope（千问）、Ollama 等预设 — 在控制台或
 
 | 命令 | 说明 |
 |------|------|
-| `octop init` | 初始化 `~/.octop/`（数据库、管理员、JWT 密钥） |
-| `octop run` | 前台启动 Octop |
-| `octop service start` | 安装并启动系统服务 |
-| `octop service stop` | 停止系统服务 |
-| `octop agent` | 创建、列出、启停 Agent |
-| `octop channel` | 安装与管理 IM 通道 |
-| `octop chats` | REPL 与会话管理 |
-| `octop acp` | 为 IDE 提供 stdio ACP 服务 |
-| `octop cron` | 管理定时任务 |
-| `octop models` | 供应商预设与模型解析 |
-| `octop skills` | 按 Agent 启用/禁用 Skill |
-| `octop plugin` | 安装并管理第三方插件 |
-| `octop backup` | 导出 / 恢复备份 |
-| `octop clean` | 清理 CLI 状态或清空 `~/.octop/` |
-| `octop memory list` | 列出可参与记忆维护的运行中 Agent；不改动数据库。 |
-| `octop memory slim [--agent ID]` | 通过运行中的宿主备份并精简 SQLite 记忆；使用指定 Agent 或按提示选择。在终端与控制台显示进度。[详情](docs/memory-slim.md) |
-| `octop memory slim --all` | 依次维护所有符合条件的运行中 Agent，逐个显示进度；首个失败即停止。 |
-| `octop update` | 检查并安装更新 |
+| `wenwen init` | 初始化 `~/.octop/`（数据库、管理员、JWT 密钥） |
+| `wenwen run` | 前台启动 WenWen AI |
+| `wenwen service start` | 安装并启动系统服务 |
+| `wenwen service stop` | 停止系统服务 |
+| `wenwen agent` | 创建、列出、启停 Agent |
+| `wenwen channel` | 安装与管理 IM 通道 |
+| `wenwen chats` | REPL 与会话管理 |
+| `wenwen acp` | 为 IDE 提供 stdio ACP 服务 |
+| `wenwen cron` | 管理定时任务 |
+| `wenwen models` | 供应商预设与模型解析 |
+| `wenwen skills` | 按 Agent 启用/禁用 Skill |
+| `wenwen plugin` | 安装并管理第三方插件 |
+| `wenwen backup` | 导出 / 恢复备份 |
+| `wenwen clean` | 清理 CLI 状态或清空 `~/.octop/` |
+| `wenwen memory list` | 列出可参与记忆维护的运行中 Agent；不改动数据库。 |
+| `wenwen memory slim [--agent ID]` | 通过运行中的宿主备份并精简 SQLite 记忆；使用指定 Agent 或按提示选择。在终端与控制台显示进度。[详情](docs/memory-slim.md) |
+| `wenwen memory slim --all` | 依次维护所有符合条件的运行中 Agent，逐个显示进度；首个失败即停止。 |
+| `wenwen update` | 检查并安装更新 |
 
 在已登录的 Web 控制台或本地 CLI 聊天中，`/memory slim` 会说明当前 Agent 的维护方式；
 `/memory slim --all` 列出符合条件的 Agent。审阅影响后加 `--confirm` 开始维护。
@@ -432,10 +432,10 @@ OpenAI 兼容 API、DashScope（千问）、Ollama 等预设 — 在控制台或
 
 ## 🖥️ Web 控制台
 
-`octop run` 启动后访问 **http://127.0.0.1:8088**。
+`wenwen run` 启动后访问 **http://127.0.0.1:8088**。
 
 <p align="center">
-  <img src="docs/assets/readme-chat-zh.png" alt="Octop Web 控制台" width="800" />
+  <img src="docs/assets/readme-chat-zh.png" alt="WenWen AI Web 控制台" width="800" />
 </p>
 
 - **对话** — 与专家 / 团队实时聊天

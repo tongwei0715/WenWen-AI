@@ -1,6 +1,7 @@
 /** Brand palettes — orthogonal to light/dark mode (`data-theme`). */
 
 export type ThemePalette =
+  | "openai"
   | "rose"
   | "tech"
   | "indigo"
@@ -12,6 +13,7 @@ export type ThemePalette =
   | "custom";
 
 export const VALID_PALETTES: ThemePalette[] = [
+  "openai",
   "rose",
   "tech",
   "indigo",
@@ -25,7 +27,7 @@ export const VALID_PALETTES: ThemePalette[] = [
 /** Curated palettes only — "custom" is handled separately via a hex value. */
 export const CURATED_PALETTES: ThemePalette[] = [...VALID_PALETTES];
 
-export const DEFAULT_PALETTE: ThemePalette = "rose";
+export const DEFAULT_PALETTE: ThemePalette = "openai";
 export const DEFAULT_CUSTOM_COLOR = "#4B74FA";
 
 /** True when the value is one of the curated palette keys (not "custom"/hex). */
@@ -44,6 +46,7 @@ export const PALETTE_STORAGE_KEY = LEGACY_PALETTE_STORAGE_KEY;
 
 /** Swatch color shown in the palette picker (light brand). */
 export const PALETTE_SWATCH: Record<ThemePalette, string> = {
+  openai: "#111111",
   rose: "#E85D75",
   tech: "#4B74FA",
   indigo: "#6366F1",
@@ -74,6 +77,27 @@ export const ANTD_BRAND_TOKENS: Record<
   Exclude<ThemePalette, "custom">,
   { light: AntdBrandTokens; dark: AntdBrandTokens }
 > = {
+  openai: {
+    light: {
+      colorPrimary: "#111111",
+      colorPrimaryHover: "#2E2E2E",
+      colorPrimaryActive: "#000000",
+      colorLink: "#111111",
+    },
+    dark: {
+      colorPrimary: "#F5F5F5",
+      colorPrimaryBg: "rgba(255, 255, 255, 0.12)",
+      colorPrimaryBgHover: "rgba(255, 255, 255, 0.18)",
+      colorPrimaryBorder: "rgba(255, 255, 255, 0.25)",
+      colorPrimaryBorderHover: "rgba(255, 255, 255, 0.35)",
+      colorPrimaryHover: "#FFFFFF",
+      colorPrimaryActive: "#E0E0E0",
+      colorPrimaryText: "#F5F5F5",
+      colorPrimaryTextHover: "#FFFFFF",
+      colorPrimaryTextActive: "#E0E0E0",
+      colorLink: "#F5F5F5",
+    },
+  },
   rose: {
     light: {
       colorPrimary: "#E85D75",

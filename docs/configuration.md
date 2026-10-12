@@ -1,7 +1,7 @@
 # Configuration
 
-Octop stores all of its state under `~/.octop/`. The directory is created
-on first server start (or by `octop init` / `octop run`).
+WenWen AI stores all of its state under `~/.octop/`. The directory is created
+on first server start (or by `wenwen init` / `wenwen run`).
 
 ## Filesystem layout
 
@@ -10,14 +10,14 @@ on first server start (or by `octop init` / `octop run`).
 ├── config.json              # process-level settings (host, port, CORS, DB, TLS, …)
 ├── env                      # optional dotenv (OCTOP_DATABASE_*, API keys, …); loaded at server start
 ├── octop.db                 # SQLite — users, agents, providers, sessions, audit
-├── cli_state.json           # CLI token + pinned defaults (`octop user login`)
-├── repl_history             # readline-style history for `octop chats repl`
+├── cli_state.json           # CLI token + pinned defaults (`wenwen user login`)
+├── repl_history             # readline-style history for `wenwen chats repl`
 ├── secrets/
-│   └── jwt_secret           # 32-byte random; rotate with `octop admin rotate-jwt-secret`
+│   └── jwt_secret           # 32-byte random; rotate with `wenwen admin rotate-jwt-secret`
 ├── agents/<agent_id>/       # per-agent workspace (LangGraph state, attachments, …)
 ├── plugins/                 # installed third-party plugins
-├── ssl/                     # self-signed certs when `octop run --ssl` is used without --cert/--key
-├── logs/                    # rotating log files (when `octop service start` writes a logfile)
+├── ssl/                     # self-signed certs when `wenwen run --ssl` is used without --cert/--key
+├── logs/                    # rotating log files (when `wenwen service start` writes a logfile)
 └── octop.log                # default foreground log path
 ```
 
@@ -32,8 +32,8 @@ file are left alone). Every running agent inherits those keys:
   cannot be overridden from `.env`). New agents store that file at
   `{workspace}/.octop/.env`; existing agents keep `{workspace}/.env` when
   their stored internal system-files prefix uses the legacy layout. Remote
-  object-store workspaces are not read from the host path — Octop/harness
-  also reads `.env` through the agent backend on each execute. Octop also
+  object-store workspaces are not read from the host path — WenWen AI/harness
+  also reads `.env` through the agent backend on each execute. WenWen AI also
   injects `OCTOP_AGENT_ID`, `OCTOP_AUTH_DIR` (under `{workspace}/.octop/auth`
   for new agents; legacy agents keep `{workspace}/.octop-auth`),
   and `OCTOP_HOME` into shell/sandbox env.
@@ -56,7 +56,7 @@ sub-paths are exposed as properties on `PathLayout` in
 ## `config.json`
 
 Generated with defaults on first run; merged with environment overrides
-on each start. Schema (`OctopConfig` in `octop/config.py`):
+on each start. Schema (`OctopConfig` in `wenwen/config.py`):
 
 ```json
 {
@@ -77,8 +77,8 @@ on each start. Schema (`OctopConfig` in `octop/config.py`):
     "sqlite_path": "octop.db",
     "host": "127.0.0.1",
     "port": 5432,
-    "database": "octop",
-    "user": "octop",
+    "database": "wenwen",
+    "user": "wenwen",
     "password": null,
     "url": null
   },
@@ -159,15 +159,15 @@ Each variable, when set, takes precedence over the matching key in
 | `OCTOP_DATABASE_SQLITE_PATH` | path | `octop.db` | SQLite file path (relative to `OCTOP_HOME` unless absolute) |
 | `OCTOP_DATABASE_HOST` | string | `127.0.0.1` | PostgreSQL host (when `driver=postgresql`) |
 | `OCTOP_DATABASE_PORT` | int | `5432` | PostgreSQL port |
-| `OCTOP_DATABASE_NAME` | string | `octop` | PostgreSQL database name |
-| `OCTOP_DATABASE_USER` | string | `octop` | PostgreSQL user |
+| `OCTOP_DATABASE_NAME` | string | `wenwen` | PostgreSQL database name |
+| `OCTOP_DATABASE_USER` | string | `wenwen` | PostgreSQL user |
 | `OCTOP_DATABASE_PASSWORD` | string | empty | PostgreSQL password (overrides file; prefer env in production) |
-| `OCTOP_ADMIN_USERNAME` | string | empty | Pre-fills the first-admin username in `octop init` |
-| `OCTOP_ADMIN_PASSWORD` | string | empty | Pre-fills the first-admin password in `octop init` |
+| `OCTOP_ADMIN_USERNAME` | string | empty | Pre-fills the first-admin username in `wenwen init` |
+| `OCTOP_ADMIN_PASSWORD` | string | empty | Pre-fills the first-admin password in `wenwen init` |
 | `OCTOP_ADMIN_DISPLAY_NAME` | string | empty | Pre-fills the admin display name |
 | `OCTOP_USER` | string | empty | Default `--user` for CLI subcommands |
 | `OCTOP_AGENT` | string | empty | Default `--agent` for CLI subcommands |
-| `OCTOP_SERVICE_MODE` | `systemd` \| `launchd` | auto | Override the service backend (used by `octop service`) |
+| `OCTOP_SERVICE_MODE` | `systemd` \| `launchd` | auto | Override the service backend (used by `wenwen service`) |
 | `OCTOP_SERVICE_SCOPE` | `user` \| `system` | auto | systemd `--user` vs system unit (Linux only) |
 
 Invalid integer values are logged and ignored — the on-disk default
@@ -224,7 +224,7 @@ step; password verification works without a pool. The modern flow uses
 plus `database_bound` / `database_driver`. `setup_lockdown` middleware
 blocks non-setup routes until the wizard completes.
 
-For unattended installs, use `octop init --yes` with
+For unattended installs, use `wenwen init --yes` with
 `OCTOP_ADMIN_USERNAME` / `OCTOP_ADMIN_PASSWORD` (and
 `OCTOP_REQUIRE_SETUP_PASSWORD=false` if the env-var path is used). This
 runs the same migrations + admin creation without the HTTP wizard.
@@ -235,7 +235,7 @@ The JWT secret is generated on first start and stored in
 `~/.octop/secrets/jwt_secret`. Rotate it with:
 
 ```bash
-octop admin rotate-jwt-secret
+wenwen admin rotate-jwt-secret
 ```
 
 Rotation invalidates every outstanding access token immediately. The

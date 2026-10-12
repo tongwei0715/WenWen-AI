@@ -1,4 +1,4 @@
-# Octop — 飞牛 FnOS 安装包
+# WenWen AI — 飞牛 FnOS 安装包
 
 本目录包含将 [TencentCloud/Octop](https://github.com/TencentCloud/Octop) 打包为飞牛 fnOS `.fpk` 安装包所需的全部文件，并附带自动同步上游 + 自动构建的 GitHub Actions。
 
@@ -6,7 +6,7 @@
 
 安装向导中设置管理员账号：用户名与密码必填，显示名称、邮箱可选。密码至少 8 位，且必须同时包含字母和数字（与应用侧密码策略一致；过于常见的密码如 `Octop123` 会被拒绝，无效输入会在安装时直接提示）。
 
-密码由用户自己设定，不再自动生成。忘记时打开飞牛「文件管理」，进入应用共享里的 Octop 数据目录，查看 `octop-login.txt`（应用「设置」窗口会显示当前目录）。该文件只备份安装或应用「设置」改密时的密码，**网页改密后不会自动更新**。
+密码由用户自己设定，不再自动生成。忘记时打开飞牛「文件管理」，进入应用共享里的 WenWen AI 数据目录，查看 `octop-login.txt`（应用「设置」窗口会显示当前目录）。该文件只备份安装或应用「设置」改密时的密码，**网页改密后不会自动更新**。
 
 > 若你在 Web 控制台「头像菜单 → 修改密码」中改过密码，请用网页密码登录。
 
@@ -15,17 +15,17 @@
 本地版安装后自动注册官方 CLI 到 PATH（`/usr/local/bin/octop` → `octop-cli`），SSH 进飞牛即可使用全部官方管理命令（以 root 或 octop-native 身份执行最顺）：
 
 ```bash
-octop --help            # 官方 CLI 全部子命令
-octop version
-octop provider list     # 模型 provider
-octop agent list        # 专家/Agent
-octop user list         # 用户管理
-octop user passwd <用户名> --password <新密码>   # 离线改密（应用「设置」窗口改密也走这一命令）
-octop skills --help     # 技能管理
-octop backup --help     # 备份/恢复
+wenwen --help            # 官方 CLI 全部子命令
+wenwen version
+wenwen provider list     # 模型 provider
+wenwen agent list        # 专家/Agent
+wenwen user list         # 用户管理
+wenwen user passwd <用户名> --password <新密码>   # 离线改密（应用「设置」窗口改密也走这一命令）
+wenwen skills --help     # 技能管理
+wenwen backup --help     # 备份/恢复
 ```
 
-> 注意：不要手动执行 `octop run`（会与飞牛应用中心托管的服务实例抢 8089 端口）；Web 服务一律由应用中心启停。
+> 注意：不要手动执行 `wenwen run`（会与飞牛应用中心托管的服务实例抢 8089 端口）；Web 服务一律由应用中心启停。
 
 ## 两种安装包
 
@@ -38,7 +38,7 @@ octop backup --help     # 备份/恢复
 | **本地版 ARM64** | `Octop-fnos-native-arm64-<ver>.fpk` | ~200 MB | 同上，site-packages 为 aarch64；勿装到 x86 | 无需 Docker；ARM 飞牛无 Docker 时再用 |
 
 - **Docker 版**实现为 FnOS `docker-project`：包体只含 `docker-compose.yaml` 与向导配置，运行时由飞牛从 GHCR 拉取镜像。x86 / ARM 飞牛共用这一份 FPK，Docker 按本机架构拉对应镜像层。ARM 飞牛优先用这一份。镜像已内置 `desktop` 桌面控制与前端；Playwright Chromium 不预装，可在控制台按需安装。
-- **本地版**实现为 FnOS 原生 `app`：解释器复用飞牛「Python 3.12」开发工具；包内是 Octop 核心依赖与前端。专家 shell / 技能若要跑 `node` / `npx`，会复用飞牛已装的 Node.js（不强制安装）。扩展里的 `.so` 与 CPU 架构绑定，因此 x86 与 ARM 各打一份；装错架构会在安装或启动时报错。
+- **本地版**实现为 FnOS 原生 `app`：解释器复用飞牛「Python 3.12」开发工具；包内是 WenWen AI 核心依赖与前端。专家 shell / 技能若要跑 `node` / `npx`，会复用飞牛已装的 Node.js（不强制安装）。扩展里的 `.so` 与 CPU 架构绑定，因此 x86 与 ARM 各打一份；装错架构会在安装或启动时报错。
 
 > 上述包随正式版一起挂在 **`v*` GitHub Release** 上（例如 [v0.9.31](https://github.com/TencentCloud/Octop/releases/latest)）：`Octop-fnos-docker-<ver>.fpk` / `Octop-fnos-native-<ver>.fpk` / `Octop-fnos-native-arm64-<ver>.fpk`。
 
@@ -74,7 +74,7 @@ fnos/
     │   ├── privilege       # 权限声明（root，用于 sudo / 远程桌面等）
     │   └── resource        # data-share + usr-local-linker
     ├── app/
-    │   ├── bin/octop       # 启动器（复用飞牛 Python 3.12，启动 octop init/run）
+    │   ├── bin/octop       # 启动器（复用飞牛 Python 3.12，启动 wenwen init/run）
     │   ├── wizard/config.template   # 「设置」窗口表单模板（渲染当前用户名后落到已安装包 wizard/config）
     │   └── ui/             # 桌面图标入口
     └── wizard/             # 安装/配置/卸载/升级向导

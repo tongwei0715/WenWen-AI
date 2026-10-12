@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/readme-banner.png" alt="Octop Banner" width="600" />
+  <img src="docs/assets/readme-banner.png" alt="WenWen AI Banner" width="600" />
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@
 
 ---
 
-**Octop** is an open-source, self-hosted AI assistant. It's not just a tool — it's a digital life form that can operate in parallel. Through its multi-agent architecture, it builds an intelligent environment that is both independent and collaborative for teams, families, and individuals. Best of all, it runs entirely on your machine — the fully self-hosted design means privacy is never a compromise, while single-process startup makes the powerful web console, CLI, and IM integrations readily accessible.
+**WenWen AI** is an open-source, self-hosted AI assistant. It's not just a tool — it's a digital life form that can operate in parallel. Through its multi-agent architecture, it builds an intelligent environment that is both independent and collaborative for teams, families, and individuals. Best of all, it runs entirely on your machine — the fully self-hosted design means privacy is never a compromise, while single-process startup makes the powerful web console, CLI, and IM integrations readily accessible.
 
 Chat through the Web Dashboard, Feishu, DingTalk, QQ, WeChat, Telegram, Discord, WeCom, or programmatic HTTP/SSE/WebSocket. Extend capabilities with the **expert library**, **Connectors** (OAuth + MCP), and **ACP** integration for IDE workflows.
 
@@ -48,7 +48,7 @@ Chat through the Web Dashboard, Feishu, DingTalk, QQ, WeChat, Telegram, Discord,
 | | Feature | Description |
 |---|---------|-------------|
 | 👥 | **Multi-user expert team** | One admin, shared household; built-in expert library and expert market — switch specialists per scenario |
-| 🤝 | **Cloud collaboration** | Link this Octop to another instance to browse peer experts and chat across instances; history stays on the expert's side |
+| 🤝 | **Cloud collaboration** | Link this WenWen AI to another instance to browse peer experts and chat across instances; history stays on the expert's side |
 | 🎭 | **MBTI personas** | 16 personality templates plus an interactive quiz — give each agent a distinct character |
 | 🎯 | **AgentTeams** *(Beta)* | A coordinator schedules multiple experts on multi-step work; [details](docs/expert-teams.md) |
 | 🔒 | **Security built-in** | JWT multi-user isolation, tool approval, shell command guardrails, and PII redaction — data stays local |
@@ -56,22 +56,22 @@ Chat through the Web Dashboard, Feishu, DingTalk, QQ, WeChat, Telegram, Discord,
 | 💾 | **Pluggable workspace backends** | Local disk, Docker sandbox, PostgreSQL, or COS/S3 for agent files — separate from the control-plane DB |
 | 🧠 | **Portable memory** | Powered by [Octop Memory](https://github.com/TencentCloud/octop-memory); memory migrates with the workspace |
 | 📚 | **Knowledge base** | RAG over your documents; share corpora within a deployment and ground answers in your private data |
-| 🧩 | **Plugins** | Extend Octop with third-party plugins; bundled plugins are seeded and toggled on demand |
-| ↔️ | **ACP bidirectional** | `octop acp` for IDE/terminal AI; delegate to OpenCode / Claude Code with permission gates |
+| 🧩 | **Plugins** | Extend WenWen AI with third-party plugins; bundled plugins are seeded and toggled on demand |
+| ↔️ | **ACP bidirectional** | `wenwen acp` for IDE/terminal AI; delegate to OpenCode / Claude Code with permission gates |
 | 💻 | **Terminal AI+** | Interactive shell in the browser — AI-assisted command execution and troubleshooting |
 | 🌐 | **Browser AI+** | Headless Chromium sessions for web automation, screenshots, and remote browsing |
 | 🖥️ | **Remote desktop** | Live screen and input from the dashboard on Linux, Windows, and macOS — remote office work and GUI apps; one-click isolated desktop on headless Linux |
 | 🪟 | **Desktop client** | Native Windows / macOS / Linux apps (and FnOS packages) alongside the web dashboard |
-| 🏠 | **Self-hosted** | Dashboard, CLI, IM channels, and cron in one `octop run` — all data under `~/.octop/` |
+| 🏠 | **Self-hosted** | Dashboard, CLI, IM channels, and cron in one `wenwen run` — all data under `~/.octop/` |
 
 ## 📌 Overview
 
-Octop is a self-hosted AI assistant platform for households and small teams. It runs a single process that serves a web dashboard, a CLI, IM channels (Feishu, DingTalk, QQ, WeChat, Telegram, Discord, WeCom, and more), and cron automation — all sharing one control-plane database under `~/.octop/` (SQLite by default; PostgreSQL optional).
+WenWen AI is a self-hosted AI assistant platform for households and small teams. It runs a single process that serves a web dashboard, a CLI, IM channels (Feishu, DingTalk, QQ, WeChat, Telegram, Discord, WeCom, and more), and cron automation — all sharing one control-plane database under `~/.octop/` (SQLite by default; PostgreSQL optional).
 
-> Octop's design goal: keep every conversation, workspace, and credential on your own machine, while giving each user a personal team of specialized agents they can switch between per task.
+> WenWen AI's design goal: keep every conversation, workspace, and credential on your own machine, while giving each user a personal team of specialized agents they can switch between per task.
 
 <details>
-<summary>🐾 What can you do with Octop</summary>
+<summary>🐾 What can you do with WenWen AI</summary>
 
 - **Personal assistant** — let a dedicated agent write weekly reports, organize notes, and manage your schedule; memory persists with the workspace.
 - **Family sharing** — one admin account, the whole household; assign different agents and experts per member; share experts and knowledge bases when useful.
@@ -96,20 +96,20 @@ Octop is a self-hosted AI assistant platform for households and small teams. It 
 | **ACP** | agent-client-protocol |
 | **Build / quality** | hatchling · ruff · mypy · pytest |
 
-Octop is built on the Octop Harness stack — a set of focused runtimes that Octop composes into one process:
+WenWen AI is built on the Octop Harness stack — a set of focused runtimes that WenWen AI composes into one process:
 
 - **[Octop Harness](https://github.com/TencentCloud/octop-harness)** — Agent runtime: model routing, tools, skills, and conversation checkpointing.
 - **[Octop Gateway](https://github.com/TencentCloud/octop-gateway)** — multi-platform IM channel bridge that normalizes incoming messages into a single processing pipeline.
 - **[Octop Memory](https://github.com/TencentCloud/octop-memory)** — hierarchical recall with full-text search, so an agent's memory travels with its workspace.
 - **[Octop Browser](https://github.com/TencentCloud/octop-browser)** — CDP-based browser automation with persistent profiles for web tasks.
 
-Instead of an external queue or message broker, Octop routes every surface — Web UI, IM, and cron — through one in-process `HarnessProcessor`. The result is a single, restart-safe process whose entire state is rebuilt from the control-plane database on boot (local SQLite by default; PostgreSQL optional).
+Instead of an external queue or message broker, WenWen AI routes every surface — Web UI, IM, and cron — through one in-process `HarnessProcessor`. The result is a single, restart-safe process whose entire state is rebuilt from the control-plane database on boot (local SQLite by default; PostgreSQL optional).
 
 ## 🤔 Features
 
 ### Server & auth
 - Multi-user JWT authentication with admin role
-- First-run setup wizard (`octop init`)
+- First-run setup wizard (`wenwen init`)
 - Interactive API docs at `/api/docs` (off by default — set `"enable_api_docs": true` in `config.json` to enable)
 
 ### Experts
@@ -127,24 +127,24 @@ Instead of an external queue or message broker, Octop routes every surface — W
 ### Surfaces
 - **Web dashboard** — chat, experts / teams, connectors, channels, cron, knowledge, plugins, settings
 - **Desktop client** — native apps for Windows / macOS / Linux; FnOS packages for NAS
-- **CLI** — `octop run`, `octop chats`, `octop acp`, admin commands
+- **CLI** — `wenwen run`, `wenwen chats`, `wenwen acp`, admin commands
 - **HTTP/SSE/WebSocket API** — full programmatic access
 - **Remote desktop** — dashboard control of the host desktop session
 
 ### Knowledge & plugins
 - **Knowledge base** — RAG over your documents; optional sharing within the same deployment
-- **Plugins** — install and manage third-party plugins (`octop plugin`); bundled plugins are seeded and toggled on demand from the dashboard
+- **Plugins** — install and manage third-party plugins (`wenwen plugin`); bundled plugins are seeded and toggled on demand from the dashboard
 
 ### ACP (Agent Client Protocol)
 
-Octop supports ACP in two directions:
+WenWen AI supports ACP in two directions:
 
-1. **Inbound** — external tools use **your** Octop agent
+1. **Inbound** — external tools use **your** WenWen AI agent
    ```bash
-   octop acp --agent main   # stdio ACP server for Zed, OpenCode, …
+   wenwen acp --agent main   # stdio ACP server for Zed, OpenCode, …
    ```
 
-2. **Outbound** — Octop delegates to external coding agents
+2. **Outbound** — WenWen AI delegates to external coding agents
    - Dashboard → **ACP** (`/acp`): configure runners (global per user)
    - Enable **acp_runner** per agent, then delegate in chat
 
@@ -170,9 +170,9 @@ Here are our mid-to-long term plans:
 - [ ] **Self-evolution** — automatically distill everyday conversations into reusable skills, so the assistant grows with you.
 - [ ] **Managed Agents** — platform-hosted agent lifecycle (provision, scale, and operate agents without managing the full self-hosted stack yourself).
 - [ ] **Project** — project-scoped workspaces that group agents, files, and conversations around a shared goal.
-- [ ] **Cloud–edge continuum** — run Octop locally while offloading selected tasks to the cloud, so light work stays on-device and heavier jobs use remote capacity when you need it.
-- [ ] **Plugin marketplace** — a curated market to discover, install, and update third-party plugins without leaving Octop.
-- [ ] **Conversational control plane** — deepen Octop’s own skills so chat can cover the full dashboard surface: create experts, wire channels, manage knowledge bases, and scaffold plugins end-to-end.
+- [ ] **Cloud–edge continuum** — run WenWen AI locally while offloading selected tasks to the cloud, so light work stays on-device and heavier jobs use remote capacity when you need it.
+- [ ] **Plugin marketplace** — a curated market to discover, install, and update third-party plugins without leaving WenWen AI.
+- [ ] **Conversational control plane** — deepen WenWen AI’s own skills so chat can cover the full dashboard surface: create experts, wire channels, manage knowledge bases, and scaffold plugins end-to-end.
 
 This roadmap may shift as the community grows; treat it as indicative only.
 
@@ -213,7 +213,7 @@ source ~/.zshrc   # Zsh
 source ~/.bashrc  # Bash
 ```
 
-The installer places `octop` on your PATH via `~/.octop/bin`. Optional extras:
+The installer places `wenwen` on your PATH via `~/.octop/bin`. Optional extras:
 
 ```bash
 # Download Playwright Chromium for browser automation (skipped if a system Chrome/Chromium is already present)
@@ -236,8 +236,8 @@ See [desktop/README.md](desktop/README.md) for the desktop shell and [fnos/READM
 **Alternative — PyPI** (if you already manage Python yourself):
 
 ```bash
-pip install octop
-# optional local ONNX embedding model cache (Models → Local): pip install "octop[local-embedding]"
+pip install wenwen-ai
+# optional local ONNX embedding model cache (Models → Local): pip install "wenwen[local-embedding]"
 # Downloads catalog weights under ~/.octop/embedding_models; not chat, not Memory.
 # Browser automation uses the bundled Playwright package; install Chromium via the installer --extras browser,
 # the dashboard, or: python -m playwright install chromium
@@ -252,7 +252,7 @@ uv sync --extra local-embedding
 ### 2. Initialize
 
 ```bash
-octop init
+wenwen init
 ```
 
 The interactive wizard creates the SQLite database, JWT secret, and first admin account under `~/.octop/`.
@@ -261,16 +261,16 @@ The interactive wizard creates the SQLite database, JWT secret, and first admin 
 
 ```bash
 # Foreground (API + Web dashboard)
-octop run
+wenwen run
 
 # Custom host / port
-octop run --host 0.0.0.0 --port 8088
+wenwen run --host 0.0.0.0 --port 8088
 
 # Register as a system service (systemd / launchd / Windows service)
-octop service start
+wenwen service start
 ```
 
-Open **http://127.0.0.1:8088**. With Docker, a valid `OCTOP_DEFAULT_PASSWORD` creates the admin on first boot (credentials in `/data/.octop/credential.txt`); if it is unset or rejected, open the setup wizard (unlock password in `/data/.octop/octop-login.txt`). Interactive `octop init` / the setup wizard asks you to choose a password (≥8 characters, letters and digits).
+Open **http://127.0.0.1:8088**. With Docker, a valid `OCTOP_DEFAULT_PASSWORD` creates the admin on first boot (credentials in `/data/.octop/credential.txt`); if it is unset or rejected, open the setup wizard (unlock password in `/data/.octop/octop-login.txt`). Interactive `wenwen init` / the setup wizard asks you to choose a password (≥8 characters, letters and digits).
 
 ### Docker (recommended for production)
 
@@ -335,20 +335,20 @@ See [`.env.example`](.env.example) for the full list.
 | Remote one-liner | Windows | `irm …/octop/install.ps1 \| iex` or `install.bat` |
 | Local script | macOS / Linux | `bash scripts/install.sh` |
 | Local script | Windows | `scripts\install.bat` or `install.ps1` |
-| PyPI | Any | `pip install octop` (optional extras such as `local-embedding`) |
+| PyPI | Any | `pip install wenwen-ai` (optional extras such as `local-embedding`) |
 | Docker | Any | `docker/docker-compose.yml` |
 
 All install scripts provision an isolated environment at `~/.octop/venv` and a `~/.octop/bin/octop` wrapper — they do not touch system Python.
 
 ### Upgrade
 
-`octop update` replaces only the wheel/binary — your `~/.octop/` database, workspaces, secrets, and `config.json` are preserved:
+`wenwen update` replaces only the wheel/binary — your `~/.octop/` database, workspaces, secrets, and `config.json` are preserved:
 
 ```bash
-octop update          # fetch and install the latest octop, then restart the service if one is registered
+wenwen update          # fetch and install the latest wenwen, then restart the service if one is registered
 ```
 
-The schema migrates automatically on next boot; run `octop init` only if the setup wizard prompts for a migration. Always back up first (`octop backup`) before a cross-version upgrade.
+The schema migrates automatically on next boot; run `wenwen init` only if the setup wizard prompts for a migration. Always back up first (`wenwen backup`) before a cross-version upgrade.
 
 ## ⚙️ Configuration
 
@@ -356,27 +356,27 @@ All runtime state lives in `~/.octop/`. Manage it via CLI or edit files directly
 
 ```bash
 # LLM providers and models
-octop models
-octop provider list
+wenwen models
+wenwen provider list
 
 # IM channels
-octop channel list
-octop channel install
+wenwen channel list
+wenwen channel install
 
 # Skills (per agent)
-octop skills list --agent main
+wenwen skills list --agent main
 
 # Cron jobs
-octop cron list
-octop cron create --help
+wenwen cron list
+wenwen cron create --help
 
 # Users (admin)
-octop user list
+wenwen user list
 ```
 
 ### Supported LLM providers
 
-OpenAI-compatible APIs, DashScope (Qwen), Ollama, and other presets — configure per agent in the dashboard or via `octop provider`.
+OpenAI-compatible APIs, DashScope (Qwen), Ollama, and other presets — configure per agent in the dashboard or via `wenwen provider`.
 
 ### Supported channels
 
@@ -403,24 +403,24 @@ Full catalog, auth kinds, and MCP modes: **[docs/connectors.md](docs/connectors.
 
 | Command | Description |
 |---------|-------------|
-| `octop init` | Bootstrap `~/.octop/` (DB, admin, JWT secret) |
-| `octop run` | Start Octop in the foreground |
-| `octop service start` | Install and start as a system service |
-| `octop service stop` | Stop the system service |
-| `octop agent` | Create, list, start/stop agents |
-| `octop channel` | Install and manage IM channels |
-| `octop chats` | REPL and session management |
-| `octop acp` | Stdio ACP server for IDE integration |
-| `octop cron` | Manage scheduled tasks |
-| `octop models` | Provider presets and model resolution |
-| `octop skills` | Enable/disable per-agent skills |
-| `octop plugin` | Install and manage third-party plugins |
-| `octop backup` | Export / restore backups |
-| `octop clean` | Remove CLI state or wipe `~/.octop/` |
-| `octop memory list` | List running agents eligible for memory maintenance; no database changes. |
-| `octop memory slim [--agent ID]` | Back up and slim SQLite memory through the running host; uses the selected agent or prompts by number. Shows terminal and dashboard progress. [Details](docs/memory-slim.md) |
-| `octop memory slim --all` | Sequentially maintain all eligible running agents, with per-agent progress; stops on the first failure. |
-| `octop update` | Check for and install updates |
+| `wenwen init` | Bootstrap `~/.octop/` (DB, admin, JWT secret) |
+| `wenwen run` | Start WenWen AI in the foreground |
+| `wenwen service start` | Install and start as a system service |
+| `wenwen service stop` | Stop the system service |
+| `wenwen agent` | Create, list, start/stop agents |
+| `wenwen channel` | Install and manage IM channels |
+| `wenwen chats` | REPL and session management |
+| `wenwen acp` | Stdio ACP server for IDE integration |
+| `wenwen cron` | Manage scheduled tasks |
+| `wenwen models` | Provider presets and model resolution |
+| `wenwen skills` | Enable/disable per-agent skills |
+| `wenwen plugin` | Install and manage third-party plugins |
+| `wenwen backup` | Export / restore backups |
+| `wenwen clean` | Remove CLI state or wipe `~/.octop/` |
+| `wenwen memory list` | List running agents eligible for memory maintenance; no database changes. |
+| `wenwen memory slim [--agent ID]` | Back up and slim SQLite memory through the running host; uses the selected agent or prompts by number. Shows terminal and dashboard progress. [Details](docs/memory-slim.md) |
+| `wenwen memory slim --all` | Sequentially maintain all eligible running agents, with per-agent progress; stops on the first failure. |
+| `wenwen update` | Check for and install updates |
 
 In signed-in dashboard or local CLI chat, `/memory slim` explains maintenance for the current agent;
 `/memory slim --all` lists your eligible agents. Add `--confirm` to start after reviewing the impact.
@@ -431,10 +431,10 @@ Full reference: **[docs/cli.md](docs/cli.md)**.
 
 ## 🖥️ Web dashboard
 
-After `octop run`, open **http://127.0.0.1:8088**.
+After `wenwen run`, open **http://127.0.0.1:8088**.
 
 <p align="center">
-  <img src="docs/assets/readme-chat.png" alt="Octop Web Dashboard" width="800" />
+  <img src="docs/assets/readme-chat.png" alt="WenWen AI Web Dashboard" width="800" />
 </p>
 
 - **Chat** — real-time conversation with experts and teams
@@ -557,7 +557,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release history.
 | [Octop Gateway](https://github.com/TencentCloud/octop-gateway) | Multi-platform IM channel bridge |
 | [Octop Memory](https://github.com/TencentCloud/octop-memory) | Hierarchical recall and FTS search |
 | [Octop Browser](https://github.com/TencentCloud/octop-browser) | CDP browser automation with persistent profiles |
-| [Octop Pet](https://github.com/jubaoliang/OctopPet) | A desktop pet for Octop |
+| [WenWen AI Pet](https://github.com/jubaoliang/OctopPet) | A desktop pet for WenWen AI |
 
 ## 💬 Community
 

@@ -1,7 +1,7 @@
-import { OCTOP_EMPTY_MASCOT_SRC } from "../../assets/mascot";
+import { WENWEN_EMPTY_MASCOT_SRC } from "../../assets/mascot";
 import styles from "./EmptyState.module.less";
 
-interface OctopEmptyMascotProps {
+interface WenWenEmptyMascotProps {
   className?: string;
   /** Square edge in px; default 160. */
   size?: number;
@@ -12,13 +12,13 @@ interface OctopEmptyMascotProps {
  * Use inside custom empty UIs or pass as ``EmptyState`` icon /
  * antd ``Empty`` ``image``.
  */
-export function OctopEmptyMascot({
+export function WenWenEmptyMascot({
   className,
   size = 160,
-}: OctopEmptyMascotProps) {
+}: WenWenEmptyMascotProps) {
   return (
     <img
-      src={OCTOP_EMPTY_MASCOT_SRC}
+      src={WENWEN_EMPTY_MASCOT_SRC}
       alt=""
       draggable={false}
       className={className ? `${styles.mascot} ${className}` : styles.mascot}

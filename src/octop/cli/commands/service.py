@@ -1,4 +1,4 @@
-"""`octop service` — install and manage the Octop system service."""
+"""`wenwen service` — install and manage the WenWen AI system service."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from octop.infra.setup.service import (
 
 @click.group()
 def service() -> None:
-    """Manage the Octop system service (systemd on Linux, launchd on macOS)."""
+    """Manage the WenWen AI system service (systemd on Linux, launchd on macOS)."""
 
 
 def _runtime(host: str | None, port: int | None, scope: ServiceScope | None) -> ServiceRuntime:
@@ -61,9 +61,9 @@ def _health_failure_hint(runtime: ServiceRuntime) -> str:
     log_path = runtime.home / "logs" / "octop.log"
     if runtime.mode == "systemd":
         journal = (
-            "journalctl --user -u octop -n 80 --no-pager"
+            "journalctl --user -u wenwen -n 80 --no-pager"
             if runtime.scope == "user"
-            else "journalctl -u octop -n 80 --no-pager"
+            else "journalctl -u wenwen -n 80 --no-pager"
         )
         return f"hint: inspect logs with `{journal}` or `tail -n 80 {log_path}`"
     return (

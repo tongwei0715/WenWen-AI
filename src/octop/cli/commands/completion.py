@@ -1,4 +1,4 @@
-"""octop completion: emit / install shell completion script."""
+"""wenwen completion: emit / install shell completion script."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from pathlib import Path
 import click
 
 _EVAL_TEMPLATE = {
-    "bash": 'eval "$(_OCTOP_COMPLETE=bash_source octop)"\n',
-    "zsh": 'autoload -U compinit && compinit\neval "$(_OCTOP_COMPLETE=zsh_source octop)"\n',
+    "bash": 'eval "$(_OCTOP_COMPLETE=bash_source wenwen)"\n',
+    "zsh": 'autoload -U compinit && compinit\neval "$(_OCTOP_COMPLETE=zsh_source wenwen)"\n',
 }
 
 _DEFAULT_RC = {
@@ -53,6 +53,6 @@ def install(shell: str | None, rc_file: str | None) -> None:
         click.echo(f"already installed in {rc_path}")
         return
     with rc_path.open("a", encoding="utf-8") as f:
-        f.write("\n# octop shell completion\n")
+        f.write("\n# wenwen shell completion\n")
         f.write(snippet)
     click.echo(f"installed to {rc_path} — restart your shell to activate")

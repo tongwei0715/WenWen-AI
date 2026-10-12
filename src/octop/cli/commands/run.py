@@ -1,4 +1,4 @@
-"""`octop run` — start the FastAPI app in the foreground."""
+"""`wenwen run` — start the FastAPI app in the foreground."""
 
 from __future__ import annotations
 
@@ -111,7 +111,7 @@ def _save_configfile_overrides(host: str | None, port: int | None) -> None:
 
     A corrupt config.json is a hard error, never an empty base: merging into
     ``{}`` and writing back destroys every other setting (issue #730 — one
-    trailing comma plus ``octop run --port`` wiped the ``database`` section and
+    trailing comma plus ``wenwen run --port`` wiped the ``database`` section and
     silently flipped a PostgreSQL instance back to greenfield SQLite).
     """
     paths = PathLayout.from_env()

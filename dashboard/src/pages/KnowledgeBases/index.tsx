@@ -75,7 +75,7 @@ import {
   type KnowledgeDocument,
   type KnowledgeOnnxModel,
 } from "../../api/modules/knowledgeBases";
-import { OctopEmptyMascot } from "../../components/EmptyState";
+import { WenWenEmptyMascot } from "../../components/EmptyState";
 import DocumentPreviewCore from "../../components/DocumentPreviewCore";
 import DocumentPreviewLoading from "../../components/DocumentPreviewLoading";
 import Markdown from "../../components/Markdown";
@@ -1852,7 +1852,7 @@ export default function KnowledgeBasesPage() {
   const showEnableGuide = !loading && !usable;
   const showEmptyGuide = !loading && usable && bases.length === 0;
   const emptyLayoutClassName = styles.emptyLayout;
-  const setupMascot = <OctopEmptyMascot />;
+  const setupMascot = <WenWenEmptyMascot />;
 
   const onDocsViewChange = (value: string | number) => {
     const mode = value === "table" ? "table" : "card";
@@ -2128,7 +2128,7 @@ export default function KnowledgeBasesPage() {
               ) : null}
               {!selected && !detailLoading ? (
                 <div className={styles.emptyDetail}>
-                  <OctopEmptyMascot size={180} />
+                  <WenWenEmptyMascot size={180} />
                   <p className={styles.emptyDetailText}>
                     {t("knowledgeBases.selectBase")}
                   </p>

@@ -298,7 +298,7 @@ export default function CandidatesReview({ agentId }: Props) {
             <Typography.Paragraph type="secondary">
               “{selected.verbatim_quote}”
             </Typography.Paragraph>
-            <Typography.Title level={5}>Octop 的建议</Typography.Title>
+            <Typography.Title level={5}>WenWen AI 的建议</Typography.Title>
             <Typography.Paragraph>
               {selected.recommended_action}
               {selected.promotion_reason

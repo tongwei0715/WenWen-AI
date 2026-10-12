@@ -1,8 +1,8 @@
-# Octop Docker Deployment
+# WenWen AI Docker Deployment
 
 ---
 
-This directory contains the Docker build and deployment assets for Octop.
+This directory contains the Docker build and deployment assets for WenWen AI.
 
 ### Files
 
@@ -13,7 +13,7 @@ This directory contains the Docker build and deployment assets for Octop.
 | `docker_build.sh` | Build image from source (BuildKit cache enabled by default) |
 | `docker-compose.yml` | One-command local / self-hosted deployment |
 | `docker-compose.postgres.yml` | PostgreSQL (+ pgvector) for dual-backend dev/tests |
-| `postgres/init-vector.sql` | Instance-level `CREATE EXTENSION vector` (initdb.d; **not** Octop migrations) |
+| `postgres/init-vector.sql` | Instance-level `CREATE EXTENSION vector` (initdb.d; **not** WenWen AI migrations) |
 | `docker-entrypoint.sh` | Container entrypoint: first-run init + start server |
 
 ### Quick start
@@ -33,7 +33,7 @@ Open `http://localhost:8088`. A valid `OCTOP_DEFAULT_PASSWORD` (≥8 characters 
 ```bash
 bash docker/docker_build.sh
 docker run -d \
-  --name octop \
+  --name wenwen \
   -p 8088:8088 \
   -v octop-data:/data/.octop \
   -e HOME=/data \
@@ -58,7 +58,7 @@ bash docker/docker_build.sh
 |----------|---------|-------------|
 | `HOME` | `/data` | Must be `/data` so `~/.octop` maps to the data volume |
 | `OCTOP_PORT` | `8088` | HTTP listen port |
-| `OCTOP_DEFAULT_PASSWORD` | _(unset)_ | First-run admin password (≥8 chars, letters + digits). Valid → `octop init`; unset or rejected → web setup wizard |
+| `OCTOP_DEFAULT_PASSWORD` | _(unset)_ | First-run admin password (≥8 chars, letters + digits). Valid → `wenwen init`; unset or rejected → web setup wizard |
 | `OCTOP_ADMIN_USERNAME` | `admin` | Initial admin username |
 | `OCTOP_DATABASE_URL` | — | PostgreSQL DSN (or other `OCTOP_DATABASE_*`; see [configuration.md](../docs/configuration.md)) |
 | `OCTOP_DATABASE_DRIVER` | — | `sqlite` \| `postgresql` when overriding defaults via env |
@@ -71,7 +71,7 @@ For Compose, put these in `docker/.env`. Values only reach the container if list
 
 - Compose mounts host `~/.octop` → container `/data/.octop`
 - `docker run` example uses named volume `octop-data`
-- First boot: a valid `OCTOP_DEFAULT_PASSWORD` runs `octop init` and writes `credential.txt`; unset or rejected passwords skip admin creation and write the wizard unlock password to `/data/.octop/octop-login.txt`. The container does not exit because of a weak default.
+- First boot: a valid `OCTOP_DEFAULT_PASSWORD` runs `wenwen init` and writes `credential.txt`; unset or rejected passwords skip admin creation and write the wizard unlock password to `/data/.octop/octop-login.txt`. The container does not exit because of a weak default.
 
 ### Health check
 
@@ -84,8 +84,8 @@ curl http://localhost:8088/api/health
 ### Operations
 
 ```bash
-docker logs -f octop
-docker exec -it octop octop --version
+docker logs -f wenwen
+docker exec -it wenwen wenwen --version
 docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml up -d --build
 ```

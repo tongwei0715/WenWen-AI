@@ -1,13 +1,13 @@
-# Octop Plugin Demos
+# WenWen AI Plugin Demos
 
 [中文版](./README_CN.md)
 
-Sample plugins for Octop / octop-harness `kind` values, plus a **dual
+Sample plugins for WenWen AI / octop-harness `kind` values, plus a **dual
 frontend + backend** demo that renders tool results in chat.
 Layout inspired by [octop-toolkit](https://github.com/veenyi/octop-plugins/tree/main/octop-toolkit).
 
 Product plugins shipped with the wheel live in
-`src/octop/infra/agents/plugins/bundled/`. `octop init` and `octop run`
+`src/octop/infra/agents/plugins/bundled/`. `wenwen init` and `wenwen run`
 copy missing ones into `~/.octop/plugins/` and set them **globally off**
 in `config.json`. Uninstalled ids are not re-copied.
 
@@ -77,11 +77,11 @@ Ship a self-contained ESM; React is provided as `window.__OCTOP_REACT__` /
 ## Install locally
 
 ```bash
-octop plugin install ./plugins/demo-toolkit --force
-octop plugin install ./plugins/demo-greeting-skill --force
-octop plugin install ./plugins/demo-turn-logger --force
-octop plugin install ./plugins/demo-ui-card --force
-octop plugin list
+wenwen plugin install ./plugins/demo-toolkit --force
+wenwen plugin install ./plugins/demo-greeting-skill --force
+wenwen plugin install ./plugins/demo-turn-logger --force
+wenwen plugin install ./plugins/demo-ui-card --force
+wenwen plugin list
 ```
 
 Or pack a ZIP first (include prebuilt `ui/dist/` when present — the server

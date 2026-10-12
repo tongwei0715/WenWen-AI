@@ -64,7 +64,7 @@ func overlayEnv(base []string, extra map[string]string) []string {
 func startOctop(root string, port int) (*exec.Cmd, error) {
 	py := pythonExe(root)
 	launch := filepath.Join(root, "launch.py")
-	// Omit --host/--port. `octop run` writes those flags back to config.json.
+	// Omit --host/--port. `wenwen run` writes those flags back to config.json.
 	// OCTOP_PORT selects the free port for this process and is not saved.
 	cmd := exec.Command(py, launch, "run")
 	cmd.Dir = root
@@ -127,8 +127,8 @@ func clearDesktopPort() {
 	_ = os.Remove(desktopPortPath())
 }
 
-// findRunningDashboard returns a live Octop URL. The saved port wins. When that
-// port is not Octop, the port this shell last bound (desktop-port) is checked
+// findRunningDashboard returns a live WenWen AI URL. The saved port wins. When that
+// port is not WenWen AI, the port this shell last bound (desktop-port) is checked
 // so a second launch attaches instead of starting another server.
 func findRunningDashboard(host string, preferred int) string {
 	preferredURL := dashboardURL(host, preferred)

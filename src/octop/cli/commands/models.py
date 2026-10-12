@@ -1,4 +1,4 @@
-"""octop models — provider presets and resolved model list."""
+"""wenwen models — provider presets and resolved model list."""
 
 from __future__ import annotations
 

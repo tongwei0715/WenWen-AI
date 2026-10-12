@@ -1,7 +1,7 @@
 /* ===================================================================
    Octop Design System v3 – CSS Custom Properties
-   Default brand: Elegant Rose #E85D75
-   Palettes via html[data-palette="rose|tech|indigo|teal|violet|emerald|amber|slate"]
+   Default brand: OpenAI Mono #111111
+   Palettes via html[data-palette="openai|rose|tech|indigo|teal|violet|emerald|amber|slate"]
    Mode via html[data-theme="light|dark"]
    =================================================================== */
 
@@ -888,4 +888,102 @@ html[data-theme="dark"] body {
 ::selection {
   background: var(--fn-color-brand);
   color: #ffffff;
+}
+
+/* ---------- OPENAI (monochrome #111111) ---------- */
+html[data-palette="openai"]:not([data-theme="dark"]) {
+  --fn-bg-hover: rgba(0, 0, 0, 0.04);
+  --fn-bg-active: rgba(0, 0, 0, 0.08);
+  --fn-bg-selected: rgba(0, 0, 0, 0.06);
+  --fn-text-brand: #111111;
+  --fn-logo-color: #111111;
+  --fn-border-focus: #111111;
+  --fn-color-brand: #111111;
+  --fn-color-brand-hover: #2e2e2e;
+  --fn-color-brand-soft: #2e2e2e;
+  --fn-color-brand-bg: rgba(0, 0, 0, 0.06);
+  --fn-color-brand-light: #f5f5f5;
+  --fn-color-brand-shadow: rgba(0, 0, 0, 0.15);
+  --fn-color-brand-glow: rgba(0, 0, 0, 0.08);
+  --fn-assistant-bubble-bg-gradient: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.7) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(229, 229, 229, 0.45) 100%
+  );
+  --fn-assistant-bubble-border: rgba(0, 0, 0, 0.12);
+  --fn-assistant-glow-color: 0, 0, 0;
+  --fn-tag-channel-text: #111111;
+  --fn-shadow-brand: 0 4px 14px rgba(0, 0, 0, 0.18);
+  --fn-shadow-brand-lg: 0 8px 24px rgba(0, 0, 0, 0.24);
+  --fn-row-selected-bg: rgba(0, 0, 0, 0.05);
+  --fn-row-selected-hover: rgba(0, 0, 0, 0.09);
+  --fn-row-selected-alt-bg: rgba(0, 0, 0, 0.04);
+  --fn-row-selected-alt-hover: rgba(0, 0, 0, 0.08);
+  --fn-row-selected-border: #111111;
+  --fn-sidebar-item-active-bg: #f5f5f5;
+  --fn-sidebar-item-active: rgba(0, 0, 0, 0.08);
+  --fn-sidebar-item-active-text: #111111;
+}
+
+html[data-palette="openai"][data-theme="dark"] {
+  --fn-bg-hover: rgba(255, 255, 255, 0.1);
+  --fn-bg-active: rgba(255, 255, 255, 0.16);
+  --fn-bg-selected: rgba(255, 255, 255, 0.12);
+  --fn-text-brand: #f5f5f5;
+  --fn-logo-color: #f5f5f5;
+  --fn-border-focus: #f5f5f5;
+  --fn-color-brand: #f5f5f5;
+  --fn-color-brand-hover: #ffffff;
+  --fn-color-brand-soft: #ffffff;
+  --fn-color-brand-bg: rgba(255, 255, 255, 0.14);
+  --fn-color-brand-light: rgba(255, 255, 255, 0.18);
+  --fn-color-brand-shadow: rgba(255, 255, 255, 0.28);
+  --fn-color-brand-glow: rgba(255, 255, 255, 0.1);
+  --fn-assistant-bubble-bg-gradient: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(245, 245, 245, 0.08) 100%
+  );
+  --fn-assistant-bubble-border: rgba(245, 245, 245, 0.16);
+  --fn-assistant-glow-color: 245, 245, 245;
+  --fn-tag-channel-text: #f5f5f5;
+  --fn-shadow-brand: 0 4px 14px rgba(255, 255, 255, 0.24);
+  --fn-shadow-brand-lg: 0 8px 24px rgba(255, 255, 255, 0.32);
+  --fn-row-selected-bg: rgba(255, 255, 255, 0.12);
+  --fn-row-selected-hover: rgba(255, 255, 255, 0.18);
+  --fn-row-selected-alt-bg: rgba(255, 255, 255, 0.1);
+  --fn-row-selected-alt-hover: rgba(255, 255, 255, 0.15);
+  --fn-row-selected-border: #f5f5f5;
+  --fn-sidebar-item-active-bg: rgba(255, 255, 255, 0.16);
+  --fn-sidebar-item-active: rgba(255, 255, 255, 0.16);
+  --fn-sidebar-item-active-text: #f5f5f5;
+}
+
+/* Keep primary controls readable with a white brand in dark mode. */
+html[data-palette="openai"][data-theme="dark"] .ant-btn-primary:not(.ant-btn-dangerous),
+html[data-palette="openai"][data-theme="dark"] .ant-btn-primary:not(.ant-btn-dangerous):hover,
+html[data-palette="openai"][data-theme="dark"] .ant-btn-primary:not(.ant-btn-dangerous):active {
+  color: #111111;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-switch.ant-switch-checked {
+  background: #f5f5f5;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-switch.ant-switch-checked .ant-switch-handle::before {
+  background-color: #111111;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #f5f5f5;
+  border-color: #f5f5f5;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: #111111;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-radio-checked .ant-radio-inner {
+  background-color: #f5f5f5;
+  border-color: #f5f5f5;
+}
+html[data-palette="openai"][data-theme="dark"] .ant-radio-checked .ant-radio-inner::after {
+  background-color: #111111;
 }

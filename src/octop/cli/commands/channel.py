@@ -1,4 +1,4 @@
-"""octop channel commands (local DB + embedded runtime)."""
+"""wenwen channel commands (local DB + embedded runtime)."""
 
 from __future__ import annotations
 

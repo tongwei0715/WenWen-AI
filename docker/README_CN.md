@@ -1,8 +1,8 @@
-# Octop Docker 部署
+# WenWen AI Docker 部署
 
 ---
 
-本目录包含 Octop 的 Docker 构建与部署相关文件。
+本目录包含 WenWen AI 的 Docker 构建与部署相关文件。
 
 ### 文件说明
 
@@ -13,7 +13,7 @@
 | `docker_build.sh` | 从源码构建镜像（默认开启 BuildKit 缓存） |
 | `docker-compose.yml` | 本地开发 / 自托管一键启动 |
 | `docker-compose.postgres.yml` | 仅 PostgreSQL（+ pgvector）开发/测试库；扩展在 `postgres/init-vector.sql` |
-| `postgres/init-vector.sql` | 实例级 `CREATE EXTENSION vector`（initdb.d；**不**进 Octop 迁移） |
+| `postgres/init-vector.sql` | 实例级 `CREATE EXTENSION vector`（initdb.d；**不**进 WenWen AI 迁移） |
 | `docker-entrypoint.sh` | 容器入口：首次初始化数据库并启动服务 |
 
 ### 快速开始
@@ -33,7 +33,7 @@ docker compose -f docker/docker-compose.yml up -d --build
 ```bash
 bash docker/docker_build.sh
 docker run -d \
-  --name octop \
+  --name wenwen \
   -p 8088:8088 \
   -v octop-data:/data/.octop \
   -e HOME=/data \
@@ -58,7 +58,7 @@ bash docker/docker_build.sh
 |------|--------|------|
 | `HOME` | `/data` | 必须为 `/data`，数据目录映射到 `~/.octop` |
 | `OCTOP_PORT` | `8088` | HTTP 服务端口 |
-| `OCTOP_DEFAULT_PASSWORD` | _(未设置)_ | 首次管理员密码（≥8 位，字母+数字）。合格则 `octop init` 建账号；未设置或不合格则走 Web 设置向导 |
+| `OCTOP_DEFAULT_PASSWORD` | _(未设置)_ | 首次管理员密码（≥8 位，字母+数字）。合格则 `wenwen init` 建账号；未设置或不合格则走 Web 设置向导 |
 | `OCTOP_ADMIN_USERNAME` | `admin` | 首次管理员用户名 |
 | `OCTOP_DATABASE_URL` | — | PostgreSQL DSN（或其他 `OCTOP_DATABASE_*`，见 [configuration.md](../docs/configuration.md)） |
 | `OCTOP_DATABASE_DRIVER` | — | 通过环境变量覆盖时：`sqlite` \| `postgresql` |
@@ -71,7 +71,7 @@ Compose 可在 `docker/.env` 中配置上述变量。注意：`.env` 只参与 C
 
 - Compose 默认将宿主机 `~/.octop` 挂载到容器 `/data/.octop`
 - `docker run` 示例使用命名卷 `octop-data`
-- 首次启动：`OCTOP_DEFAULT_PASSWORD` 合格则执行 `octop init` 并写入 `credential.txt`；未设置或不合格则不建管理员，向导口令写入 `/data/.octop/octop-login.txt`，打开页面完成设置（容器不会因弱密码退出）。
+- 首次启动：`OCTOP_DEFAULT_PASSWORD` 合格则执行 `wenwen init` 并写入 `credential.txt`；未设置或不合格则不建管理员，向导口令写入 `/data/.octop/octop-login.txt`，打开页面完成设置（容器不会因弱密码退出）。
 
 ### 健康检查
 
@@ -84,8 +84,8 @@ curl http://localhost:8088/api/health
 ### 常用运维命令
 
 ```bash
-docker logs -f octop
-docker exec -it octop octop --version
+docker logs -f wenwen
+docker exec -it wenwen wenwen --version
 docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml up -d --build
 ```

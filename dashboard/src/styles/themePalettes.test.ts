@@ -25,6 +25,7 @@ function contrastRatio(foreground: string, background: string): number {
 describe("theme palettes", () => {
   it("exposes the curated palette set", () => {
     expect(VALID_PALETTES).toEqual([
+      "openai",
       "rose",
       "tech",
       "indigo",
@@ -45,16 +46,18 @@ describe("theme palettes", () => {
   });
 
   it.each(VALID_PALETTES.filter((palette) => palette !== "rose"))(
-    "keeps %s solid Ant Design states readable with white text",
+    "keeps %s solid Ant Design states readable",
     (palette) => {
       for (const mode of ["light", "dark"] as const) {
         const tokens = ANTD_BRAND_TOKENS[palette][mode];
+        const foreground =
+          palette === "openai" && mode === "dark" ? "#111111" : "#FFFFFF";
         for (const color of [
           tokens.colorPrimary,
           tokens.colorPrimaryHover,
           tokens.colorPrimaryActive,
         ]) {
-          expect(contrastRatio(color, "#FFFFFF")).toBeGreaterThanOrEqual(4.5);
+          expect(contrastRatio(color, foreground)).toBeGreaterThanOrEqual(4.5);
         }
       }
     },

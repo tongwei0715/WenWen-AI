@@ -1,4 +1,4 @@
-"""`octop update` — self-upgrade via pip or uv."""
+"""`wenwen update` — self-upgrade via pip or uv."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ from octop.infra.setup.self_update import (
     help="Include and allow installing pre-releases (alpha / beta / rc / dev).",
 )
 def update(check: bool, yes: bool, verbose: bool, allow_prerelease: bool) -> None:
-    """Check for and install a newer Octop release."""
+    """Check for and install a newer WenWen AI release."""
     current = get_local_version()
     info = fetch_pypi_info()
     click.echo(f"installed: {current}")
@@ -59,7 +59,7 @@ def update(check: bool, yes: bool, verbose: bool, allow_prerelease: bool) -> Non
         raise SystemExit(1)
 
     if not yes:
-        click.confirm(f"Upgrade octop from {current} to {latest}?", abort=True)
+        click.confirm(f"Upgrade wenwen from {current} to {latest}?", abort=True)
 
     venv_python = resolve_venv_python()
     click.echo(f"target python: {venv_python}")

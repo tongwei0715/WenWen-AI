@@ -1,4 +1,4 @@
-"""`octop backup` — export and restore Octop data."""
+"""`wenwen backup` — export and restore WenWen AI data."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ def backup() -> None:
     "-o", "--output", type=click.Path(path_type=Path), default=None, help="Output .tar.gz path."
 )
 @click.option(
-    "--home", type=click.Path(path_type=Path), default=None, help="Octop home (default ~/.octop)."
+    "--home", type=click.Path(path_type=Path), default=None, help="WenWen AI home (default ~/.octop)."
 )
 @click.option("--no-config", is_flag=True, help="Do not include config.json / env.")
 @click.option("--no-workspaces", is_flag=True, help="Do not include agent workspaces.")
@@ -89,12 +89,12 @@ def create(
 
 @backup.group("auto")
 def auto() -> None:
-    """Automatic backup status and one-shot run (schedule requires ``octop run``)."""
+    """Automatic backup status and one-shot run (schedule requires ``wenwen run``)."""
 
 
 @auto.command("status")
 @click.option(
-    "--home", type=click.Path(path_type=Path), default=None, help="Octop home (default ~/.octop)."
+    "--home", type=click.Path(path_type=Path), default=None, help="WenWen AI home (default ~/.octop)."
 )
 def auto_status(home: Path | None) -> None:
     """Print automatic backup settings from config.json."""
@@ -110,12 +110,12 @@ def auto_status(home: Path | None) -> None:
     click.echo(f"include_plugins: {backup_cfg.include_plugins}")
     click.echo(f"include_knowledge: {backup_cfg.include_knowledge}")
     click.echo(f"include_chats: {backup_cfg.include_chats}")
-    click.echo("note: the scheduler only runs inside an active `octop run` process")
+    click.echo("note: the scheduler only runs inside an active `wenwen run` process")
 
 
 @auto.command("run")
 @click.option(
-    "--home", type=click.Path(path_type=Path), default=None, help="Octop home (default ~/.octop)."
+    "--home", type=click.Path(path_type=Path), default=None, help="WenWen AI home (default ~/.octop)."
 )
 def auto_run(home: Path | None) -> None:
     """Create one automatic backup now and apply retention pruning."""
@@ -149,14 +149,14 @@ def auto_run(home: Path | None) -> None:
 @backup.command("restore")
 @click.argument("archive", type=click.Path(exists=True, path_type=Path))
 @click.option(
-    "--home", type=click.Path(path_type=Path), default=None, help="Octop home (default ~/.octop)."
+    "--home", type=click.Path(path_type=Path), default=None, help="WenWen AI home (default ~/.octop)."
 )
 @click.option("--no-config", is_flag=True, default=False, help="Do not restore config.json / env.")
 @click.option(
     "--owner-user-id",
     type=int,
     default=None,
-    help="For LightClaw migration archives: Octop user id that receives imported ownership "
+    help="For LightClaw migration archives: WenWen AI user id that receives imported ownership "
     "(default: first admin among current users).",
 )
 @click.option("--yes", is_flag=True, default=False, help="Skip confirmation.")
@@ -167,7 +167,7 @@ def restore(
     owner_user_id: int | None,
     yes: bool,
 ) -> None:
-    """Restore from a backup archive. Stop ``octop run`` first for a clean restore."""
+    """Restore from a backup archive. Stop ``wenwen run`` first for a clean restore."""
     if not yes:
         click.confirm(
             "This overwrites the database and local workspaces. Continue?",

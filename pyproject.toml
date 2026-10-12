@@ -3,9 +3,9 @@ requires = ["hatchling>=1.18"]
 build-backend = "hatchling.build"
 
 [project]
-name = "octop"
+name = "wenwen-ai"
 version = "1.0.2b7"
-description = "Smarter self-hosted AI assistant for multiple users and agents, built on octop-harness"
+description = "WenWen AI: smarter self-hosted AI assistant for multiple users and agents"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.12"
@@ -94,7 +94,8 @@ dev = [
 ]
 
 [project.scripts]
-octop = "octop.cli.main:cli"
+wenwen = "octop.cli.main:cli"
+octop = "octop.cli.main:cli"  # legacy alias
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/octop"]

@@ -1,0 +1,8 @@
+<svg width="1506" height="578" viewBox="0 0 1506 578" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- WenWen AI horizontal lockup. Dark variant (for light backgrounds). -->
+  <g transform="translate(60,89) scale(0.78125)">
+    <circle cx="256" cy="82" r="32" fill="#111111"/>
+    <path d="M104 150 L184 362 L256 206 L328 362 L408 150" stroke="#111111" stroke-width="62" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="560" y="345" font-family="Noto Sans, DejaVu Sans, sans-serif" font-size="150" font-weight="700" letter-spacing="2" fill="#111111">WenWen AI</text>
+</svg>

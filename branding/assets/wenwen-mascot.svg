@@ -1,0 +1,15 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- WenWen AI empty-state mascot: soft neutral medallion + W mark. -->
+  <circle cx="512" cy="512" r="440" fill="#F4F4F5"/>
+  <circle cx="512" cy="512" r="440" fill="url(#sheen)"/>
+  <g transform="translate(272,300) scale(0.9375)">
+    <circle cx="256" cy="82" r="32" fill="#111111"/>
+    <path d="M104 150 L184 362 L256 206 L328 362 L408 150" stroke="#111111" stroke-width="62" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <defs>
+    <radialGradient id="sheen" cx="0.35" cy="0.3" r="0.9">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

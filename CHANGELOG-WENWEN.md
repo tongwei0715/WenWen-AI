@@ -11,6 +11,20 @@
 
 ---
 
+## [1.0.2b7-wenwen.2] - 2026-10-13
+
+Logo 更换：由"几何 W + 灵感火花点"改为"黑色对话气泡 + 白色 W"。
+
+### 变更
+
+- **新 Logo**：对话气泡造型，一眼可识别为 AI 聊天；保持黑白极简风。
+  更新了 `branding/assets/` 下全部 7 个 SVG 母版
+  （icon 深/浅、横版深/浅、mascot、banner 中/英），
+  并重新渲染了所有 PNG（`node branding/tools/render-logos.mjs`），
+  通过 `scripts/apply-branding.py` 同步到登录页、侧边栏、启动屏、
+  favicon、空状态插画、README banner、渠道图标。
+- **版本记录机制**：今后每次 logo/品牌变更都在此记录（用户要求）。
+
 ## [1.0.2b7-wenwen.1] - 2026-10-13
 
 首个品牌化版本，基于上游 `TencentCloud/Octop` v1.0.2b7。

@@ -17,7 +17,7 @@
 | 项目 | 说明 |
 |---|---|
 | 显示名 | WenWen AI |
-| Logo | 几何 "W" + 灵感火花点，黑白极简风（`branding/assets/` 为 SVG 母版） |
+| Logo | 黑色对话气泡 + 白色 W，黑白极简风（`branding/assets/` 为 SVG 母版） |
 | 主题 | 新增 `openai` monochrome 色板并设为默认；原 `rose` 等色板保留，可在设置里切换 |
 | 发行包名 | `wenwen-ai`（PyPI / wheel） |
 | CLI | `wenwen`（`octop` 保留为兼容别名） |

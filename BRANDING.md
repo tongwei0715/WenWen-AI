@@ -4,6 +4,14 @@
 品牌为 **WenWen AI**。品牌改动被收敛在一套可重复执行的脚本里，
 同步官方更新后重新运行即可恢复品牌，不会被覆盖。
 
+> 项目简介、功能说明与部署方式以上游仓库为准：
+> 上游 README（[中文](https://github.com/TencentCloud/Octop/blob/main/README_CN.md) /
+> [English](https://github.com/TencentCloud/Octop/blob/main/README.md)）、
+> 上游 `docs/` 与 `CHANGELOG.md`。
+> 本仓库与上游的差异只有品牌层（见下）与 `CHANGELOG-WENWEN.md` 记录的版本变更；
+> 部署时把上游文档里的包名/镜像名/CLI 换成 `wenwen-ai` / `wenwen` 即可，
+> 其余步骤与上游完全一致。
+
 ## 品牌内容
 
 | 项目 | 说明 |
@@ -44,23 +52,59 @@ BRANDING.md               # 本文档
 
 ## 同步官方更新（不会丢品牌）
 
+完整操作流程，每次同步官方更新都按此执行：
+
 ```bash
 # 1. 取官方更新
 git fetch upstream
-git merge upstream/main        # 有冲突时：品牌文件以官方为准，合并完继续第 2 步
 
-# 2. 重新应用品牌（幂等）
-python scripts/apply-branding.py
-
-# 3. 重新构建前端（dashboard 有改动时）
-make build-frontend
-
-# 4. 验证
-make all
+# 2. 合并到当前分支（main）
+git merge upstream/main
 ```
 
-建议把品牌改动保持在独立提交里（`git log --grep=branding`），
-与功能性合并分开，便于回看。
+**出现合并冲突时的处理原则：**
+
+| 冲突文件类型 | 处理方式 |
+|---|---|
+| 品牌脚本/品牌资源（`scripts/apply-branding.py`、`branding/`、`BRANDING.md`） | 以本仓库版本为准（`git checkout --ours`），品牌逻辑由我们维护 |
+| 官方功能文件（如 `dashboard/src/...`、`src/octop/...` 被官方重构） | 以官方为准（`git checkout --theirs`），合并完成后再跑第 3 步恢复品牌 |
+| 文案/标题类冲突 | 先合入官方，跑脚本后检查一遍页面文案即可 |
+
+```bash
+# 3. 重新应用品牌（幂等：已是品牌状态则无输出）
+python scripts/apply-branding.py
+
+# 4. 品牌自检（应无输出）
+python scripts/apply-branding.py --check
+
+# 5. 重新构建前端（dashboard 有改动时）
+make build-frontend
+
+# 6. 验证
+cd dashboard && npx tsc -b
+uv run pytest tests/unit/i18n -q
+# 条件允许时跑全量：make all
+
+# 7. 记录本次更新（必须）
+#    在 CHANGELOG-WENWEN.md 顶部新增一条，写明：上游版本、同步日期、
+#    品牌脚本是否需要调整、本次改了什么
+
+# 8. 提交（品牌与合并分开，便于回看）
+git add -A
+git commit -m "chore: merge upstream <上游版本>"
+python scripts/apply-branding.py   # 确认无残留后
+git commit -m "branding: re-apply WenWen AI branding after upstream sync"
+```
+
+**为什么品牌不会被覆盖：**
+
+1. 所有用户可见的品牌改动都由 `scripts/apply-branding.py` 生成，
+   合并官方代码后重跑一次即恢复——脚本是幂等的，可反复执行。
+2. 品牌相关的提交独立存放（`git log --grep=branding` 可查），
+   不混入功能合并提交。
+3. 内部标识（`src/octop`、`~/.octop`、`octop.db` 等）刻意不改，
+   官方重构内部代码时几乎不产生冲突。
+4. `CHANGELOG-WENWEN.md` 记录每次同步的版本与变更，可追溯。
 
 ## 改了品牌相关的东西？
 

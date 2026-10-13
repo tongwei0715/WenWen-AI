@@ -4,6 +4,8 @@
     <path d="M168 344 L138 436 L238 344 Z" fill="#111111"/>
     <rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/>
     <path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/>
+    <text x="412" y="134" font-family="Noto Sans, DejaVu Sans, sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text>
   </g>
   <text x="560" y="345" font-family="Noto Sans, DejaVu Sans, sans-serif" font-size="150" font-weight="700" letter-spacing="2" fill="#111111">WenWen AI</text>
 </svg>

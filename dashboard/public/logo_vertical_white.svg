@@ -1,6 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- WenWen AI mark: dialogue bubble + W. White variant (for dark backgrounds). -->
+  <!-- WenWen AI mark: dialogue bubble + W + ai dot. White variant (for dark backgrounds). -->
   <path d="M168 344 L138 436 L238 344 Z" fill="#FFFFFF"/>
   <rect x="92" y="112" width="328" height="244" rx="76" fill="#FFFFFF"/>
   <path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#111111" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="412" cy="118" r="44" fill="#FFFFFF" stroke="#111111" stroke-width="6"/>
+  <text x="412" y="134" font-family="Noto Sans, DejaVu Sans, sans-serif" font-size="40" font-weight="700" fill="#111111" text-anchor="middle">ai</text>
 </svg>

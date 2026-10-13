@@ -11,6 +11,17 @@
 
 ---
 
+## [1.0.2b7-wenwen.3] - 2026-10-13
+
+去掉空状态 mascot 后面的灰色圆圈，只保留对话气泡图标。
+
+### 变更
+
+- **mascot 去圆圈**：`branding/assets/wenwen-mascot.svg` 去掉灰色圆底，
+  纯对话气泡图标（透明背景）；重新渲染
+  `wenwen-mascot-empty.png` / `wenwen-mascot-tasks.png`，
+  影响空状态页、输入框思考气泡、连接中指示器。
+
 ## [1.0.2b7-wenwen.2] - 2026-10-13
 
 Logo 更换：由"几何 W + 灵感火花点"改为"黑色对话气泡 + 白色 W"。

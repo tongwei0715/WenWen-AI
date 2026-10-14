@@ -11,6 +11,15 @@
 
 ---
 
+## [1.0.2b7-wenwen.10] - 2026-10-14
+
+桌面版 CI workflow fork 化：`octop-desktop.yml` 仍在找上游 `Octop-*`
+产物名，而打包脚本实际产出 `WenWenAI-*`，CI 会直接失败。
+已改为 `WenWenAI-*`（portable/desktop/staging/download pattern），
+产物版本号改读 `wenwen_version.py` 的 fork 版本号；
+branding 脚本锁定这些改动防上游合并回退。
+打 tag `v1.0.2b7-wenwen.10` 即可触发六平台桌面包构建并挂到 GitHub Release。
+
 ## [1.0.2b7-wenwen.9] - 2026-10-14
 
 **升级链路 fork 化（修复在线升级抹掉品牌的问题）**：

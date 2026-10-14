@@ -154,6 +154,8 @@ def apply_assets() -> None:
         "dashboard/public/octop-mascot-peek.webm",
         "dashboard/public/octop-mascot-type.webp",
         "dashboard/public/octop-mascot-type.webm",
+        "desktop/src/assets/octop-mascot-peek.webp",
+        "desktop/src/assets/octop-mascot-type.webp",
         "dashboard/src/assets/channels/octop.svg",
         "docs/assets/octop-logo.svg",
         "docs/assets/octop-banner.png",
@@ -177,6 +179,23 @@ def apply_assets() -> None:
             print(f"warning: logo render failed ({e}); PNGs left as-is")
     else:
         print("warning: node render skipped (run node branding/tools/render-logos.mjs manually)")
+
+    # Desktop loading-page mascots (webp) from the rendered mascot PNG
+    mascot_png = ROOT / "dashboard/public/wenwen-mascot-empty.png"
+    if mascot_png.exists():
+        for rel in ["desktop/src/assets/wenwen-mascot-peek.webp",
+                    "desktop/src/assets/wenwen-mascot-type.webp"]:
+            dest = ROOT / rel
+            try:
+                from PIL import Image
+                Image.open(mascot_png).save(dest, "WEBP")
+                note(f"render {rel}")
+            except ImportError:
+                print(f"warning: PIL missing, cannot render {rel}")
+                break
+            except Exception as e:  # noqa: BLE001 - best effort
+                print(f"warning: webp render failed for {rel} ({e})")
+                break
 
 
 # ---------------------------------------------------------------------------
@@ -804,6 +823,17 @@ def apply_docs() -> None:
         text = prose_rules(text)
         if text != orig:
             write(guide, text)
+
+    # Desktop app loading page: mascot refs + brand prose
+    desk = ROOT / "desktop/src/assets/index.html"
+    if desk.exists():
+        text = desk.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("/octop-mascot-peek.webp", "/wenwen-mascot-peek.webp")
+        text = text.replace("/octop-mascot-type.webp", "/wenwen-mascot-type.webp")
+        text = prose_rules(text)
+        if text != orig:
+            write(desk, text)
 
     # Docker image tags (anchored; never inside URLs like postgresql://…)
     for rel in ["docker/docker-compose.yml", "docker/docker_build.sh"]:

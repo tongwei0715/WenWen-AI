@@ -11,6 +11,15 @@
 
 ---
 
+## [1.0.2b7-wenwen.6] - 2026-10-14
+
+桌面端加载页章鱼吉祥物替换：`desktop/src/assets/index.html`
+引用的 `octop-mascot-peek.webp` / `octop-mascot-type.webp`
+换成新 logo 生成的 `wenwen-mascot-peek.webp` / `wenwen-mascot-type.webp`；
+旧 webp 已删除并加入脚本 retire 列表；该页面标题/品牌文案
+"Octop" → "WenWen AI"；`scripts/apply-branding.py`
+新增该文件的处理及 webp 生成逻辑。
+
 ## [1.0.2b7-wenwen.5] - 2026-10-14
 
 品牌审计修复：补齐 5 处遗漏。

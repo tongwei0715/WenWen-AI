@@ -1005,6 +1005,41 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # _common.sh: octop_version() must prefer the fork version from
+    # wenwen_version.py over pyproject.toml, or portable/desktop artifact
+    # filenames lose the -wenwen.N suffix and CI's PORTABLE_ZIP check fails.
+    p = ROOT / "desktop/portable/_common.sh"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        upstream_fn = (
+            'octop_version() {\n'
+            '  sed -nE \'s/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\\1/p\' \\\n'
+            '    "${REPO_ROOT}/pyproject.toml" | head -1\n'
+            '}'
+        )
+        fork_fn = (
+            '# WenWen AI fork: prefer the fork version (WENWEN_VERSION in\n'
+            '# src/octop/wenwen_version.py, synced from CHANGELOG-WENWEN.md) over the\n'
+            '# upstream base version in pyproject.toml, so artifact filenames carry the\n'
+            '# full fork version (e.g. 1.0.2b7-wenwen.10).\n'
+            'octop_version() {\n'
+            '  local fw\n'
+            '  fw="$(sed -nE \'s/^WENWEN_VERSION[[:space:]]*=[[:space:]]*"([^"]+)".*/\\1/p\' \\\n'
+            '    "${REPO_ROOT}/src/octop/wenwen_version.py" 2>/dev/null | head -1)"\n'
+            '  if [[ -n "$fw" ]]; then\n'
+            '    echo "$fw"\n'
+            '    return 0\n'
+            '  fi\n'
+            '  sed -nE \'s/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\\1/p\' \\\n'
+            '    "${REPO_ROOT}/pyproject.toml" | head -1\n'
+            '}'
+        )
+        if upstream_fn in text:
+            text = text.replace(upstream_fn, fork_fn)
+        if text != orig:
+            write(p, text)
+
 
 # ---------------------------------------------------------------------------
 # 6. CLI help texts + docs + install scripts + packaging

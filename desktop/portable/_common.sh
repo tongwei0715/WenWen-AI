@@ -28,7 +28,18 @@ ALL_PLATS=(
 # Public GitHub Release names: WenWenAI-<kind>-<os>-<arch>-<version>.<ext>
 # Zip payload directory stays WenWenAI-<plat>/ (the desktop unzip strips the first
 # path component). PyPI wheels keep the PEP 427 name and are not renamed here.
+# WenWen AI fork: prefer the fork version (WENWEN_VERSION in
+# src/octop/wenwen_version.py, synced from CHANGELOG-WENWEN.md) over the
+# upstream base version in pyproject.toml, so artifact filenames carry the
+# full fork version (e.g. 1.0.2b7-wenwen.10).
 octop_version() {
+  local fw
+  fw="$(sed -nE 's/^WENWEN_VERSION[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' \
+    "${REPO_ROOT}/src/octop/wenwen_version.py" 2>/dev/null | head -1)"
+  if [[ -n "$fw" ]]; then
+    echo "$fw"
+    return 0
+  fi
   sed -nE 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' \
     "${REPO_ROOT}/pyproject.toml" | head -1
 }

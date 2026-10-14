@@ -216,7 +216,7 @@ export function DockerEnvFooter() {
         </div>
       </section>
 
-      {/* 3. Octop agent install */}
+      {/* 3. WenWen AI agent install */}
       <section className={styles.section}>
         <div className={styles.sectionTitle}>
           {t("storage.dockerEnv.sectionOctop")}

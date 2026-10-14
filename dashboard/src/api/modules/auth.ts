@@ -300,12 +300,12 @@ export const authApi = {
   /** @deprecated Octop always requires auth — there is no first-time set step. */
   setPassword: (): Promise<never> =>
     Promise.reject(
-      new Error("setPassword is not supported in octop; use change-password"),
+      new Error("setPassword is not supported in wenwen; use change-password"),
     ),
 
   /** @deprecated Octop cannot disable auth. */
   disableAuth: (): Promise<never> =>
-    Promise.reject(new Error("disableAuth is not supported in octop")),
+    Promise.reject(new Error("disableAuth is not supported in wenwen")),
 
   /** @deprecated Octop's setup wizard is single-step; nothing to mark done. */
   markSetupDone: (): Promise<{ ok: boolean }> => Promise.resolve({ ok: true }),

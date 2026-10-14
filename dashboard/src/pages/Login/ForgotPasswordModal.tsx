@@ -41,13 +41,13 @@ export default function ForgotPasswordModal({ open, onClose }: Props) {
         <p className={styles.help}>
           {t(
             "login.forgotPasswordHelp",
-            "Ask an administrator to reset it under Users. If you manage this host, run the command below on the machine where Octop is installed, using the same OS account that runs the service.",
+            "Ask an administrator to reset it under Users. If you manage this host, run the command below on the machine where WenWen AI is installed, using the same OS account that runs the service.",
           )}
         </p>
         <CopyCommand
           text={t(
             "login.forgotPasswordCommand",
-            "octop user passwd <username> --password <new-password>",
+            "wenwen user passwd <username> --password <new-password>",
           )}
         />
         <p className={styles.hint}>
@@ -85,7 +85,7 @@ function PlatformHelp({ platform }: { platform: Platform }) {
         <CopyCommand
           text={t(
             "login.forgotPasswordDockerCommand",
-            "docker exec -it <container> octop user passwd <username> --password <new-password>",
+            "docker exec -it <container> wenwen user passwd <username> --password <new-password>",
           )}
         />
       </div>
@@ -98,7 +98,7 @@ function PlatformHelp({ platform }: { platform: Platform }) {
         <p className={styles.note}>
           {t(
             "login.forgotPasswordWindows",
-            "Open PowerShell or Command Prompt, then run the command above. If octop is not found:",
+            "Open PowerShell or Command Prompt, then run the command above. If wenwen is not found:",
           )}
         </p>
         <div className={styles.fallback}>
@@ -129,11 +129,11 @@ function PlatformHelp({ platform }: { platform: Platform }) {
         {platform === "mac"
           ? t(
               "login.forgotPasswordMac",
-              "Open Terminal (Applications → Utilities → Terminal), then run the command above. If octop is not found:",
+              "Open Terminal (Applications → Utilities → Terminal), then run the command above. If wenwen is not found:",
             )
           : t(
               "login.forgotPasswordLinux",
-              "Open Terminal, then run the command above. If octop is not found:",
+              "Open Terminal, then run the command above. If wenwen is not found:",
             )}
       </p>
       <CopyCommand

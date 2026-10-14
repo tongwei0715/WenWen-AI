@@ -11,6 +11,22 @@
 
 ---
 
+## [1.0.2b7-wenwen.8] - 2026-10-14
+
+品牌全量自检补漏：新增 `apply_dashboard_string_literals()`
+（分词器级横扫 dashboard 全部 ts/tsx 字符串字面量，跳过注释/
+标识符/路径/URL），补上之前逐字替换表漏掉的用户可见文案：
+PWA manifest 安装名、`apple-mobile-web-app-title`、offline.html、
+ChatInput 占位符、记忆/连接器/远程桌面/更新页等 10+ 处；
+`catalog.json` 连接器描述 4 处（surgical 替换，不重排格式）；
+`process_test.go` 断言对齐；`UpdateConfig` 里 `cd Octop` →
+`cd WenWen-AI`；修正旧版误换的 `wenwen[browser]` →
+`wenwen-ai[browser]`（pip 包名）。有意不碰：Ant Design
+`prefixCls="octop"`（LESS 样式依赖）、postgres 默认库名/用户
+名（功能配置）、`octop.db` / `~/.octop` / `OCTOP_HOME`。
+已验证：脚本二次运行零改动（完全幂等）；模拟上游新增
+Octop 字符串 → `git merge` 无冲突 → 重跑脚本自动品牌化。
+
 ## [1.0.2b7-wenwen.7] - 2026-10-14
 
 P2 补幂等：`scripts/apply-branding.py` 的 `apply_desktop()` 里

@@ -84,6 +84,9 @@ def prose_rules(text: str) -> str:
         # Never inside TencentCloud/Octop (upstream org/repo) or other /Octop paths
         seg = re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, seg)
         seg = seg.replace("pip install octop", f"pip install {DIST_NAME}")
+        seg = seg.replace("pip install -U octop", f"pip install -U {DIST_NAME}")
+        # pip extras: the package is wenwen-ai (not wenwen, not octop)
+        seg = seg.replace("octop[browser]", f"{DIST_NAME}[browser]")
         # Bare `octop` CLI/product mentions -> wenwen, but never inside
         # ~/.octop, octop.db, octop-memory, octop-harness, octop-gateway,
         # .octop/, or functional keys like `octop:` (skill metadata)
@@ -531,6 +534,21 @@ def apply_metadata() -> None:
 
     p = ROOT / "dashboard/index.html"
     sub_file(p, r"<title>Octop</title>", f"<title>{DISPLAY}</title>")
+    sub_file(p, r'content="Octop" />', f'content="{DISPLAY}" />')
+
+    # PWA manifest (install name shown on home screen)
+    p = ROOT / "dashboard/public/manifest.json"
+    sub_file(p, r'"name": "Octop"', f'"name": "{DISPLAY}"')
+    sub_file(p, r'"short_name": "Octop"', f'"short_name": "{DISPLAY}"')
+
+    # PWA offline fallback page
+    p = ROOT / "dashboard/public/offline.html"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = prose_rules(text)
+        if text != orig:
+            write(p, text)
 
     # FastAPI / OpenAPI title
     p = ROOT / "src/octop/api/app.py"
@@ -540,11 +558,99 @@ def apply_metadata() -> None:
 # ---------------------------------------------------------------------------
 # 5. Hardcoded UI literals + mascot/component renames (dashboard)
 # ---------------------------------------------------------------------------
+def _replace_in_ts_strings(text: str) -> str:
+    """Replace standalone Octop/octop inside TS string literals only.
+
+    Skips comments, identifiers, import paths, URLs and /Octop paths so
+    code semantics never change; only user-visible strings are rebranded.
+    """
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c == "/" and i + 1 < n and text[i + 1] == "/":
+            j = text.find("\n", i)
+            j = n if j == -1 else j
+            out.append(text[i:j])
+            i = j
+            continue
+        if c == "/" and i + 1 < n and text[i + 1] == "*":
+            j = text.find("*/", i + 2)
+            j = n if j == -1 else j + 2
+            out.append(text[i:j])
+            i = j
+            continue
+        if c in "\"'`":
+            j = i + 1
+            while j < n:
+                if text[j] == "\\":
+                    j += 2
+                    continue
+                if text[j] == c:
+                    break
+                j += 1
+            j = min(j + 1, n)
+            s = text[i:j]
+            s = s.replace("cd Octop", "cd WenWen-AI")
+            s = s.replace("octop[browser]", "wenwen-ai[browser]")
+            s = re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, s)
+            # NOTE: bare `octop` is intentionally NOT replaced here. It is the
+            # Ant Design prefixCls, CLI compat alias and module name in code
+            # strings; prose_rules() handles the prose cases elsewhere.
+            # Upstream sibling projects keep their factual names
+            s = re.sub(r"WenWen AI (Harness|Memory|Gateway|Browser)", r"Octop \1", s)
+            out.append(s)
+            i = j
+            continue
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
+def apply_dashboard_string_literals() -> None:
+    """Sweep every dashboard .ts/.tsx string literal for leftover branding."""
+    src = ROOT / "dashboard/src"
+    if not src.exists():
+        return
+    for p in sorted(src.rglob("*.tsx")) + sorted(src.rglob("*.ts")):
+        if ".test." in p.name:
+            continue
+        text = p.read_text(encoding="utf-8")
+        new = _replace_in_ts_strings(text)
+        if new != text:
+            write(p, new)
+
+    # Connector catalog: 4 user-visible description strings (surgical, no reformat)
+    p = ROOT / "src/octop/infra/connectors/catalog.json"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace(
+            "Use one-click OAuth when Octop has public HTTPS or localhost;",
+            "Use one-click OAuth when WenWen AI has public HTTPS or localhost;")
+        text = text.replace(
+            "Octop and Obsidian must run on the same host,",
+            "WenWen AI and Obsidian must run on the same host,")
+        text = text.replace(
+            "Octop 与 Obsidian 需在同一台主机，",
+            "WenWen AI 与 Obsidian 需在同一台主机，")
+        text = text.replace(
+            "Octop appends /api/v1 when the URL does not already include it",
+            "WenWen AI appends /api/v1 when the URL does not already include it")
+        if text != orig:
+            write(p, text)
+
+
 def apply_dashboard_literals() -> None:
     repls = [
         ('alt="Octop"', f'alt="{DISPLAY}"'),
         ('aria-label="Octop mascot"', f'aria-label="{DISPLAY} mascot"'),
         ("Octop 的建议", f"{DISPLAY} 的建议"),
+        ("将 Octop 安装为 App，随时一键打开。", f"将 {DISPLAY} 安装为 App，随时一键打开。"),
+        ("或在 Octop 主机终端手动执行下方命令。", f"或在 {DISPLAY} 主机终端手动执行下方命令。"),
+        ("这些草稿由 Octop 从对话中自动提取，正在等待系统规则判断。",
+         f"这些草稿由 {DISPLAY} 从对话中自动提取，正在等待系统规则判断。"),
+        ("{/* 3. Octop agent install */}", "{/* 3. WenWen AI agent install */}"),
     ]
     for rel in [
         "dashboard/src/layouts/Sidebar.tsx",
@@ -552,6 +658,9 @@ def apply_dashboard_literals() -> None:
         "dashboard/src/pages/Setup/index.tsx",
         "dashboard/src/pages/Chat/components/WelcomeScreen.tsx",
         "dashboard/src/pages/Agent/Memory/CandidatesReview.tsx",
+        "dashboard/src/components/PwaInstallPrompt/index.tsx",
+        "dashboard/src/pages/Agent/Connectors/index.tsx",
+        "dashboard/src/pages/Admin/Storage/DockerEnvFooter.tsx",
     ]:
         p = ROOT / rel
         if not p.exists():
@@ -744,6 +853,13 @@ def apply_desktop() -> None:
         text = re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, text)
         if text != orig:
             write(p, text)
+    p = ROOT / "desktop/src/process_test.go"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, text)
+        if text != orig:
+            write(p, text)
 
 
 # ---------------------------------------------------------------------------
@@ -889,6 +1005,7 @@ def main() -> int:
     apply_locales()
     apply_metadata()
     apply_dashboard_literals()
+    apply_dashboard_string_literals()
     apply_desktop()
     apply_cli_texts()
     apply_docs()

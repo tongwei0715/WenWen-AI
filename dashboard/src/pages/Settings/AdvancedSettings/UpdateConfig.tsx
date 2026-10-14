@@ -29,15 +29,15 @@ import styles from "./UpdateConfig.module.less";
 const UPGRADE_GUIDE_CODE = {
   installerUnix: `curl -fsSL https://finnie-1258344699.cos.ap-guangzhou.myqcloud.com/octop/install.sh | bash`,
   installerWin: `irm https://finnie-1258344699.cos.ap-guangzhou.myqcloud.com/octop/install.ps1 | iex`,
-  cli: `octop update
+  cli: `wenwen update
 # or non-interactive:
-octop update --yes
+wenwen update --yes
 # pre-release (beta) requires --allow-prerelease:
-# octop update --allow-prerelease --yes`,
-  pip: `pip install -U octop
+# wenwen update --allow-prerelease --yes`,
+  pip: `pip install -U wenwen-ai
 # optional extras, e.g. browser automation:
-# pip install -U "octop[browser]"`,
-  source: `cd Octop
+# pip install -U "wenwen-ai[browser]"`,
+  source: `cd WenWen-AI
 git pull
 make build-frontend
 # or: cd dashboard && npm ci && npm run build && cd ..
@@ -49,16 +49,16 @@ docker compose -f docker/docker-compose.yml up -d --build
 # or rebuild the image then run with a persistent data volume
 bash docker/docker_build.sh
 docker run -d \\
-  --name octop \\
+  --name wenwen \\
   -p 8088:8088 \\
   -v octop-data:/data/.octop \\
   -e HOME=/data \\
   octop:latest`,
   restart: `# system service (systemd / launchd / Windows service)
-octop service restart
+wenwen service restart
 
 # foreground process — stop the old process, then:
-octop run`,
+wenwen run`,
 } as const;
 
 type GuideMethodKey =

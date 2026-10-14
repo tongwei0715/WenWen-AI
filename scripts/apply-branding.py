@@ -960,6 +960,21 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # Desktop CI workflow: artifact names must match what the (rebranded)
+    # packaging scripts actually produce, or the workflow fails on
+    # if-no-files-found. Upstream uses Octop-*; the fork uses WenWenAI-*.
+    p = ROOT / ".github/workflows/octop-desktop.yml"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("Octop-portable-", "WenWenAI-portable-")
+        text = text.replace("Octop-desktop-", "WenWenAI-desktop-")
+        text = text.replace("release/Octop-", "release/WenWenAI-")
+        text = text.replace("pattern: Octop-*", "pattern: WenWenAI-*")
+        text = text.replace("its Octop-* artifacts", "its WenWenAI-* artifacts")
+        if text != orig:
+            write(p, text)
+
 
 # ---------------------------------------------------------------------------
 # 6. CLI help texts + docs + install scripts + packaging

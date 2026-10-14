@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WenWen AI — 遇事不决，问问ai！</title>
+<meta name="description" content="WenWen AI：支持多用户、多 Agent 的自托管 AI 助手 — 更聪明，更懂你。数据留在本地，一条命令即可运行。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M168 344 L138 436 L238 344 Z' fill='%23111'/%3E%3Crect x='92' y='112' width='328' height='244' rx='76' fill='%23111'/%3E%3Cpath d='M172 192 L214 296 L256 212 L298 296 L340 192' stroke='white' stroke-width='36' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='412' cy='118' r='44' fill='%23111' stroke='white' stroke-width='6'/%3E%3Ctext x='412' y='134' font-family='sans-serif' font-size='40' font-weight='700' fill='white' text-anchor='middle'%3Eai%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --ink: #111111;
+    --ink-soft: #444444;
+    --muted: #6b6b6b;
+    --line: #e8e8e8;
+    --bg: #ffffff;
+    --bg-soft: #f7f7f7;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.86);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .brand svg { width: 30px; height: 30px; display: block; }
+  .nav-links { display: flex; gap: 28px; font-size: 15px; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-block; padding: 10px 22px; border-radius: 999px;
+    background: var(--ink); color: #fff; font-size: 15px; font-weight: 600;
+    border: 1px solid var(--ink); transition: all .2s;
+  }
+  .btn:hover { background: #2e2e2e; }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--bg-soft); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* Hero */
+  .hero { text-align: center; padding: 110px 24px 90px; }
+  .hero-logo { width: 92px; height: 92px; margin: 0 auto 28px; }
+  .hero-logo svg { width: 100%; height: 100%; }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 800; letter-spacing: -1px; line-height: 1.25;
+  }
+  .hero p.sub {
+    margin: 22px auto 0; max-width: 620px;
+    font-size: 18px; color: var(--muted);
+  }
+  .hero-cta { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero-badges { margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    font-size: 13px; color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px;
+    background: var(--bg-soft);
+  }
+
+  /* Sections */
+  section.block { padding: 84px 0; }
+  section.block.alt { background: var(--bg-soft); }
+  .sec-title { text-align: center; font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: -.5px; }
+  .sec-desc { text-align: center; color: var(--muted); margin-top: 12px; font-size: 16px; }
+
+  .grid {
+    margin-top: 52px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 28px 24px; background: #fff;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.07); }
+  .card .icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: var(--ink); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .card .icon svg { width: 22px; height: 22px; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; }
+  .card p { font-size: 14.5px; color: var(--muted); }
+
+  /* Use cases */
+  .cases { margin-top: 52px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 720px) { .cases { grid-template-columns: 1fr; } }
+  .case {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 32px 28px; background: #fff;
+  }
+  .case h3 { font-size: 19px; margin-bottom: 10px; }
+  .case p { color: var(--muted); font-size: 15px; }
+  .case .tag {
+    display: inline-block; font-size: 12.5px; font-weight: 700;
+    background: var(--ink); color: #fff; border-radius: 6px;
+    padding: 3px 10px; margin-bottom: 14px;
+  }
+
+  /* Quickstart */
+  .terminal {
+    margin: 48px auto 0; max-width: 680px;
+    background: #0d0d0d; border-radius: var(--radius);
+    overflow: hidden; text-align: left;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+  }
+  .term-bar { display: flex; gap: 8px; padding: 14px 18px; border-bottom: 1px solid #222; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .term-body { padding: 24px 26px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 15px; }
+  .term-body .line { color: #e8e8e8; margin-bottom: 10px; white-space: pre-wrap; word-break: break-all; }
+  .term-body .prompt { color: #888; user-select: none; }
+  .term-body .comment { color: #666; }
+  .steps { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+  .step .num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--ink); color: #fff; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;
+  }
+  .step h4 { font-size: 16px; margin-bottom: 6px; }
+  .step p { font-size: 14px; color: var(--muted); }
+
+  /* Download */
+  .dl-grid { margin-top: 52px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 720px) { .dl-grid { grid-template-columns: 1fr; } }
+  .dl-card {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 32px 24px; text-align: center; background: #fff;
+  }
+  .dl-card h3 { font-size: 18px; margin-bottom: 8px; }
+  .dl-card p { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); padding: 48px 0; }
+  .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .foot-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .foot-brand svg { width: 26px; height: 26px; }
+  .foot-links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+  .foot-links a:hover { color: var(--ink); }
+  .copyright { width: 100%; margin-top: 24px; font-size: 13px; color: #999; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#111111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text></svg>
+      WenWen AI
+    </a>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#cases">场景</a>
+      <a href="#start">快速开始</a>
+      <a href="#download">下载</a>
+    </div>
+    <a class="btn" href="#start">开始使用</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-logo">
+    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#111111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text></svg>
+  </div>
+  <h1>遇事不决，问问ai！</h1>
+  <p class="sub">WenWen AI — 支持多用户、多 Agent 的自托管 AI 助手。数据留在你的机器上，一条命令即可运行 Web 控制台、CLI、IM 通道与定时任务。</p>
+  <div class="hero-cta">
+    <a class="btn" href="#start">快速开始</a>
+    <a class="btn btn-ghost" href="#features">了解功能</a>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">开源 · MIT</span>
+    <span class="badge">自托管</span>
+    <span class="badge">多用户多 Agent</span>
+    <span class="badge">隐私优先</span>
+  </div>
+</header>
+
+<section class="block alt" id="features">
+  <div class="wrap">
+    <h2 class="sec-title reveal">一个助手，一支专家团</h2>
+    <p class="sec-desc reveal">不只是对话工具，而是可并行运作的数字生命体</p>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>多用户多 Agent</h3><p>一人管理，全家共用。内置专家库与专家市场，按场景一键切换专业角色。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>IM 全通道</h3><p>飞书、钉钉、QQ、微信、企业微信，或 HTTP / SSE / WebSocket API，随时随地对话。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>隐私优先</h3><p>JWT 多用户隔离、工具审批、Shell 防护与敏感信息脱敏。对话与数据只留在本地。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h3>Connector 生态</h3><p>一键接入腾讯文档、会议等常用服务，OAuth 与 MCP 网关轻松扩展能力边界。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>记忆与知识库</h3><p>可迁移的记忆系统 + 基于文档的 RAG 检索，让回答锚定你的私有知识。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3>开发者增效</h3><p>ACP 双向集成 IDE 与终端 AI，浏览器 AI+ 与远程桌面搞定网页自动化。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="cases">
+  <div class="wrap">
+    <h2 class="sec-title reveal">为你的生活而设</h2>
+    <p class="sec-desc reveal">个人、家庭、团队，各取所需</p>
+    <div class="cases">
+      <div class="case reveal">
+        <span class="tag">个人</span>
+        <h3>你的专属助理</h3>
+        <p>写周报、整理资料、定日程、按时提醒。记忆随工作区长期保留，越用越懂你。</p>
+      </div>
+      <div class="case reveal">
+        <span class="tag">家庭</span>
+        <h3>全家共用一个大脑</h3>
+        <p>一个管理员账号，按成员分配不同的 Agent 与专家角色，也可共享专家与知识库。</p>
+      </div>
+      <div class="case reveal">
+        <span class="tag">团队</span>
+        <h3>任务自动分发</h3>
+        <p>多 Agent 并行协作，对接飞书 / 钉钉 / 企业微信，把任务自动分发到群里，定时推送结果。</p>
+      </div>
+      <div class="case reveal">
+        <span class="tag">开发</span>
+        <h3>编码与运维搭子</h3>
+        <p>把编码任务委派给 OpenCode / Claude Code，在终端里用 AI 辅助排障，网页操作自动完成。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="start">
+  <div class="wrap">
+    <h2 class="sec-title reveal">三步，跑起来</h2>
+    <p class="sec-desc reveal">单进程启动 Web 控制台、CLI、IM 通道与定时任务</p>
+    <div class="terminal reveal">
+      <div class="term-bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span></div>
+      <div class="term-body">
+        <div class="line"><span class="comment"># 克隆项目</span></div>
+        <div class="line"><span class="prompt">$ </span>git clone https://github.com/tongwei0715/WenWen-AI.git</div>
+        <div class="line"><span class="prompt">$ </span>cd WenWen-AI && bash scripts/install.sh --from-source</div>
+        <div class="line"><span class="comment"># 初始化并启动</span></div>
+        <div class="line"><span class="prompt">$ </span>wenwen init && wenwen run</div>
+        <div class="line"><span class="comment"># 打开 http://127.0.0.1:8088 开始使用</span></div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">1</div><h4>安装</h4><p>一条脚本完成依赖与构建</p></div>
+      <div class="step reveal"><div class="num">2</div><h4>初始化</h4><p>向导式配置，创建管理员账号</p></div>
+      <div class="step reveal"><div class="num">3</div><h4>运行</h4><p>打开浏览器，遇事不决问问 AI</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="download">
+  <div class="wrap">
+    <h2 class="sec-title reveal">随处可用</h2>
+    <p class="sec-desc reveal">桌面客户端与 Web 控制台并行使用，数据互通</p>
+    <div class="dl-grid">
+      <div class="dl-card reveal">
+        <h3>桌面客户端</h3>
+        <p>Windows / macOS / Linux 原生应用，托盘常驻，开机即用。</p>
+        <a class="btn btn-ghost" href="#start">查看安装方式</a>
+      </div>
+      <div class="dl-card reveal">
+        <h3>飞牛 FnOS</h3>
+        <p>一键安装包，NAS 上自建 AI 助手，全家共享。</p>
+        <a class="btn btn-ghost" href="#start">查看安装方式</a>
+      </div>
+      <div class="dl-card reveal">
+        <h3>Web 控制台</h3>
+        <p>任意浏览器打开，完整功能，无需安装客户端。</p>
+        <a class="btn btn-ghost" href="#start">快速开始</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="foot-brand" href="#top">
+      <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#111111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text></svg>
+      WenWen AI
+    </a>
+    <div class="foot-links">
+      <a href="#features">功能</a>
+      <a href="#start">快速开始</a>
+      <a href="#download">下载</a>
+      <a href="https://github.com/tongwei0715/WenWen-AI" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="copyright">© 2026 WenWen AI · 开源 MIT 协议 · 遇事不决，问问ai！</p>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

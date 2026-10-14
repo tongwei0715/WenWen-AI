@@ -993,6 +993,15 @@ def apply_desktop() -> None:
             'echo "[package] building octop wheel → ${wheel_dir}" >&2',
             'echo "[package] building wenwen-ai wheel → ${wheel_dir}" >&2',
         )
+        # Staging dir inside the portable zip follows the brand too.
+        text = text.replace('"${GREEN_RELEASE}/Octop-${plat}"', '"${GREEN_RELEASE}/WenWenAI-${plat}"')
+        text = text.replace('"Octop-${plat}"', '"WenWenAI-${plat}"')
+        text = text.replace("'Octop-${plat}'", "'WenWenAI-${plat}'")
+        text = text.replace("#   Octop-<plat>/", "#   WenWenAI-<plat>/")
+        text = text.replace(
+            "# Public filename is Octop-portable-<plat>-<version>.zip",
+            "# Public filename is WenWenAI-portable-<plat>-<version>.zip",
+        )
         if text != orig:
             write(p, text)
 

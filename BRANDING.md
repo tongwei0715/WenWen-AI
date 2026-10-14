@@ -115,7 +115,8 @@ git commit -m "branding: re-apply WenWen AI branding after upstream sync"
 
 ## 验证清单
 
-- `python scripts/apply-branding.py --check` 无输出（已是品牌状态）
+- `python scripts/apply-branding.py --check` 无输出（已是品牌状态；`--check` 为纯只读，不写 PNG）
 - `cd dashboard && npx tsc -b` 通过
 - `uv run pytest tests/unit/i18n -q` 通过（中英 key 对齐）
+- 桌面端：`cd desktop/src && go test ./...` 通过（品牌断言与源码文案一致）
 - 页面标题、登录页、引导页显示 WenWen AI；设置 → 外观默认选中 `openai`（墨黑）色板

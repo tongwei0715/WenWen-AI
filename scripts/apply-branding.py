@@ -156,13 +156,16 @@ def apply_assets() -> None:
         "dashboard/public/octop-mascot-type.webm",
         "dashboard/src/assets/channels/octop.svg",
         "docs/assets/octop-logo.svg",
+        "docs/assets/octop-banner.png",
     ]:
         p = ROOT / rel
         if p.exists() or (p.is_symlink()):
             note(f"remove {rel}")
             if not check_only:
                 p.unlink()
-    # Render PNGs from SVG masters when node is available
+    # Render PNGs from SVG masters when node is available (skip in --check mode)
+    if check_only:
+        return
     render = BRANDING / "tools" / "render-logos.mjs"
     node = shutil.which("node")
     if node and (BRANDING / "tools" / "node_modules").exists():
@@ -792,6 +795,15 @@ def apply_docs() -> None:
         text = prose_rules(text)
         if text != orig:
             write(new_intro, text)
+
+    # Standalone user guide page: rebrand prose in place
+    guide = ROOT / "docs/user-guide.html"
+    if guide.exists():
+        text = guide.read_text(encoding="utf-8")
+        orig = text
+        text = prose_rules(text)
+        if text != orig:
+            write(guide, text)
 
     # Docker image tags (anchored; never inside URLs like postgresql://…)
     for rel in ["docker/docker-compose.yml", "docker/docker_build.sh"]:

@@ -82,7 +82,7 @@ externally managed and is not copied by the desktop shell.
 
 GitHub Release names follow `Octop-<kind>-<os>-<arch>-<version>.<ext>`:
 
-- Desktop GUI: `Octop-desktop-<plat>-<version>.dmg` (macOS; open and drag
+- Desktop GUI: `WenWenAI-desktop-<plat>-<version>.dmg` (macOS; open and drag
   `WenWen AI.app` into Applications), `.exe` (Windows NSIS installer — copies
   into `Program Files\WenWen AI` and creates Start Menu + desktop shortcuts),
   `.tar.gz` (Linux)

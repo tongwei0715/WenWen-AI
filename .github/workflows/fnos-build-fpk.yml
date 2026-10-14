@@ -1,4 +1,4 @@
-name: Build Octop FPK
+name: Build WenWenAI FPK
 
 # FnOS (飞牛 NAS) 安装包流水线。
 #
@@ -18,7 +18,7 @@ name: Build Octop FPK
 #   version → ensure-image → fpk（Docker 版 .fpk，仅打包 compose；镜像已是 amd64+arm64）
 #           ↘ native（x86_64 本地版 .fpk）
 #           ↘ native-arm64（ubuntu-24.04-arm 装 aarch64 site-packages）
-#             → native-arm64-pack（amd64 上用 fnpack 打 Octop-fnos-native-arm64-*.fpk）
+#             → native-arm64-pack（amd64 上用 fnpack 打 WenWenAI-fnos-native-arm64-*.fpk）
 #           → release（把 .fpk 挂到已有的 v* GitHub Release）
 
 on:
@@ -125,14 +125,14 @@ jobs:
 
       - name: Build Docker FPK
         env:
-          FPK_NAME_PREFIX: Octop-fnos
+          FPK_NAME_PREFIX: WenWenAI-fnos
         run: bash scripts/build-fpk.sh docker
 
       - name: Upload docker fpk artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-fpk
-          path: dist/Octop-fnos-docker-*.fpk
+          path: dist/WenWenAI-fnos-docker-*.fpk
           if-no-files-found: error
 
   native:
@@ -185,7 +185,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: dashboard/package-lock.json
 
-      - name: Build Octop wheel from current source
+      - name: Build WenWenAI wheel from current source
         if: steps.wheel.outputs.source == 'build'
         run: |
           set -e
@@ -202,7 +202,7 @@ jobs:
           echo "=== built wheel ==="
           ls -lh dist/octop-*.whl
 
-      - name: Install Octop core into app/site-packages (no Chromium, no preinstalled skills)
+      - name: Install WenWenAI core into app/site-packages (no Chromium, no preinstalled skills)
         id: install_core
         timeout-minutes: 15
         env:
@@ -239,18 +239,18 @@ jobs:
       - name: Build native FPK
         id: build_native
         env:
-          FPK_NAME_PREFIX: Octop-fnos
+          FPK_NAME_PREFIX: WenWenAI-fnos
         run: bash scripts/build-fpk.sh native
 
       - name: Show native fpk size
-        run: ls -lh dist/Octop-fnos-native-[0-9]*.fpk
+        run: ls -lh dist/WenWenAI-fnos-native-[0-9]*.fpk
 
       - name: Upload native fpk artifact
         id: upload_native
         uses: actions/upload-artifact@v4
         with:
           name: native-fpk
-          path: dist/Octop-fnos-native-[0-9]*.fpk
+          path: dist/WenWenAI-fnos-native-[0-9]*.fpk
           if-no-files-found: error
 
       - name: Upload native install log (for debugging)
@@ -305,7 +305,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: dashboard/package-lock.json
 
-      - name: Build Octop wheel from current source
+      - name: Build WenWenAI wheel from current source
         if: steps.wheel.outputs.source == 'build'
         run: |
           set -e
@@ -322,7 +322,7 @@ jobs:
           echo "=== built wheel ==="
           ls -lh dist/octop-*.whl
 
-      - name: Install Octop core into app/site-packages (aarch64)
+      - name: Install WenWenAI core into app/site-packages (aarch64)
         id: install_core
         timeout-minutes: 15
         env:
@@ -401,7 +401,7 @@ jobs:
 
       - name: Build native ARM64 FPK
         env:
-          FPK_NAME_PREFIX: Octop-fnos
+          FPK_NAME_PREFIX: WenWenAI-fnos
           FPK_ARCH: arm64
         run: |
           set -euo pipefail
@@ -409,13 +409,13 @@ jobs:
           bash scripts/build-fpk.sh native
 
       - name: Show native arm64 fpk size
-        run: ls -lh dist/Octop-fnos-native-arm64-*.fpk
+        run: ls -lh dist/WenWenAI-fnos-native-arm64-*.fpk
 
       - name: Upload native arm64 fpk artifact
         uses: actions/upload-artifact@v4
         with:
           name: native-arm64-fpk
-          path: dist/Octop-fnos-native-arm64-*.fpk
+          path: dist/WenWenAI-fnos-native-arm64-*.fpk
           if-no-files-found: error
 
   release:

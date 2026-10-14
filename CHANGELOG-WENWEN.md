@@ -11,6 +11,25 @@
 
 ---
 
+## [1.0.2b7-wenwen.5] - 2026-10-14
+
+品牌审计修复：补齐 5 处遗漏。
+
+### 修复
+
+- **P1**：`docs/user-guide.html` 13 处 "Octop" 补品牌化；
+  `scripts/apply-branding.py` 新增该文件的处理（`prose_rules`）。
+- **P2**：`desktop/src/download_test.go` 健康检查断言文案
+  改为 "WenWen AI …"（与 `desktop_copy.go` 源码一致）。
+- **P3**：`.github/workflows/fnos-build-fpk.yml` 产物前缀
+  `Octop-fnos` → `WenWenAI-fnos`；README/README_CN、
+  desktop/README、fnos/README 产物表同步为 `WenWenAI-desktop-*` /
+  `WenWenAI-fnos-*`。
+- **P4**：删除死资源 `docs/assets/octop-banner.png`（153KB，无引用），
+  并加入脚本 retire 列表。
+- **P5**：`--check` 改为纯只读（不再触发 node PNG 渲染）；
+  验证清单新增 `go test`。
+
 ## [1.0.2b7-wenwen.4] - 2026-10-13
 
 Logo 右上角增加小写 `ai` 圆点角标。

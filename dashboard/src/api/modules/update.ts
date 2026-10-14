@@ -5,6 +5,8 @@ export interface UpdateStatus {
   latest_version: string | null;
   has_update: boolean;
   is_editable: boolean;
+  /** True when installed from a local source tree (editable or direct). */
+  is_source_install?: boolean;
   /** Non-null when the process was launched via `octop service start` (systemd or launchd). */
   service_mode: "systemd" | "launchd" | null;
   /** True when Octop is spawned by the Wails desktop shell (or ``OCTOP_DESKTOP=1``). */

@@ -481,6 +481,33 @@ def apply_test_updates() -> None:
         if text != orig:
             write(p, text)
 
+    # Updater tests follow the fork (GitHub releases, never upstream PyPI).
+    # If upstream rewrites these files, --check flags the missing markers.
+    fork_test_markers = {
+        ROOT / "tests/unit/cli/test_update_cmd.py": [
+            "fetch_fork_release",
+            "get_wenwen_version",
+            "is_source_install",
+        ],
+        ROOT / "tests/unit/api/test_update_router.py": [
+            "fetch_fork_release",
+            "release_unreachable",
+            "is_source_install",
+        ],
+        ROOT / "tests/unit/infra/setup/test_self_update.py": [
+            "def test_is_newer_wenwen(",
+            "def test_run_upgrade_refuses_source_install(",
+            "wenwen-ai @ git+https://github.com/",
+        ],
+    }
+    for path, markers in fork_test_markers.items():
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for marker in markers:
+            if marker not in text:
+                note(f"{path.relative_to(ROOT)}: missing fork marker {marker!r} — re-apply manually!")
+
 
 # ---------------------------------------------------------------------------
 # 3. Locales (dashboard + backend): palette label + brand strings in values
@@ -553,6 +580,78 @@ def apply_metadata() -> None:
     # FastAPI / OpenAPI title
     p = ROOT / "src/octop/api/app.py"
     sub_file(p, r'title="Octop API"', f'title="{DISPLAY} API"')
+
+
+# ---------------------------------------------------------------------------
+# 4b. WenWen AI fork identity: version file + updater package lock
+# ---------------------------------------------------------------------------
+def _wenwen_repo_slug() -> str:
+    """Derive ``owner/repo`` from git origin, fallback to the known fork."""
+    try:
+        out = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            capture_output=True, text=True, timeout=10,
+        ).stdout.strip()
+        m = re.search(r"github\.com[/:]([^/]+)/([^/]+?)(?:\.git)?$", out)
+        if m:
+            return f"{m.group(1)}/{m.group(2)}"
+    except Exception:
+        pass
+    return "tongwei0715/WenWen-AI"
+
+
+def apply_wenwen_version() -> None:
+    """Sync ``src/octop/wenwen_version.py`` from the latest CHANGELOG entry.
+
+    The self-updater compares this full fork version (``<upstream>-wenwen.<N>``)
+    against the fork's GitHub releases. Without it the updater cannot tell
+    fork releases apart, so this must run on every branding pass.
+    """
+    m = re.search(
+        r"^## \[([0-9][^\]\s]*-wenwen\.\d+)\]",
+        (ROOT / "CHANGELOG-WENWEN.md").read_text(encoding="utf-8"),
+        flags=re.M,
+    )
+    if not m:
+        note("CHANGELOG-WENWEN.md has no wenwen version header; skipping wenwen_version.py")
+        return
+    ver, repo = m.group(1), _wenwen_repo_slug()
+    content = (
+        '"""WenWen AI fork identity.\n'
+        '\n'
+        'Managed by ``scripts/apply-branding.py`` — do not edit by hand.\n'
+        '``WENWEN_VERSION`` is the full fork version (``<upstream>-wenwen.<N>``),\n'
+        '``WENWEN_REPO`` is the GitHub repo whose releases the self-updater tracks\n'
+        '(override at runtime with the ``WENWEN_REPO`` environment variable).\n'
+        '"""\n'
+        f'\nWENWEN_VERSION = "{ver}"\nWENWEN_REPO = "{repo}"\n'
+    )
+    write(ROOT / "src/octop/wenwen_version.py", content)
+
+    # Lock: the self-updater must never reference the upstream PyPI package.
+    # If upstream renames/restructures this module, --check will flag it.
+    p = ROOT / "src/octop/infra/setup/self_update.py"
+    text = p.read_text(encoding="utf-8")
+    if '_PACKAGE_NAME = "wenwen-ai"' not in text:
+        if check_only:
+            note("self_update.py: _PACKAGE_NAME is not wenwen-ai")
+        else:
+            text = re.sub(
+                r'^_PACKAGE_NAME = "[^"]*"$',
+                '_PACKAGE_NAME = "wenwen-ai"',
+                text, count=1, flags=re.M,
+            )
+            write(p, text)
+            note('self_update.py: _PACKAGE_NAME restored to "wenwen-ai"')
+    # The fork-guard helpers must survive upstream merges of this file.
+    for marker in (
+        "def get_wenwen_version(",
+        "def fetch_fork_release(",
+        "def is_source_install(",
+        "def get_source_dir(",
+    ):
+        if marker not in text:
+            note(f"self_update.py: missing fork guard {marker} — re-apply manually!")
 
 
 # ---------------------------------------------------------------------------
@@ -1004,6 +1103,7 @@ def main() -> int:
     apply_test_updates()
     apply_locales()
     apply_metadata()
+    apply_wenwen_version()
     apply_dashboard_literals()
     apply_dashboard_string_literals()
     apply_desktop()

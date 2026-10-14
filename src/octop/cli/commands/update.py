@@ -1,4 +1,4 @@
-"""`wenwen update` — self-upgrade via pip or uv."""
+"""`wenwen update` — self-upgrade from the WenWen AI fork's GitHub releases."""
 
 from __future__ import annotations
 
@@ -6,11 +6,13 @@ import click
 
 from octop.cli.support.db import resolve_cli_locale
 from octop.infra.setup.self_update import (
-    fetch_pypi_info,
+    fetch_fork_release,
     get_editable_path,
-    get_local_version,
-    is_newer,
-    is_prerelease,
+    get_source_dir,
+    get_wenwen_repo,
+    get_wenwen_version,
+    is_newer_wenwen,
+    is_source_install,
     resolve_venv_python,
     run_upgrade,
 )
@@ -29,33 +31,31 @@ from octop.infra.setup.self_update import (
 )
 def update(check: bool, yes: bool, verbose: bool, allow_prerelease: bool) -> None:
     """Check for and install a newer WenWen AI release."""
-    current = get_local_version()
-    info = fetch_pypi_info()
+    current = get_wenwen_version()
+    tag, _html_url, _body = fetch_fork_release()
     click.echo(f"installed: {current}")
-    if info is None:
+    if tag is None:
         click.echo(
-            "could not reach PyPI — check your network or proxy settings and retry",
+            f"could not reach the release feed for {get_wenwen_repo()} — "
+            "check your network or proxy settings and retry",
             err=True,
         )
         raise SystemExit(1)
-    latest = info.version if allow_prerelease else info.latest_stable
-    if latest is None:
-        click.echo("no stable release available (pass --allow-prerelease to include pre-releases)")
-        return
+    latest = tag.lstrip("vV")
     click.echo(f"latest:    {latest}")
-    if not is_newer(latest, current):
+    if not is_newer_wenwen(latest, current):
         click.echo("already up to date")
         return
     if check:
         return
 
-    editable_path = get_editable_path()
-    if editable_path:
+    if is_source_install():
+        src_dir = get_source_dir() or get_editable_path()
         click.echo(
-            f"This installation is running from source ({editable_path}).",
+            f"This installation is running from source ({src_dir}).",
             err=True,
         )
-        click.echo(f"To upgrade: cd {editable_path} && git pull")
+        click.echo(f"To upgrade: cd {src_dir} && git pull", err=True)
         raise SystemExit(1)
 
     if not yes:
@@ -65,7 +65,7 @@ def update(check: bool, yes: bool, verbose: bool, allow_prerelease: bool) -> Non
     click.echo(f"target python: {venv_python}")
     result = run_upgrade(
         verbose=verbose,
-        allow_prerelease=is_prerelease(latest),
+        allow_prerelease=allow_prerelease,
         version=latest,
         locale=resolve_cli_locale(),
     )

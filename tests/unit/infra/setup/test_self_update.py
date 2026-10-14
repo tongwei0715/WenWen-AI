@@ -15,12 +15,18 @@ from octop.infra.setup.self_update import (
     _all_mirrors_failed,
     build_upgrade_command,
     fetch_pypi_info,
+    get_wenwen_repo,
+    get_wenwen_version,
     index_label,
     is_newer,
+    is_newer_wenwen,
     is_prerelease,
+    is_source_install,
+    package_requirement,
     page_has_package_version,
     parse_changelog_for_version,
     parse_version,
+    parse_wenwen_version,
     pick_latest_versions,
     probe_index,
     rank_install_indexes,
@@ -28,6 +34,65 @@ from octop.infra.setup.self_update import (
     run_upgrade,
     stash_console_scripts,
 )
+
+
+def test_wenwen_version_format() -> None:
+    assert parse_wenwen_version("1.0.2b7-wenwen.8") == ("1.0.2b7", 8)
+    assert parse_wenwen_version("v1.0.2b7-wenwen.9") == ("1.0.2b7", 9)
+    assert parse_wenwen_version("1.0.2b7") is None
+    assert parse_wenwen_version("9.9.9") is None
+
+
+def test_is_newer_wenwen() -> None:
+    assert is_newer_wenwen("1.0.2b7-wenwen.9", "1.0.2b7-wenwen.8")
+    assert not is_newer_wenwen("1.0.2b7-wenwen.8", "1.0.2b7-wenwen.9")
+    assert not is_newer_wenwen("1.0.2b7-wenwen.8", "1.0.2b7-wenwen.8")
+    assert is_newer_wenwen("1.0.2b8-wenwen.1", "1.0.2b7-wenwen.9")
+
+
+def test_get_wenwen_version_matches_changelog() -> None:
+    assert get_wenwen_version() == "1.0.2b7-wenwen.8"
+
+
+def test_get_wenwen_repo_default() -> None:
+    import os
+
+    os.environ.pop("WENWEN_REPO", None)
+    assert get_wenwen_repo() == "tongwei0715/WenWen-AI"
+
+
+def test_package_requirement_never_touches_upstream() -> None:
+    req = package_requirement("1.0.2b7-wenwen.9")
+    assert "octop" not in req.replace("wenwen-ai", "")
+    assert req.startswith("wenwen-ai @ git+https://github.com/tongwei0715/WenWen-AI@v")
+
+
+def test_run_upgrade_refuses_source_install(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        "octop.infra.setup.self_update.is_source_install", lambda: True
+    )
+    monkeypatch.setattr(
+        "octop.infra.setup.self_update.get_source_dir", lambda: "/src/wenwen-ai"
+    )
+    monkeypatch.setattr(
+        "octop.infra.setup.self_update.get_editable_path", lambda: None
+    )
+    result = run_upgrade(version="1.0.2b7-wenwen.9")
+    assert result.success is False
+    assert "git pull" in (result.error or "")
+    assert "/src/wenwen-ai" in (result.error or "")
+
+
+def test_is_source_install_false_when_no_direct_url(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "octop.infra.setup.self_update.get_editable_path", lambda: None
+    )
+    monkeypatch.setattr(
+        "octop.infra.setup.self_update.get_source_dir", lambda: None
+    )
+    assert is_source_install() is False
 
 
 def test_pep440_order() -> None:
@@ -167,12 +232,14 @@ def test_build_upgrade_command_prerelease_flags(
     uv_cmd = build_upgrade_command("uv", python, allow_prerelease=True, version="0.9.34b1")
     assert uv_cmd is not None
     assert uv_cmd[uv_cmd.index("--prerelease") + 1] == "allow"
-    assert "octop==0.9.34b1" in uv_cmd
+    # WenWen AI fork: installs come from the fork's GitHub repo, never PyPI.
+    assert "wenwen-ai @ git+https://github.com/" in uv_cmd
+    assert "@v0.9.34b1" in uv_cmd
     monkeypatch.setattr("octop.infra.setup.self_update.has_pip", lambda _: True)
     pip_cmd = build_upgrade_command("pip", python, allow_prerelease=True, version="0.9.34b1")
     assert pip_cmd is not None
     assert "--pre" in pip_cmd
-    assert "octop==0.9.34b1" in pip_cmd
+    assert "wenwen-ai @ git+https://github.com/" in pip_cmd
 
 
 def test_portable_upgrade_prefers_bundled_uv(
@@ -213,12 +280,13 @@ def test_build_upgrade_command_pins_stable_without_pre(
     python = "/home/user/.octop/venv/bin/python"
     uv_cmd = build_upgrade_command("uv", python, version="0.9.33")
     assert uv_cmd is not None
-    assert "octop==0.9.33" in uv_cmd
+    assert "wenwen-ai @ git+https://github.com/" in uv_cmd
+    assert "@v0.9.33" in uv_cmd
     assert "--prerelease" not in uv_cmd
     monkeypatch.setattr("octop.infra.setup.self_update.has_pip", lambda _: True)
     pip_cmd = build_upgrade_command("pip", python, version="0.9.33")
     assert pip_cmd is not None
-    assert "octop==0.9.33" in pip_cmd
+    assert "wenwen-ai @ git+https://github.com/" in pip_cmd
     assert "--pre" not in pip_cmd
 
 

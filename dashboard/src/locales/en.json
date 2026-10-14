@@ -3576,6 +3576,7 @@
       "restartHint": "Please restart WenWen AI for the update to take effect.",
       "restartCommand": "Restart command",
       "editableHint": "Development install detected. Use git pull to update.",
+      "sourceInstallHint": "Source install detected — online upgrade is unavailable. Run git pull in the source directory to update.",
       "networkError": "Could not reach update server. Check your network.",
       "mirrorSource": "Version info served by mirror {{source}}; it may lag slightly behind pypi.org.",
       "errors": {

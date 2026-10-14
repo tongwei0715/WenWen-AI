@@ -387,15 +387,20 @@ def _settings_server(stable_only: bool | None = None) -> Any:
 
 
 def test_build_status_success_reports_source(monkeypatch: pytest.MonkeyPatch) -> None:
-    info = self_update.PyPIInfo(version="1.2.3", description="desc", source="mirrors.aliyun.com")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
+    # WenWen AI fork: update info comes from the fork's GitHub releases.
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", "https://github.com/x/y/releases/tag/v1.0.2b7-wenwen.9", None),
+    )
+    monkeypatch.setattr(update_router, "get_wenwen_repo", lambda: "x/y")
 
     payload = update_router._build_status()
 
-    assert payload["latest_version"] == "1.2.3"
+    assert payload["latest_version"] == "1.0.2b7-wenwen.9"
     assert payload["error"] is None
     assert payload["error_code"] is None
-    assert payload["source"] == "mirrors.aliyun.com"
+    assert payload["source"] == "github:x/y"
 
 
 def test_build_status_failure_via_check_keeps_error_code(
@@ -411,104 +416,112 @@ def test_build_status_failure_via_check_keeps_error_code(
 
 
 @pytest.mark.asyncio
-async def test_check_endpoint_reports_error_code_when_pypi_unreachable(
+async def test_check_endpoint_reports_error_code_when_release_unreachable(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: None)
+    monkeypatch.setattr(update_router, "fetch_fork_release", lambda: (None, None, None))
 
     result = await update_router.check_for_updates(_=None, server=_settings_server())
 
     assert result["latest_version"] is None
-    assert result["error"] == "could not reach PyPI"
-    assert result["error_code"] == "pypi_unreachable"
+    assert result["error"] == "could not reach the WenWen AI release feed"
+    assert result["error_code"] == "release_unreachable"
 
 
 @pytest.mark.asyncio
 async def test_check_endpoint_success_passes_source(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(version="1.2.3", source="pypi.org")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", "https://github.com/x/y/releases/tag/v1.0.2b7-wenwen.9", None),
+    )
+    monkeypatch.setattr(update_router, "get_wenwen_repo", lambda: "x/y")
 
     result = await update_router.check_for_updates(_=None, server=_settings_server())
 
-    assert result["latest_version"] == "1.2.3"
-    assert result["source"] == "pypi.org"
+    assert result["latest_version"] == "1.0.2b7-wenwen.9"
+    assert result["source"] == "github:x/y"
     assert result["error"] is None
     assert result["stable_only"] is True
     assert result["latest_is_prerelease"] is False
 
 
 @pytest.mark.asyncio
-async def test_status_stable_only_ignores_prerelease(
+async def test_status_offers_fork_release_in_both_channels(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.9.33", source="pypi.org")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "0.9.32")
+    # WenWen AI fork: no stable/prerelease channel split — the fork's own
+    # release is always the update target.
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", None, None),
+    )
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     auto = await update_router.update_status(_=None, server=_settings_server(True))
-    assert auto["latest_version"] == "0.9.33"
+    assert auto["latest_version"] == "1.0.2b7-wenwen.9"
     assert auto["has_update"] is True
-    assert auto["latest_is_prerelease"] is False
     assert auto["stable_only"] is True
 
     manual = await update_router.check_for_updates(_=None, server=_settings_server(True))
-    assert manual["latest_version"] == "0.9.34b1"
+    assert manual["latest_version"] == "1.0.2b7-wenwen.9"
     assert manual["has_update"] is True
-    assert manual["latest_is_prerelease"] is True
 
 
 @pytest.mark.asyncio
-async def test_status_includes_prerelease_when_stable_only_off(
+async def test_status_no_update_when_fork_release_matches(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(
-        version="0.9.34b1",
-        latest_stable="0.9.33",
-        source="pypi.org",
-        description="## [0.9.34b1] - 2026-09-01\n\n- beta notes\n\n## [0.9.33]\n- old\n",
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.8", None, None),
     )
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "0.9.33")
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     auto = await update_router.update_status(_=None, server=_settings_server(False))
-    assert auto["latest_version"] == "0.9.34b1"
-    assert auto["has_update"] is True
-    assert auto["latest_is_prerelease"] is True
-    assert auto["release_notes"] is not None
-    assert "beta notes" in auto["release_notes"]
+    assert auto["latest_version"] == "1.0.2b7-wenwen.8"
+    assert auto["has_update"] is False
 
 
 @pytest.mark.asyncio
 async def test_patch_settings_remaps_cached_status(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.9.33", source="pypi.org")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "0.9.33")
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", None, None),
+    )
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
     server = _settings_server(True)
 
     first = await update_router.update_status(_=None, server=server)
-    assert first["latest_version"] == "0.9.33"
-    assert first["has_update"] is False
+    assert first["latest_version"] == "1.0.2b7-wenwen.9"
+    assert first["has_update"] is True
 
     body = update_router.UpdateSettingsBody(stable_only=False)
     patched = await update_router.update_settings(body, server=server, _=None)
     assert patched["stable_only"] is False
-    assert patched["latest_version"] == "0.9.34b1"
+    assert patched["latest_version"] == "1.0.2b7-wenwen.9"
     assert patched["has_update"] is True
     assert server.services.settings_repo.get("update.stable_only") == "false"
 
 
 @pytest.mark.asyncio
-async def test_trigger_upgrade_pins_stable_when_prerelease_exists(
+async def test_trigger_upgrade_uses_fork_release(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.9.33", source="pypi.org")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
-    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "0.9.32")
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", None, None),
+    )
+    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     captured: dict[str, object] = {}
 
@@ -526,7 +539,7 @@ async def test_trigger_upgrade_pins_stable_when_prerelease_exists(
 
     monkeypatch.setattr(update_router, "_upgrade_worker", fake_worker)
 
-    body = update_router.UpgradeBody(version="0.9.33")
+    body = update_router.UpgradeBody(version="1.0.2b7-wenwen.9")
     result = await update_router.trigger_upgrade(
         request=Request({"type": "http", "headers": [(b"accept-language", b"en")]}),
         body=body,
@@ -535,19 +548,21 @@ async def test_trigger_upgrade_pins_stable_when_prerelease_exists(
     )
     await asyncio.sleep(0)
     assert result["status"] == "started"
-    assert captured["version"] == "0.9.33"
-    assert captured["allow_prerelease"] is False
+    assert captured["version"] == "1.0.2b7-wenwen.9"
     assert captured["locale"] == "zh"
 
 
 @pytest.mark.asyncio
-async def test_trigger_upgrade_defaults_to_channel_latest(
+async def test_trigger_upgrade_defaults_to_fork_latest(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    info = self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.9.33", source="pypi.org")
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: info)
-    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "0.9.32")
+    monkeypatch.setattr(
+        update_router,
+        "fetch_fork_release",
+        lambda: ("v1.0.2b7-wenwen.9", None, None),
+    )
+    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     captured: dict[str, object] = {}
 
@@ -572,19 +587,41 @@ async def test_trigger_upgrade_defaults_to_channel_latest(
     )
     await asyncio.sleep(0)
     assert result["status"] == "started"
-    assert captured["version"] == "0.9.33"
-    assert captured["allow_prerelease"] is False
+    assert captured["version"] == "1.0.2b7-wenwen.9"
     assert captured["locale"] == "en"
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("requested", ["1.0.2b4", "1.0.2b3", "1.0.2-beta.4"])
+async def test_trigger_upgrade_refuses_source_install(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(update_router, "is_source_install", lambda: True)
+    monkeypatch.setattr(update_router, "get_source_dir", lambda: "/src/wenwen-ai")
+    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
+
+    async def unexpected_task() -> None:
+        pytest.fail("source install must not create an upgrade task")
+
+    monkeypatch.setattr(update_router, "create_task", unexpected_task)
+    with pytest.raises(OctopError) as exc_info:
+        await update_router.trigger_upgrade(
+            request=Request({"type": "http", "headers": []}),
+            body=update_router.UpgradeBody(),
+            server=_settings_server(True),
+            _=None,
+        )
+    error = exc_info.value
+    assert error.code == ErrorCode.FORBIDDEN
+    assert "git pull" in str(error.message)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("requested", ["1.0.2b7-wenwen.8", "1.0.2b7-wenwen.7"])
 async def test_trigger_upgrade_rejects_non_newer_target_without_starting_task(
     monkeypatch: pytest.MonkeyPatch, requested: str
 ) -> None:
-    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
-    monkeypatch.setattr(update_router, "fetch_pypi_info", lambda: None)
-    monkeypatch.setattr(update_router, "get_local_version", lambda: "1.0.2b4")
+    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     async def unexpected_task() -> None:
         pytest.fail("rejected target must not create an upgrade task")
@@ -600,7 +637,7 @@ async def test_trigger_upgrade_rejects_non_newer_target_without_starting_task(
     error = exc_info.value
     assert error.code == ErrorCode.UPDATE_TARGET_NOT_NEWER
     assert error.status == 400
-    assert error.details == {"target": requested, "current": "1.0.2b4"}
+    assert error.details == {"target": requested, "current": "1.0.2b7-wenwen.8"}
 
 
 @pytest.mark.asyncio

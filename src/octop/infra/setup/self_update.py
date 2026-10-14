@@ -28,10 +28,14 @@ from octop.infra.utils.paths import PathLayout
 
 logger = logging.getLogger(__name__)
 
-_PACKAGE_NAME = "octop"
+_PACKAGE_NAME = "wenwen-ai"
 _PYPI_URL = f"https://pypi.org/pypi/{_PACKAGE_NAME}/json"
 _PYPI_SIMPLE = "https://pypi.org/simple"
 _PYPI_UA = {"User-Agent": f"{_PACKAGE_NAME}-updater/1.0"}
+_GITHUB_API_UA = {"User-Agent": "wenwen-ai-updater/1.0", "Accept": "application/vnd.github+json"}
+# NOTE (WenWen AI fork): the self-updater must NEVER touch the upstream
+# ``octop`` package. Updates are tracked against this fork's own GitHub
+# releases; see ``fetch_fork_release()`` and ``octop/wenwen_version.py``.
 _GREEN_PACKAGES_ENV = "OCTOP_GREEN_PACKAGES"
 _STASH_SUFFIX = ".octop-old"
 _PROBE_TIMEOUT_S = 8
@@ -65,7 +69,7 @@ class UpgradeResult:
 
 @dataclass(frozen=True)
 class IndexProbe:
-    """Result of probing a PEP 503 simple index for ``octop``."""
+    """Result of probing a PEP 503 simple index for ``wenwen-ai``."""
 
     index_url: str
     label: str
@@ -151,6 +155,108 @@ def get_local_version() -> str:
         return version(_PACKAGE_NAME)
     except Exception:
         return "0.0.0"
+
+
+# ---------------------------------------------------------------------------
+# WenWen AI fork: version + release tracking (never the upstream package)
+# ---------------------------------------------------------------------------
+
+_WENWEN_VER_RE = re.compile(r"^(?P<base>.+?)-wenwen\.(?P<n>\d+)$")
+
+
+def get_wenwen_version() -> str:
+    """Full fork version, e.g. ``1.0.2b7-wenwen.8``.
+
+    Falls back to the base package version when the fork marker is missing.
+    """
+    try:
+        from octop.wenwen_version import WENWEN_VERSION
+
+        if WENWEN_VERSION:
+            return str(WENWEN_VERSION)
+    except Exception:
+        pass
+    return get_local_version()
+
+
+def get_wenwen_repo() -> str:
+    """``owner/repo`` whose GitHub releases the updater tracks."""
+    try:
+        from octop.wenwen_version import WENWEN_REPO
+
+        default = str(WENWEN_REPO) if WENWEN_REPO else "tongwei0715/WenWen-AI"
+    except Exception:
+        default = "tongwei0715/WenWen-AI"
+    return os.environ.get("WENWEN_REPO", default).strip() or default
+
+
+def parse_wenwen_version(value: str) -> tuple[str, int] | None:
+    """Split ``<base>-wenwen.<N>`` (leading ``v`` allowed); None if not a fork version."""
+    match = _WENWEN_VER_RE.match(value.strip().lstrip("vV"))
+    if match is None:
+        return None
+    return match.group("base"), int(match.group("n"))
+
+
+def is_newer_wenwen(remote: str, local: str) -> bool:
+    """Compare fork versions; falls back to PEP 440 ordering for other shapes."""
+    r, l = parse_wenwen_version(remote), parse_wenwen_version(local)
+    if r is None or l is None:
+        return is_newer(remote, local)
+    if r[0] != l[0]:
+        return is_newer(r[0], l[0])
+    return r[1] > l[1]
+
+
+def fetch_fork_release(timeout: int = 10) -> tuple[str | None, str | None, str | None]:
+    """Latest release ``(tag, html_url, body)`` of the fork repo.
+
+    Any element may be None. Never raises; network or API failures simply
+    mean "no update info".
+    """
+    repo = get_wenwen_repo()
+    url = f"https://api.github.com/repos/{repo}/releases/latest"
+    try:
+        req = urllib.request.Request(url, headers=_GITHUB_API_UA)
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.load(resp)
+        tag = data.get("tag_name")
+        body = data.get("body")
+        return (
+            str(tag) if tag else None,
+            data.get("html_url"),
+            str(body) if body else None,
+        )
+    except Exception as exc:  # noqa: BLE001 - any failure means "unknown"
+        logger.warning("failed to fetch fork release for %s: %s", repo, exc)
+        return None, None, None
+
+
+def get_source_dir() -> str | None:
+    """Local source dir for non-editable ``file://`` direct installs.
+
+    Complements :func:`get_editable_path` (editable only): a regular
+    ``pip install /path/to/source`` also records ``direct_url.json`` and must
+    never be "upgraded" via pip — it would replace the fork with PyPI code.
+    """
+    try:
+        import importlib.metadata as meta
+
+        dist = meta.distribution(_PACKAGE_NAME)
+        direct_url = dist.read_text("direct_url.json")
+        if direct_url:
+            info = json.loads(direct_url)
+            url = info.get("url", "")
+            if url.startswith("file://") and not info.get("dir_info", {}).get("editable", False):
+                return url.replace("file://", "") or None
+    except Exception:
+        pass
+    return None
+
+
+def is_source_install() -> bool:
+    """True when running from a local source tree (editable or direct)."""
+    return get_editable_path() is not None or get_source_dir() is not None
 
 
 @dataclass
@@ -401,7 +507,7 @@ def is_newer(remote: str, local: str) -> bool:
 
 def validate_upgrade_target(version: str | None, local_ver: str) -> None:
     """Reject reinstalls/downgrades before any installer changes the environment."""
-    if version is not None and not is_newer(version, local_ver):
+    if version is not None and not is_newer_wenwen(version, local_ver):
         raise OctopError(
             ErrorCode.UPDATE_TARGET_NOT_NEWER,
             tr("errors.UPDATE_TARGET_NOT_NEWER", "en", target=version, current=local_ver),
@@ -447,10 +553,18 @@ def find_pip_in_venv(python_exe: str) -> str | None:
 
 
 def package_requirement(version: str | None = None) -> str:
-    """Return ``octop`` or a pinned ``octop==<version>`` spec."""
+    """Return the fork install requirement.
+
+    WenWen AI is not published to PyPI; installs and upgrades come from the
+    fork's GitHub repo, e.g.
+    ``wenwen-ai @ git+https://github.com/tongwei0715/WenWen-AI@v1.0.2b7-wenwen.9``.
+    """
+    repo = get_wenwen_repo()
+    git_url = f"git+https://github.com/{repo}"
     if version:
-        return f"{_PACKAGE_NAME}=={version}"
-    return _PACKAGE_NAME
+        tag = version if version[:1] in ("v", "V") else f"v{version}"
+        return f"{_PACKAGE_NAME} @ {git_url}@{tag}"
+    return f"{_PACKAGE_NAME} @ {git_url}"
 
 
 def append_prerelease_flags(
@@ -975,6 +1089,20 @@ def run_upgrade(
     version: str | None = None,
     locale: str = DEFAULT_LOCALE,
 ) -> UpgradeResult:
+    # WenWen AI fork: a source-tree install must NEVER be "upgraded" via pip —
+    # that would replace the fork with PyPI code. Update via git pull instead.
+    # (The CLI and the /api/update/upgrade endpoint also refuse up front; this
+    # is defense in depth for any other caller.)
+    src_dir = get_source_dir() or get_editable_path()
+    if src_dir:
+        return UpgradeResult(
+            success=False,
+            error=(
+                "检测到源码安装，无法通过在线升级更新。"
+                f"请在终端执行：cd {src_dir} && git pull，"
+                "然后重新运行安装脚本。"
+            ),
+        )
     try:
         validate_upgrade_target(version, get_local_version())
     except OctopError as exc:

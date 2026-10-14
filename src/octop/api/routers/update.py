@@ -25,15 +25,17 @@ from octop.infra.errors import ErrorCode, OctopError
 from octop.infra.server import OctopServer
 from octop.infra.setup.self_update import (
     UpgradeResult,
-    fetch_pypi_info,
+    fetch_fork_release,
     get_editable_path,
-    get_local_version,
+    get_source_dir,
+    get_wenwen_repo,
+    get_wenwen_version,
     green_packages_dir,
-    is_newer,
+    is_newer_wenwen,
     is_prerelease,
+    is_source_install,
     parse_changelog_for_version,
     run_upgrade,
-    validate_upgrade_target,
 )
 from octop.infra.setup.service import (
     ServiceRuntime,
@@ -99,11 +101,11 @@ def _present_status(
     stable_only: bool,
     include_prerelease: bool,
 ) -> dict[str, Any]:
-    current = str(cached.get("current_version") or get_local_version())
+    current = str(cached.get("current_version") or get_wenwen_version())
     latest_any = cached.get("latest_any") or cached.get("latest_version")
     latest_stable = cached.get("latest_stable")
     latest = _channel_latest(latest_any, latest_stable, include_prerelease=include_prerelease)
-    has_update = bool(latest and is_newer(latest, current))
+    has_update = bool(latest and is_newer_wenwen(latest, current))
     description = cached.get("description")
     notes = parse_changelog_for_version(description, latest) if has_update and latest else None
     return {
@@ -114,6 +116,7 @@ def _present_status(
         "description": description,
         "has_update": has_update,
         "is_editable": get_editable_path() is not None,
+        "is_source_install": is_source_install(),
         "service_mode": detect_service_mode(),
         "desktop": _is_desktop_process(),
         "error": cached.get("error"),
@@ -145,16 +148,17 @@ def _build_status(
     stable_only: bool = True,
     include_prerelease: bool = False,
 ) -> dict[str, Any]:
-    current = get_local_version()
+    current = get_wenwen_version()
     if latest_any is None:
         latest_any = latest
     if latest_any is None and error is None:
-        info = fetch_pypi_info()
-        if info is not None:
-            latest_any = info.version
-            latest_stable = info.latest_stable
-            source = info.source
-            description = info.description
+        # WenWen AI fork: track the fork's own GitHub releases, never the
+        # upstream PyPI package.
+        tag, _html_url, body = fetch_fork_release()
+        if tag:
+            latest_any = tag.lstrip("vV")
+            source = f"github:{get_wenwen_repo()}"
+            description = body
     if latest_stable is None and latest_any and not is_prerelease(latest_any):
         latest_stable = latest_any
     payload = _present_status(
@@ -210,22 +214,23 @@ async def check_for_updates(
     server: Any = Depends(get_server),
 ) -> dict[str, Any]:
     stable_only = _read_stable_only(server)
-    pypi_info = await asyncio.to_thread(fetch_pypi_info)
-    if pypi_info is None:
+    # WenWen AI fork: check the fork's GitHub releases, never upstream PyPI.
+    tag, _html_url, body = await asyncio.to_thread(fetch_fork_release)
+    if tag is None:
         return await asyncio.to_thread(
             _build_status,
             latest=None,
-            error="could not reach PyPI",
-            error_code="pypi_unreachable",
+            error="could not reach the WenWen AI release feed",
+            error_code="release_unreachable",
             stable_only=stable_only,
             include_prerelease=True,
         )
     return await asyncio.to_thread(
         _build_status,
-        latest_any=pypi_info.version,
-        latest_stable=pypi_info.latest_stable,
-        source=pypi_info.source,
-        description=pypi_info.description,
+        latest_any=tag.lstrip("vV"),
+        latest_stable=tag.lstrip("vV"),
+        source=f"github:{get_wenwen_repo()}",
+        description=body,
         stable_only=stable_only,
         include_prerelease=True,
     )
@@ -328,27 +333,35 @@ async def trigger_upgrade(
     server: Any = Depends(get_server),
     _: Any = Depends(require_permission("update")),
 ) -> dict[str, Any]:
-    if get_editable_path() is not None:
+    # WenWen AI fork: a source-tree install must never be "upgraded" via pip —
+    # that would replace the fork with upstream code. Update via git pull.
+    src_dir = await asyncio.to_thread(get_source_dir)
+    if src_dir is not None or await asyncio.to_thread(get_editable_path) is not None:
         raise OctopError(
             ErrorCode.FORBIDDEN,
-            "editable installs must be upgraded manually (git pull / uv sync)",
+            "检测到源码安装，无法通过在线升级更新。"
+            f"请在终端执行：cd {src_dir or ''} && git pull，然后重新运行安装脚本。",
         )
-    stable_only = _read_stable_only(server)
-    info = await asyncio.to_thread(fetch_pypi_info)
+    tag, _html_url, _body = await asyncio.to_thread(fetch_fork_release)
     requested = body.version if body is not None else None
     target = _resolve_upgrade_target(
         requested=requested,
-        latest_any=info.version if info else None,
-        latest_stable=info.latest_stable if info else None,
-        stable_only=stable_only,
+        latest_any=tag.lstrip("vV") if tag else None,
+        latest_stable=tag.lstrip("vV") if tag else None,
+        stable_only=True,
     )
-    validate_upgrade_target(target, await asyncio.to_thread(get_local_version))
-    allow_prerelease = bool(target and is_prerelease(target))
+    current = await asyncio.to_thread(get_wenwen_version)
+    if target is not None and not is_newer_wenwen(target, current):
+        raise OctopError(
+            ErrorCode.UPDATE_TARGET_NOT_NEWER,
+            f"target {target} is not newer than current {current}",
+            details={"target": target, "current": current},
+        )
     task = await create_task()
     asyncio.create_task(
         _upgrade_worker(
             task.task_id,
-            allow_prerelease=allow_prerelease,
+            allow_prerelease=True,
             version=target,
             locale=resolve_locale(
                 user_locale=getattr(_, "locale", None),

@@ -11,6 +11,25 @@
 
 ---
 
+## [1.0.2b7-wenwen.9] - 2026-10-14
+
+**升级链路 fork 化（修复在线升级抹掉品牌的问题）**：
+- 根因：`self_update.py` 的 `_PACKAGE_NAME` 写死为上游 `octop`，
+  前端"在线升级"实际执行 `pip install -U octop`，把品牌包整个换成上游原版；
+  且包改名后本地版本号读不到（返回 `0.0.0`），导致永远提示有更新。
+- `_PACKAGE_NAME` 改为 `wenwen-ai`；新增 `src/octop/wenwen_version.py`
+ （`WENWEN_VERSION`/`WENWEN_REPO`，由 `apply-branding.py` 从本日志同步），
+  更新检查改为查询 fork 自身的 GitHub releases（`fetch_fork_release()`），
+  不再碰 PyPI 的上游包。
+- 源码安装（editable 或 `file://` 直接安装）拦截：`run_upgrade()`、
+  `/api/update/upgrade`、CLI `wenwen update` 均拒绝 pip 升级并提示
+  `git pull`；前端新增 `is_source_install` 状态，隐藏升级按钮并显示指引。
+- 非源码安装的升级改为从 fork GitHub 按 release tag 安装
+ （`wenwen-ai @ git+https://github.com/<fork>@<tag>`）。
+- 测试同步更新（CLI/router/self_update 均改为 fork 行为断言）；
+  branding 脚本新增 `apply_wenwen_version()` 并锁定关键标记，
+  上游合并若破坏这些改动会被 `--check` 指出。
+
 ## [1.0.2b7-wenwen.8] - 2026-10-14
 
 品牌全量自检补漏：新增 `apply_dashboard_string_literals()`

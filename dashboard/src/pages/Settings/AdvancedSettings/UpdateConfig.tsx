@@ -410,6 +410,13 @@ export default function UpdateConfig() {
             </div>
           )}
 
+          {status?.is_source_install && !status?.is_editable && (
+            <div className={`${styles.alert} ${styles.alertWarn}`}>
+              <AlertTriangle size={15} />
+              <span>{t("advancedSettings.update.sourceInstallHint")}</span>
+            </div>
+          )}
+
           {status?.error && (
             <div className={`${styles.alert} ${styles.alertError}`}>
               <XCircle size={15} />
@@ -464,7 +471,7 @@ export default function UpdateConfig() {
               </button>
             )}
 
-            {status?.has_update && !status.is_editable && !upgradeFinished && (
+            {status?.has_update && !status.is_editable && !status.is_source_install && !upgradeFinished && (
               <button
                 type="button"
                 className={styles.btnPrimary}

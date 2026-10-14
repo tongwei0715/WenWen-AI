@@ -1,4 +1,4 @@
-"""Tests for `octop update`."""
+"""Tests for `wenwen update` (WenWen AI fork: tracks fork GitHub releases)."""
 
 from __future__ import annotations
 
@@ -11,16 +11,20 @@ from octop.cli.main import cli
 from octop.infra.setup import self_update
 
 
+def _fork_release(tag: str) -> tuple[str, str, None]:
+    return (tag, f"https://github.com/tongwei0715/WenWen-AI/releases/tag/{tag}", None)
+
+
 def test_update_check_only_no_install(monkeypatch: pytest.MonkeyPatch) -> None:
     import octop.cli.commands.update as update_cmd
 
     monkeypatch.setattr(
         update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="9.9.9", latest_stable="9.9.9"),
+        "fetch_fork_release",
+        lambda: _fork_release("v1.0.2b7-wenwen.9"),
     )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
+    monkeypatch.setattr(update_cmd, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
+    monkeypatch.setattr(update_cmd, "is_source_install", lambda: False)
 
     called: dict[str, bool] = {}
 
@@ -33,7 +37,7 @@ def test_update_check_only_no_install(monkeypatch: pytest.MonkeyPatch) -> None:
     runner = CliRunner()
     result = runner.invoke(cli, ["update", "--check"])
     assert result.exit_code == 0
-    assert "9.9.9" in result.output
+    assert "1.0.2b7-wenwen.9" in result.output
     assert "ran" not in called
 
 
@@ -42,11 +46,11 @@ def test_update_yes_runs_upgrade(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(
         update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="9.9.9", latest_stable="9.9.9"),
+        "fetch_fork_release",
+        lambda: _fork_release("v1.0.2b7-wenwen.9"),
     )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
+    monkeypatch.setattr(update_cmd, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
+    monkeypatch.setattr(update_cmd, "is_source_install", lambda: False)
     monkeypatch.setattr(
         update_cmd, "resolve_venv_python", lambda: "/home/user/.octop/venv/bin/python"
     )
@@ -56,7 +60,7 @@ def test_update_yes_runs_upgrade(monkeypatch: pytest.MonkeyPatch) -> None:
     def _fake_upgrade(**kw):
         called["ran"] = True
         called["kwargs"] = kw
-        return self_update.UpgradeResult(success=True, installed_version="9.9.9")
+        return self_update.UpgradeResult(success=True, installed_version="1.0.2b7-wenwen.9")
 
     monkeypatch.setattr(update_cmd, "run_upgrade", _fake_upgrade)
 
@@ -64,8 +68,7 @@ def test_update_yes_runs_upgrade(monkeypatch: pytest.MonkeyPatch) -> None:
     result = runner.invoke(cli, ["update", "--yes"])
     assert result.exit_code == 0
     assert called.get("ran") is True
-    assert called["kwargs"]["version"] == "9.9.9"
-    assert called["kwargs"]["allow_prerelease"] is False
+    assert called["kwargs"]["version"] == "1.0.2b7-wenwen.9"
     assert "/home/user/.octop/venv/bin/python" in result.output
 
 
@@ -74,11 +77,11 @@ def test_update_already_latest(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(
         update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="0.1.0", latest_stable="0.1.0"),
+        "fetch_fork_release",
+        lambda: _fork_release("v1.0.2b7-wenwen.8"),
     )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
+    monkeypatch.setattr(update_cmd, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
+    monkeypatch.setattr(update_cmd, "is_source_install", lambda: False)
 
     runner = CliRunner()
     result = runner.invoke(cli, ["update", "--check"])
@@ -93,16 +96,18 @@ def test_build_upgrade_command_uses_managed_venv_python() -> None:
     assert "--python" in cmd
     assert python in cmd
     assert "--upgrade-package" in cmd
-    assert "octop" in cmd
+    assert "wenwen-ai" in cmd
     assert "https://mirror.example/simple" in cmd
     assert "--target" not in cmd
 
 
 def test_build_upgrade_command_pins_version() -> None:
     python = "/home/user/.octop/venv/bin/python"
-    cmd = self_update.build_upgrade_command("uv", python, version="0.9.33")
+    cmd = self_update.build_upgrade_command("uv", python, version="1.0.2b7-wenwen.9")
     assert cmd is not None
-    assert "octop==0.9.33" in cmd
+    # Fork installs come from the fork's GitHub repo, never PyPI.
+    assert "wenwen-ai @ git+https://github.com/" in cmd
+    assert "@v1.0.2b7-wenwen.9" in cmd
     assert "--prerelease" not in cmd
 
 
@@ -150,89 +155,21 @@ def test_resolve_venv_python_prefers_octop_home(
     assert self_update.resolve_venv_python() == str(venv_python)
 
 
-def test_update_check_skips_prerelease_by_default(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_update_source_install_exits_nonzero(monkeypatch: pytest.MonkeyPatch) -> None:
     import octop.cli.commands.update as update_cmd
 
     monkeypatch.setattr(
         update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.1.0"),
+        "fetch_fork_release",
+        lambda: _fork_release("v1.0.2b7-wenwen.9"),
     )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
+    monkeypatch.setattr(update_cmd, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
+    monkeypatch.setattr(update_cmd, "is_source_install", lambda: True)
+    monkeypatch.setattr(update_cmd, "get_source_dir", lambda: "/src/wenwen-ai")
     monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
-
-    runner = CliRunner()
-    result = runner.invoke(cli, ["update", "--check"])
-    assert result.exit_code == 0
-    assert "0.1.0" in result.output
-    assert "0.9.34b1" not in result.output
-    assert "up to date" in result.output.lower()
-
-
-def test_update_allow_prerelease_check_shows_prerelease(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    import octop.cli.commands.update as update_cmd
-
-    monkeypatch.setattr(
-        update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.1.0"),
-    )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
-
-    runner = CliRunner()
-    result = runner.invoke(cli, ["update", "--check", "--allow-prerelease"])
-    assert result.exit_code == 0
-    assert "0.9.34b1" in result.output
-
-
-def test_update_allow_prerelease_installs_prerelease(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    import octop.cli.commands.update as update_cmd
-
-    monkeypatch.setattr(
-        update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="0.9.34b1", latest_stable="0.1.0"),
-    )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: None)
-    monkeypatch.setattr(
-        update_cmd, "resolve_venv_python", lambda: "/home/user/.octop/venv/bin/python"
-    )
-
-    called: dict[str, object] = {}
-
-    def _fake_upgrade(**kw):
-        called["ran"] = True
-        called["kwargs"] = kw
-        return self_update.UpgradeResult(success=True, installed_version="0.9.34b1")
-
-    monkeypatch.setattr(update_cmd, "run_upgrade", _fake_upgrade)
-
-    runner = CliRunner()
-    result = runner.invoke(cli, ["update", "--allow-prerelease", "--yes"])
-    assert result.exit_code == 0
-    assert called.get("ran") is True
-    assert called["kwargs"]["version"] == "0.9.34b1"
-    assert called["kwargs"]["allow_prerelease"] is True
-
-
-def test_update_editable_install_exits_nonzero(monkeypatch: pytest.MonkeyPatch) -> None:
-    import octop.cli.commands.update as update_cmd
-
-    monkeypatch.setattr(
-        update_cmd,
-        "fetch_pypi_info",
-        lambda: self_update.PyPIInfo(version="9.9.9", latest_stable="9.9.9"),
-    )
-    monkeypatch.setattr(update_cmd, "get_local_version", lambda: "0.1.0")
-    monkeypatch.setattr(update_cmd, "get_editable_path", lambda: "/src/orca")
 
     runner = CliRunner()
     result = runner.invoke(cli, ["update", "--yes"])
     assert result.exit_code == 1
-    assert "/src/orca" in result.output
+    assert "/src/wenwen-ai" in result.output
+    assert "git pull" in result.output

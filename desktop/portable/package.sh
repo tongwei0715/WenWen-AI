@@ -30,18 +30,20 @@ require_uv
 build_octop_wheel() {
   local wheel_dir="$1"
   mkdir -p "$wheel_dir"
-  # Drop previous local octop wheels so we pick the fresh build.
+  # Drop previous local wheels so we pick the fresh build.
+  # (WenWen AI fork: distribution is wenwen-ai → wheel is wenwen_ai-*.whl)
+  find "$wheel_dir" -maxdepth 1 -type f -name 'wenwen_ai-*.whl' -delete 2>/dev/null || true
   find "$wheel_dir" -maxdepth 1 -type f -name 'octop-*.whl' -delete 2>/dev/null || true
   if [[ ! -f "${REPO_ROOT}/src/octop/dashboard/index.html" ]]; then
     echo "[package] WARNING: dashboard not built (src/octop/dashboard/index.html missing)." >&2
     echo "  Run: make build-frontend" >&2
   fi
-  echo "[package] building octop wheel → ${wheel_dir}" >&2
+  echo "[package] building wenwen-ai wheel → ${wheel_dir}" >&2
   uv build --wheel --out-dir "$wheel_dir" "$REPO_ROOT" >&2
   local whl
-  whl="$(ls -1 "${wheel_dir}"/octop-*.whl 2>/dev/null | sort | tail -1 || true)"
+  whl="$(ls -1 "${wheel_dir}"/wenwen_ai-*.whl 2>/dev/null | sort | tail -1 || true)"
   if [[ -z "$whl" ]]; then
-    echo "[package] failed to build octop-*.whl" >&2
+    echo "[package] failed to build wenwen_ai-*.whl" >&2
     exit 1
   fi
   # stdout: wheel path only (captured by caller)

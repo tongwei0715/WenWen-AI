@@ -975,6 +975,27 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # Portable packaging: the wheel is now wenwen_ai-*.whl (distribution
+    # renamed), but the script looked for octop-*.whl and aborted.
+    p = ROOT / "desktop/portable/package.sh"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace(
+            'whl="$(ls -1 "${wheel_dir}"/octop-*.whl 2>/dev/null | sort | tail -1 || true)"',
+            'whl="$(ls -1 "${wheel_dir}"/wenwen_ai-*.whl 2>/dev/null | sort | tail -1 || true)"',
+        )
+        text = text.replace(
+            'echo "[package] failed to build octop-*.whl" >&2',
+            'echo "[package] failed to build wenwen_ai-*.whl" >&2',
+        )
+        text = text.replace(
+            'echo "[package] building octop wheel → ${wheel_dir}" >&2',
+            'echo "[package] building wenwen-ai wheel → ${wheel_dir}" >&2',
+        )
+        if text != orig:
+            write(p, text)
+
 
 # ---------------------------------------------------------------------------
 # 6. CLI help texts + docs + install scripts + packaging

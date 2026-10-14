@@ -741,6 +741,7 @@ def apply_desktop() -> None:
         text = p.read_text(encoding="utf-8")
         orig = text
         text = text.replace('"Octop-"+greenPlat()+".zip"', '"WenWenAI-"+greenPlat()+".zip"')
+        text = re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, text)
         if text != orig:
             write(p, text)
 

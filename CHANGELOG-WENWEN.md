@@ -11,6 +11,15 @@
 
 ---
 
+## [1.0.2b7-wenwen.7] - 2026-10-14
+
+P2 补幂等：`scripts/apply-branding.py` 的 `apply_desktop()` 里
+`download_test.go` 之前只替换 `.zip` 文件名，错误文案断言
+（"Octop 服务未在…" 等）上游合并后不会被恢复。新增加
+`re.sub(r"(?<![\w/-])Octop(?![\w-])", DISPLAY, text)` 规则；
+已用"回滚→重跑脚本"实测验证：断言恢复为 "WenWen AI"，
+`Octop-test/` 等测试固件路径有意保留。
+
 ## [1.0.2b7-wenwen.6] - 2026-10-14
 
 桌面端加载页章鱼吉祥物替换：`desktop/src/assets/index.html`

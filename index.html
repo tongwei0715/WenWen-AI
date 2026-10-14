@@ -161,6 +161,106 @@
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.visible { opacity: 1; transform: none; }
+
+  /* ===== Product Showcase ===== */
+  .showcase { padding: 40px 0 90px; }
+  .browser-frame {
+    max-width: 960px; margin: 0 auto;
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.08);
+    border: 1px solid #e2e2e2;
+    background: #fff;
+  }
+  .browser-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px; background: #f5f5f5;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .browser-dots { display: flex; gap: 7px; }
+  .browser-dots span { width: 11px; height: 11px; border-radius: 50%; }
+  .browser-url {
+    flex: 1; background: #fff; border: 1px solid #e4e4e4;
+    border-radius: 8px; padding: 6px 14px; font-size: 13px; color: #666;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .browser-url .lock { font-size: 11px; }
+  .mock-dash { display: flex; height: 560px; background: #fff; text-align: left; }
+  .mock-side {
+    width: 240px; background: #fafafa; border-right: 1px solid #eee;
+    padding: 18px 14px; display: flex; flex-direction: column; gap: 6px;
+    flex-shrink: 0;
+  }
+  .mock-side .side-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 14px; padding: 4px 8px 14px;
+  }
+  .mock-side .side-logo svg { width: 22px; height: 22px; }
+  .mock-nav-item {
+    padding: 9px 12px; border-radius: 8px; font-size: 13.5px;
+    color: #555; display: flex; align-items: center; gap: 10px;
+  }
+  .mock-nav-item.active { background: #111; color: #fff; font-weight: 600; }
+  .mock-nav-item .dot-ic { width: 16px; height: 16px; border-radius: 4px; background: currentColor; opacity: .35; }
+  .mock-nav-item.active .dot-ic { opacity: .9; }
+  .mock-side .side-foot { margin-top: auto; padding: 10px 8px; font-size: 12px; color: #999; }
+  .mock-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .mock-chat-head {
+    padding: 16px 24px; border-bottom: 1px solid #f0f0f0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mock-chat-head .t { font-weight: 700; font-size: 15px; }
+  .mock-chat-head .st { font-size: 12px; color: #22a355; display: flex; align-items: center; gap: 6px; }
+  .mock-chat-head .st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #22a355; }
+  .mock-msgs { flex: 1; padding: 24px; overflow: hidden; display: flex; flex-direction: column; gap: 18px; }
+  .msg { max-width: 78%; padding: 12px 16px; border-radius: 14px; font-size: 13.5px; line-height: 1.65; }
+  .msg.user { align-self: flex-end; background: #111; color: #fff; border-bottom-right-radius: 4px; }
+  .msg.ai { align-self: flex-start; background: #f4f4f4; color: #222; border-bottom-left-radius: 4px; }
+  .msg.ai .who { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-weight: 700; font-size: 12.5px; }
+  .msg.ai .who svg { width: 18px; height: 18px; }
+  .msg .tool {
+    margin-top: 10px; background: #fff; border: 1px solid #e6e6e6; border-radius: 8px;
+    padding: 8px 12px; font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px;
+  }
+  .msg .tool .ok { color: #22a355; font-weight: 700; }
+  .mock-input {
+    margin: 0 24px 22px; border: 1px solid #e2e2e2; border-radius: 14px;
+    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0,0,0,.05);
+  }
+  .mock-input .ph { color: #aaa; font-size: 13.5px; }
+  .mock-input .send {
+    width: 34px; height: 34px; border-radius: 50%; background: #111;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 16px;
+  }
+  .showcase-cap { text-align: center; margin-top: 26px; color: var(--muted); font-size: 14.5px; }
+  .shots { margin-top: 70px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 860px) { .shots { grid-template-columns: 1fr; } }
+  .shot-card {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; background: #fff;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .shot-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.09); }
+  .shot-thumb {
+    height: 190px; background: #f8f8f8; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    padding: 22px; position: relative; overflow: hidden;
+  }
+  .shot-thumb .mini {
+    width: 100%; height: 100%; background: #fff; border-radius: 10px;
+    border: 1px solid #e8e8e8; box-shadow: 0 6px 20px rgba(0,0,0,.06);
+    padding: 14px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .mini .m-row { display: flex; gap: 8px; align-items: center; }
+  .mini .m-ava { width: 26px; height: 26px; border-radius: 50%; background: #111; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+  .mini .m-line { height: 8px; border-radius: 4px; background: #eee; }
+  .mini .m-line.w60 { width: 60%; } .mini .m-line.w80 { width: 80%; } .mini .m-line.w40 { width: 40%; }
+  .mini .m-chip { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #111; color: #fff; font-size: 10.5px; font-weight: 600; }
+  .mini .m-chip.ghost { background: #f0f0f0; color: #555; }
+  .shot-body { padding: 22px 24px; }
+  .shot-body h3 { font-size: 16.5px; margin-bottom: 6px; }
+  .shot-body p { font-size: 13.5px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -172,6 +272,7 @@
       WenWen AI
     </a>
     <div class="nav-links">
+      <a href="#showcase">产品</a>
       <a href="#features">功能</a>
       <a href="#cases">场景</a>
       <a href="#start">快速开始</a>
@@ -189,7 +290,7 @@
   <p class="sub">WenWen AI — 支持多用户、多 Agent 的自托管 AI 助手。数据留在你的机器上，一条命令即可运行 Web 控制台、CLI、IM 通道与定时任务。</p>
   <div class="hero-cta">
     <a class="btn" href="#start">快速开始</a>
-    <a class="btn btn-ghost" href="#features">了解功能</a>
+    <a class="btn btn-ghost" href="#showcase">看看界面</a>
   </div>
   <div class="hero-badges">
     <span class="badge">开源 · MIT</span>
@@ -198,6 +299,111 @@
     <span class="badge">隐私优先</span>
   </div>
 </header>
+
+<!-- ===== 产品展示 ===== -->
+<section class="showcase" id="showcase">
+  <div class="wrap">
+    <div class="browser-frame reveal">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span>
+        </div>
+        <div class="browser-url"><span class="lock">🔒</span> wenwenai.cn/console</div>
+        <div style="width:60px"></div>
+      </div>
+      <div class="mock-dash">
+        <div class="mock-side">
+          <div class="side-logo">
+            <svg viewBox="0 0 512 512"><path d="M168 344 L138 436 L238 344 Z" fill="#111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#fff" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            WenWen AI
+          </div>
+          <div class="mock-nav-item active"><span class="dot-ic"></span> 对话</div>
+          <div class="mock-nav-item"><span class="dot-ic"></span> 专家</div>
+          <div class="mock-nav-item"><span class="dot-ic"></span> 技能</div>
+          <div class="mock-nav-item"><span class="dot-ic"></span> 定时任务</div>
+          <div class="mock-nav-item"><span class="dot-ic"></span> 知识库</div>
+          <div class="mock-nav-item"><span class="dot-ic"></span> 设置</div>
+          <div class="side-foot">v1.0.2 · 本地运行中</div>
+        </div>
+        <div class="mock-main">
+          <div class="mock-chat-head">
+            <div class="t">工作助理</div>
+            <div class="st">运行中</div>
+          </div>
+          <div class="mock-msgs">
+            <div class="msg user">帮我总结一下这周的工作周报，要发给老板</div>
+            <div class="msg ai">
+              <div class="who">
+                <svg viewBox="0 0 512 512"><rect x="92" y="112" width="328" height="244" rx="76" fill="#111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#fff" stroke-width="36" fill="none" stroke-linecap="round"/></svg>
+                WenWen AI
+              </div>
+              好的，我从你的知识库和本周的任务记录里整理了以下要点：
+              <br>1️⃣ 完成了桌面端打包流程的 4 轮修复<br>2️⃣ 官网已上线 wenwenai.cn<br>3️⃣ 移动端方案已确定
+              <div class="tool"><span class="ok">✓</span> 已调用「知识库检索」· 命中 3 篇文档</div>
+            </div>
+            <div class="msg user">再帮我翻译成英文版</div>
+            <div class="msg ai">
+              <div class="who">
+                <svg viewBox="0 0 512 512"><rect x="92" y="112" width="328" height="244" rx="76" fill="#111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#fff" stroke-width="36" fill="none" stroke-linecap="round"/></svg>
+                WenWen AI
+              </div>
+              Sure! Here's the English version of your weekly report…
+            </div>
+          </div>
+          <div class="mock-input">
+            <span class="ph">输入消息，Shift + Enter 换行…</span>
+            <span class="send">↑</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="showcase-cap reveal">Web 控制台 · 对话、专家、技能、定时任务，一个界面全搞定</p>
+
+    <div class="shots">
+      <div class="shot-card reveal">
+        <div class="shot-thumb">
+          <div class="mini">
+            <div class="m-row"><span class="m-ava">专</span><div class="m-line w60"></div></div>
+            <div class="m-line w80"></div>
+            <div class="m-line w40"></div>
+            <div class="m-row"><span class="m-chip">编程专家</span><span class="m-chip ghost">写作助手</span><span class="m-chip ghost">翻译</span></div>
+          </div>
+        </div>
+        <div class="shot-body">
+          <h3>专家一键切换</h3>
+          <p>内置专家库与专家市场，按场景切换专业角色，每个专家都有独立的记忆与技能。</p>
+        </div>
+      </div>
+      <div class="shot-card reveal">
+        <div class="shot-thumb">
+          <div class="mini">
+            <div class="m-row"><span class="m-chip">⏰ 每天 9:00</span></div>
+            <div class="m-line w80"></div>
+            <div class="m-line w60"></div>
+            <div class="m-row"><span class="m-chip ghost">推送日报</span><span class="m-chip ghost">已启用</span></div>
+          </div>
+        </div>
+        <div class="shot-body">
+          <h3>定时任务</h3>
+          <p>每天自动推送日报、定时提醒、周期性检查，像有个不知疲倦的助理。</p>
+        </div>
+      </div>
+      <div class="shot-card reveal">
+        <div class="shot-thumb">
+          <div class="mini">
+            <div class="m-row"><span class="m-ava">🔌</span><div class="m-line w60"></div></div>
+            <div class="m-line w80"></div>
+            <div class="m-row"><span class="m-chip">飞书</span><span class="m-chip">钉钉</span><span class="m-chip ghost">+12</span></div>
+          </div>
+        </div>
+        <div class="shot-body">
+          <h3>全通道接入</h3>
+          <p>飞书、钉钉、QQ、微信、企业微信，或 API 对接，随时随地呼唤你的 AI。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="block alt" id="features">
   <div class="wrap">
@@ -315,6 +521,7 @@
       WenWen AI
     </a>
     <div class="foot-links">
+      <a href="#showcase">产品</a>
       <a href="#features">功能</a>
       <a href="#start">快速开始</a>
       <a href="#download">下载</a>

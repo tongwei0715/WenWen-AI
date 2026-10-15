@@ -1,4 +1,4 @@
-name: Octop Desktop Package
+name: WenWen AI Desktop Package
 
 # 正式发版：Auto Tag 在打 v* 后与 Release / Docker Publish 一并 dispatch。
 # 产物 upsert 到同一 GitHub Release。手工补包：workflow_dispatch + release_tag
@@ -68,7 +68,7 @@ jobs:
           cache: npm
           cache-dependency-path: dashboard/package-lock.json
 
-      - name: Build frontend → src/octop/dashboard
+      - name: Build frontend dashboard
         run: make build-frontend
 
       - uses: actions/upload-artifact@v7

@@ -972,6 +972,15 @@ def apply_desktop() -> None:
         text = text.replace("release/Octop-", "release/WenWenAI-")
         text = text.replace("pattern: Octop-*", "pattern: WenWenAI-*")
         text = text.replace("its Octop-* artifacts", "its WenWenAI-* artifacts")
+        # Workflow display name on the Actions tab must read WenWen AI.
+        # The file name stays octop-desktop.yml (upstream merge compatibility).
+        text = text.replace(
+            "name: Octop Desktop Package", "name: WenWen AI Desktop Package"
+        )
+        text = text.replace(
+            "name: Build frontend \u2192 src/octop/dashboard",
+            "name: Build frontend dashboard",
+        )
         if text != orig:
             write(p, text)
 

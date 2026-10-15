@@ -1040,6 +1040,30 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # stamp_version.py: four_part_version() must strip the -wenwen.N fork
+    # suffix before mapping to Windows X.X.X.X, or Windows packaging fails.
+    p = ROOT / "desktop/src/build/stamp_version.py"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        anchor = "def four_part_version(version: str) -> str | None:"
+        fork_block = (
+            '# WenWen AI fork versions look like 1.0.2b7-wenwen.10: strip the -wenwen.N\n'
+            '# local suffix before mapping to Windows X.X.X.X (display strings keep it).\n'
+            '_FORK_VERSION_SUFFIX = re.compile(r"-wenwen\\.\\d+$", re.IGNORECASE)\n'
+            '\n\n'
+        )
+        if anchor in text and "_FORK_VERSION_SUFFIX" not in text:
+            text = text.replace(anchor, fork_block + anchor, 1)
+            text = text.replace(
+                '    raw = version.strip()\n    if not raw or raw == "dev":\n        return None\n',
+                '    raw = version.strip()\n    if not raw or raw == "dev":\n        return None\n'
+                '    raw = _FORK_VERSION_SUFFIX.sub("", raw)\n',
+                1,
+            )
+        if text != orig:
+            write(p, text)
+
 
 # ---------------------------------------------------------------------------
 # 6. CLI help texts + docs + install scripts + packaging

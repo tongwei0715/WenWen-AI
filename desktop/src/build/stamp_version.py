@@ -42,11 +42,17 @@ def should_stamp(version: str) -> bool:
     return bool(version) and version != "dev"
 
 
+# WenWen AI fork versions look like 1.0.2b7-wenwen.10: strip the -wenwen.N
+# local suffix before mapping to Windows X.X.X.X (display strings keep it).
+_FORK_VERSION_SUFFIX = re.compile(r"-wenwen\.\d+$", re.IGNORECASE)
+
+
 def four_part_version(version: str) -> str | None:
     """Map pep440 / dotted versions to Windows X.X.X.X (display string unchanged)."""
     raw = version.strip()
     if not raw or raw == "dev":
         return None
+    raw = _FORK_VERSION_SUFFIX.sub("", raw)
     parts = raw.split(".")
     if parts and all(p.isdigit() for p in parts):
         while len(parts) < 4:

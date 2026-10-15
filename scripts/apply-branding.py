@@ -1099,6 +1099,104 @@ def restore_upstream_product_names(text: str) -> str:
     return text
 
 
+def apply_desktop_build_metadata() -> None:
+    """Desktop packaging metadata (icons aside): user-visible names/IDs.
+
+    Upstream stamps Octop branding into the installer/exe/.app metadata;
+    the fork must read WenWen AI everywhere. Binary assets (appicon.png,
+    appicon-macos.png, dmg-background.jpeg) are generated from
+    branding/make-desktop-assets.py and are not touched here.
+    """
+    # Windows exe version resource (stamp_version.py only sets versions).
+    p = ROOT / "desktop/src/build/windows/info.json"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace('"CompanyName": "Octop"', '"CompanyName": "WenWen AI"')
+        text = text.replace('"FileDescription": "Octop desktop"', '"FileDescription": "WenWen AI desktop"')
+        text = text.replace('"ProductName": "Octop"', '"ProductName": "WenWen AI"')
+        text = text.replace('"Comments": "Octop desktop shell"', '"Comments": "WenWen AI desktop shell"')
+        if text != orig:
+            write(p, text)
+
+    # NSIS installer defines.
+    p = ROOT / "desktop/src/build/windows/nsis/wails_tools.nsh"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("for the Octop desktop installer.", "for the WenWen AI desktop installer.")
+        text = text.replace('!define INFO_PROJECTNAME "Octop"', '!define INFO_PROJECTNAME "WenWen AI"')
+        text = text.replace('!define INFO_COMPANYNAME "Octop"', '!define INFO_COMPANYNAME "WenWen AI"')
+        text = text.replace('!define INFO_PRODUCTNAME "Octop"', '!define INFO_PRODUCTNAME "WenWen AI"')
+        text = text.replace('"(c) 2026, Octop"', '"(c) 2026, WenWen AI"')
+        if text != orig:
+            write(p, text)
+
+    p = ROOT / "desktop/src/build/windows/nsis/project.nsi"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("# Octop desktop NSIS installer.", "# WenWen AI desktop NSIS installer.")
+        text = text.replace("Octop.exe project.nsi", "WenWenAI.exe project.nsi")
+        if text != orig:
+            write(p, text)
+
+    # Windows app manifest identity.
+    p = ROOT / "desktop/src/build/windows/wails.exe.manifest"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace('name="com.tencent.octop"', 'name="com.wenwenai.desktop"')
+        if text != orig:
+            write(p, text)
+
+    # macOS Info.plist (CFBundleExecutable must match the WenWenAI binary or
+    # Finder cannot launch the app; the zip name must match what download.go
+    # looks for, or the bundled runtime is not found).
+    for rel in ["desktop/src/build/darwin/Info.plist", "desktop/src/build/darwin/Info.dev.plist"]:
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("<string>Octop</string>", "<string>WenWen AI</string>", 1)
+        text = text.replace("<string>Octop</string>", "<string>WenWenAI</string>", 1)
+        text = text.replace("<string>com.tencent.octop</string>", "<string>com.wenwenai.desktop</string>")
+        text = text.replace("Octop desktop shell", "WenWen AI desktop shell")
+        if text != orig:
+            write(p, text)
+
+    # stamp_version.py: manifest regex must match the fork identity.
+    p = ROOT / "desktop/src/build/stamp_version.py"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace(r"com\.tencent\.octop", r"com\.wenwenai\.desktop")
+        text = text.replace('"""Stamp the Octop version', '"""Stamp the WenWen AI version')
+        text = text.replace("octop assemblyIdentity not found", "assemblyIdentity not found")
+        if text != orig:
+            write(p, text)
+
+    # Portable-zip default names + task summaries across platform Taskfiles.
+    for rel, olds in [
+        ("desktop/src/build/darwin/Taskfile.yml", ["Octop-portable-darwin-", "Octop-darwin-{{.ARCH}}.zip", "octop-dmg.XXXXXX"]),
+        ("desktop/src/build/windows/Taskfile.yml", ["Octop-portable-windows-", "Wraps Octop.exe in an NSIS installer"]),
+        ("desktop/src/build/linux/Taskfile.yml", ["Octop-portable-linux-"]),
+        ("desktop/src/build/Taskfile.yml", ["octop-iconset.XXXXXX"]),
+    ]:
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        for o in olds:
+            n = (o.replace("Octop-", "WenWenAI-").replace("Octop.exe", "WenWenAI.exe")
+                   .replace("octop-", "wenwenai-"))
+            text = text.replace(o, n)
+        if text != orig:
+            write(p, text)
+
+
 def apply_docs() -> None:
     roots = [ROOT / "README.md", ROOT / "README_CN.md", ROOT / "CONTRIBUTING.md",
              ROOT / "SECURITY.md", ROOT / "docs", ROOT / "desktop",
@@ -1220,6 +1318,7 @@ def main() -> int:
     apply_dashboard_literals()
     apply_dashboard_string_literals()
     apply_desktop()
+    apply_desktop_build_metadata()
     apply_cli_texts()
     apply_docs()
     apply_install_scripts()

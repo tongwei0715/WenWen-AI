@@ -1015,6 +1015,29 @@ def apply_desktop() -> None:
         if p.exists():
             p.unlink()
 
+    # WenWen AI fork: PyPI publish is optional (upgrade path uses git URLs).
+    # Skip gracefully when PYPI_API_TOKEN is unset instead of failing the
+    # release; github-release then runs off build directly. Re-apply on every
+    # run so upstream merges can't revert it.
+    p = ROOT / ".github/workflows/release.yml"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        if "secrets.PYPI_API_TOKEN != ''" not in text:
+            text = text.replace(
+                "  publish:\n    name: Publish to PyPI\n    needs: build\n",
+                "  publish:\n    name: Publish to PyPI\n    needs: build\n"
+                "    if: ${{ secrets.PYPI_API_TOKEN != '' }}\n",
+            )
+        # github-release must not hard-depend on the optional publish job.
+        text = text.replace(
+            "  github-release:\n    name: Create GitHub Release\n    needs: publish\n",
+            "  github-release:\n    name: Create GitHub Release\n    needs: build\n"
+            "    if: ${{ always() && needs.build.result == 'success' }}\n",
+        )
+        if text != orig:
+            write(p, text)
+
     # Portable packaging: the wheel is now wenwen_ai-*.whl (distribution
     # renamed), but the script looked for octop-*.whl and aborted.
     p = ROOT / "desktop/portable/package.sh"

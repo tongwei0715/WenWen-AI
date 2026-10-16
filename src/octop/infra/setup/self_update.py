@@ -650,7 +650,14 @@ def stash_console_scripts(python_exe: str) -> list[tuple[Path, Path]]:
     script_dir = Path(python_exe).parent
     _purge_stale_stashes(script_dir)
     moved: list[tuple[Path, Path]] = []
-    for script in sorted(script_dir.glob(f"{_PACKAGE_NAME}*.exe")):
+    # WenWen AI fork: console scripts are `wenwen` (+ legacy `octop` alias),
+    # not the PyPI distribution name `wenwen-ai`.
+    scripts = {
+        p
+        for pattern in ("wenwen*.exe", "octop*.exe")
+        for p in script_dir.glob(pattern)
+    }
+    for script in sorted(scripts):
         stash = script.with_name(script.name + _STASH_SUFFIX)
         try:
             script.replace(stash)

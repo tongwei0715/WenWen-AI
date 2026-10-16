@@ -51,7 +51,12 @@ def test_is_newer_wenwen() -> None:
 
 
 def test_get_wenwen_version_matches_changelog() -> None:
-    assert get_wenwen_version() == "1.0.2b7-wenwen.8"
+    import re
+
+    changelog = Path(__file__).resolve().parents[4] / "CHANGELOG-WENWEN.md"
+    m = re.search(r"^## \[([^\]]+)\]", changelog.read_text(encoding="utf-8"), re.M)
+    assert m, "no version entry in CHANGELOG-WENWEN.md"
+    assert get_wenwen_version() == m.group(1)
 
 
 def test_get_wenwen_repo_default() -> None:
@@ -184,9 +189,9 @@ def test_fetch_pypi_info_loads_prerelease_description(
     def fake_urlopen(req: object, timeout: int = 10) -> _JsonResp:
         url = getattr(req, "full_url", "")
         urls.append(url)
-        if url.endswith("/octop/json"):
+        if url.endswith("/wenwen-ai/json"):
             return _JsonResp(catalog)
-        if url.endswith("/octop/1.0.2b5/json"):
+        if url.endswith("/wenwen-ai/1.0.2b5/json"):
             return _JsonResp(beta)
         raise AssertionError(url)
 
@@ -197,7 +202,7 @@ def test_fetch_pypi_info_loads_prerelease_description(
     assert info.latest_stable == "1.0.1"
     assert info.description is not None
     assert "remote bridge" in info.description
-    assert any(url.endswith("/octop/1.0.2b5/json") for url in urls)
+    assert any(url.endswith("/wenwen-ai/1.0.2b5/json") for url in urls)
 
 
 def test_fetch_pypi_info_skips_versioned_fetch_when_stable_is_latest(
@@ -212,7 +217,7 @@ def test_fetch_pypi_info_skips_versioned_fetch_when_stable_is_latest(
     def fake_urlopen(req: object, timeout: int = 10) -> _JsonResp:
         url = getattr(req, "full_url", "")
         urls.append(url)
-        if url.endswith("/octop/json"):
+        if url.endswith("/wenwen-ai/json"):
             return _JsonResp(catalog)
         raise AssertionError(url)
 
@@ -222,7 +227,7 @@ def test_fetch_pypi_info_skips_versioned_fetch_when_stable_is_latest(
     assert info.version == "1.0.1"
     assert info.description is not None
     assert "stable" in info.description
-    assert urls == ["https://pypi.org/pypi/octop/json"]
+    assert urls == ["https://pypi.org/pypi/wenwen-ai/json"]
 
 
 def test_build_upgrade_command_prerelease_flags(
@@ -233,13 +238,13 @@ def test_build_upgrade_command_prerelease_flags(
     assert uv_cmd is not None
     assert uv_cmd[uv_cmd.index("--prerelease") + 1] == "allow"
     # WenWen AI fork: installs come from the fork's GitHub repo, never PyPI.
-    assert "wenwen-ai @ git+https://github.com/" in uv_cmd
-    assert "@v0.9.34b1" in uv_cmd
+    assert any("wenwen-ai @ git+https://github.com/" in arg for arg in uv_cmd)
+    assert any("@v0.9.34b1" in arg for arg in uv_cmd)
     monkeypatch.setattr("octop.infra.setup.self_update.has_pip", lambda _: True)
     pip_cmd = build_upgrade_command("pip", python, allow_prerelease=True, version="0.9.34b1")
     assert pip_cmd is not None
     assert "--pre" in pip_cmd
-    assert "wenwen-ai @ git+https://github.com/" in pip_cmd
+    assert any("wenwen-ai @ git+https://github.com/" in arg for arg in pip_cmd)
 
 
 def test_portable_upgrade_prefers_bundled_uv(
@@ -294,6 +299,8 @@ def _fake_windows_scripts(tmp_path: Path) -> Path:
     script_dir = tmp_path / "Scripts"
     script_dir.mkdir()
     (script_dir / "python.exe").write_text("python")
+    (script_dir / "wenwen.exe").write_text("launcher")
+    (script_dir / "wenwen.exe.octop-old").write_text("leftover")
     (script_dir / "octop.exe").write_text("launcher")
     (script_dir / "octop.exe.octop-old").write_text("leftover")
     (script_dir / "pip.exe").write_text("pip")
@@ -319,9 +326,14 @@ def test_stash_console_scripts_moves_launcher_and_purges_leftovers(
 
     moved = stash_console_scripts(str(script_dir / "python.exe"))
 
-    assert moved == [(script_dir / "octop.exe", script_dir / "octop.exe.octop-old")]
+    assert moved == [
+        (script_dir / "octop.exe", script_dir / "octop.exe.octop-old"),
+        (script_dir / "wenwen.exe", script_dir / "wenwen.exe.octop-old"),
+    ]
+    assert not (script_dir / "wenwen.exe").exists()
     assert not (script_dir / "octop.exe").exists()
     # The leftover from an earlier upgrade is gone, replaced by the new stash.
+    assert (script_dir / "wenwen.exe.octop-old").read_text() == "launcher"
     assert (script_dir / "octop.exe.octop-old").read_text() == "launcher"
     assert (script_dir / "pip.exe").exists()
 
@@ -336,6 +348,8 @@ def test_restore_console_scripts_puts_launcher_back(
 
     restore_console_scripts(moved)
 
+    assert (script_dir / "wenwen.exe").read_text() == "launcher"
+    assert not (script_dir / "wenwen.exe.octop-old").exists()
     assert (script_dir / "octop.exe").read_text() == "launcher"
     assert not (script_dir / "octop.exe.octop-old").exists()
 
@@ -348,6 +362,8 @@ def test_run_upgrade_restores_launcher_only_on_failure(
 ) -> None:
     monkeypatch.setattr("octop.infra.setup.self_update._is_windows", lambda: True)
     monkeypatch.delenv("OCTOP_FPK_SITE_PACKAGES", raising=False)
+    monkeypatch.setattr("octop.infra.setup.self_update.get_source_dir", lambda: None)
+    monkeypatch.setattr("octop.infra.setup.self_update.get_editable_path", lambda: None)
     script_dir = _fake_windows_scripts(tmp_path)
     monkeypatch.setattr(
         "octop.infra.setup.self_update.resolve_venv_python",
@@ -373,11 +389,11 @@ def test_run_upgrade_restores_launcher_only_on_failure(
 
 
 def test_page_has_package_version_matches_wheel_and_sdist() -> None:
-    body = '<a href="octop-1.0.1-py3-none-any.whl">octop-1.0.1-py3-none-any.whl</a>'
+    body = '<a href="wenwen-ai-1.0.1-py3-none-any.whl">wenwen-ai-1.0.1-py3-none-any.whl</a>'
     assert page_has_package_version(body, "1.0.1")
     assert not page_has_package_version(body, "1.0.10")
     assert page_has_package_version(
-        '<a href="octop-1.0.2.tar.gz">octop-1.0.2.tar.gz</a>',
+        '<a href="wenwen-ai-1.0.2.tar.gz">wenwen-ai-1.0.2.tar.gz</a>',
         "1.0.2",
     )
     assert page_has_package_version("any non-empty body", None)
@@ -586,10 +602,10 @@ def _write_octop_package(target: Path, version: str) -> None:
 
 
 def _write_upgrade_wheel(directory: Path, metadata: str | None = None) -> Path:
-    wheel = directory / "octop-1.0.2b5-py3-none-any.whl"
+    wheel = directory / "wenwen-ai-1.0.2b5-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
         archive.writestr(
-            "octop-1.0.2b5.dist-info/METADATA", metadata or "Name: octop\nVersion: 1.0.2b5\n"
+            "wenwen-ai-1.0.2b5.dist-info/METADATA", metadata or "Name: wenwen-ai\nVersion: 1.0.2b5\n"
         )
     return wheel
 
@@ -649,6 +665,8 @@ def test_target_version_prevents_downgrade_before_service_restart(
 
     monkeypatch.setattr(octop, "__version__", "1.0.2b4")
     monkeypatch.setenv("OCTOP_GREEN_PACKAGES", str(tmp_path))
+    monkeypatch.setattr(self_update, "get_source_dir", lambda: None)
+    monkeypatch.setattr(self_update, "get_editable_path", lambda: None)
     _write_octop_package(tmp_path, "1.0.2b6")
     assert self_update.get_local_version() == "1.0.2b6"
     result = run_upgrade(version="1.0.2b5", locale="en")
@@ -707,8 +725,8 @@ def test_application_only_checks_target_dependency_closure(
         requirement = "absent>=1; python_version < '0'"
     elif scenario == "direct-url":
         requirement = "upgrade-dep @ https://example.com/dep.whl"
-    release = f"Name: octop\nVersion: 1.0.2b5\nRequires-Dist: {requirement}\n"
-    metadata("octop", "1.0.2b4", ["old-absent-dep>=1"])
+    release = f"Name: wenwen-ai\nVersion: 1.0.2b5\nRequires-Dist: {requirement}\n"
+    metadata("wenwen-ai", "1.0.2b4", ["old-absent-dep>=1"])
     if scenario != "missing":
         metadata(
             "upgrade_dep",
@@ -794,7 +812,7 @@ def test_legacy_pip_fast_path_falls_back_and_verifies_full_install(
             calls.append(("download", timeout))
             directory = Path(cmd[cmd.index("--dest") + 1])
             downloads.append(directory)
-            release = "Name: octop\nVersion: 1.0.2b5\n"
+            release = "Name: wenwen-ai\nVersion: 1.0.2b5\n"
             if failure == "dependency":
                 release += "Requires-Dist: missing-upgrade-dependency>=1\n"
             _write_upgrade_wheel(directory, release)
@@ -896,7 +914,7 @@ def test_verify_green_upgrade_reads_only_target(
 
     metadata = tmp_path / "octop-1.0.2b5.dist-info" / "METADATA"
     metadata.parent.mkdir()
-    metadata.write_text("Name: octop\nVersion: 1.0.2b5\n", encoding="utf-8")
+    metadata.write_text("Name: wenwen-ai\nVersion: 1.0.2b5\n", encoding="utf-8")
     _write_octop_package(tmp_path, "1.0.2b5")
     installed = self_update._verify_upgrade("1.0.2b4", sys.executable, [], version="1.0.2b5")
     assert installed.success
@@ -910,6 +928,8 @@ def test_pip_target_upgrade_with_stale_metadata_succeeds_without_retry(
 
     monkeypatch.setenv("OCTOP_GREEN_PACKAGES", str(tmp_path))
     monkeypatch.delenv("OCTOP_FPK_SITE_PACKAGES", raising=False)
+    monkeypatch.setattr(self_update, "get_source_dir", lambda: None)
+    monkeypatch.setattr(self_update, "get_editable_path", lambda: None)
     _write_octop_metadata(tmp_path, "1.0.2b4")
     _write_octop_package(tmp_path, "1.0.2b4")
     monkeypatch.setattr(self_update, "detect_installer", lambda: "pip")
@@ -1023,7 +1043,7 @@ def test_legacy_pip_fallback_window_is_shared_across_mirrors(
             elapsed += 80
             _write_upgrade_wheel(
                 Path(cmd[cmd.index("--dest") + 1]),
-                "Name: octop\nVersion: 1.0.2b5\nRequires-Dist: missing-upgrade-dependency>=1\n",
+                "Name: wenwen-ai\nVersion: 1.0.2b5\nRequires-Dist: missing-upgrade-dependency>=1\n",
             )
             return 0, ""
         assert "--no-deps" not in cmd
@@ -1105,6 +1125,8 @@ def test_upgrade_keeps_locale_bundle_when_installer_replaces_resources(
     monkeypatch.setenv("OCTOP_FPK_SITE_PACKAGES", str(target) if fpk else "")
     monkeypatch.setattr(loader.resources, "files", lambda _: bundles)
     monkeypatch.setattr(self_update, "get_local_version", lambda: "1.0.2b4")
+    monkeypatch.setattr(self_update, "get_source_dir", lambda: None)
+    monkeypatch.setattr(self_update, "get_editable_path", lambda: None)
     monkeypatch.setattr(self_update, "get_version_in_dir", lambda *args, **kwargs: actual)
     monkeypatch.setattr(self_update, "detect_installer", lambda: "uv")
     monkeypatch.setattr(self_update, "find_uv_executable", lambda: str(tmp_path / "uv"))
@@ -1152,6 +1174,8 @@ def test_run_upgrade_rejects_non_newer_target_before_changes(
 
     monkeypatch.setenv("OCTOP_FPK_SITE_PACKAGES", "fpk-target" if fpk else "")
     monkeypatch.setattr(self_update, "get_local_version", lambda: "1.0.2b4")
+    monkeypatch.setattr(self_update, "get_source_dir", lambda: None)
+    monkeypatch.setattr(self_update, "get_editable_path", lambda: None)
 
     def unexpected(*args: object, **kwargs: object) -> None:
         pytest.fail("non-newer target must be rejected before probing or modifying files")
@@ -1225,7 +1249,7 @@ def test_cold_target_install_budget_preserves_regular_timeout(
         if "download" in cmd:
             _write_upgrade_wheel(
                 Path(cmd[cmd.index("--dest") + 1]),
-                "Name: octop\nVersion: 1.0.2b5\nRequires-Dist: absent>=1\n",
+                "Name: wenwen-ai\nVersion: 1.0.2b5\nRequires-Dist: absent>=1\n",
             )
         return (
             (0, "")

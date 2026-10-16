@@ -492,7 +492,7 @@ def apply_test_updates() -> None:
         ROOT / "tests/unit/api/test_update_router.py": [
             "fetch_fork_release",
             "release_unreachable",
-            "is_source_install",
+            "get_source_dir",
         ],
         ROOT / "tests/unit/infra/setup/test_self_update.py": [
             "def test_is_newer_wenwen(",
@@ -580,6 +580,9 @@ def apply_metadata() -> None:
     # FastAPI / OpenAPI title
     p = ROOT / "src/octop/api/app.py"
     sub_file(p, r'title="Octop API"', f'title="{DISPLAY} API"')
+    # ... and the integration test asserting it
+    p = ROOT / "tests/integration/test_scalar.py"
+    sub_file(p, r'== "Octop API"', f'== "{DISPLAY} API"')
 
 
 # ---------------------------------------------------------------------------
@@ -1175,6 +1178,14 @@ def apply_desktop_build_metadata() -> None:
         text = p.read_text(encoding="utf-8")
         orig = text
         text = text.replace('name="com.tencent.octop"', 'name="com.wenwenai.desktop"')
+        if text != orig:
+            write(p, text)
+    # ... and the unit test asserting the stamped identity
+    p = ROOT / "tests/unit/desktop/test_stamp_version.py"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("com.tencent.octop", "com.wenwenai.desktop")
         if text != orig:
             write(p, text)
 

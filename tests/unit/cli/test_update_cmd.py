@@ -106,8 +106,8 @@ def test_build_upgrade_command_pins_version() -> None:
     cmd = self_update.build_upgrade_command("uv", python, version="1.0.2b7-wenwen.9")
     assert cmd is not None
     # Fork installs come from the fork's GitHub repo, never PyPI.
-    assert "wenwen-ai @ git+https://github.com/" in cmd
-    assert "@v1.0.2b7-wenwen.9" in cmd
+    assert any("wenwen-ai @ git+https://github.com/" in arg for arg in cmd)
+    assert any("@v1.0.2b7-wenwen.9" in arg for arg in cmd)
     assert "--prerelease" not in cmd
 
 

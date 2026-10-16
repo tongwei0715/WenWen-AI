@@ -520,7 +520,8 @@ async def test_trigger_upgrade_uses_fork_release(
         "fetch_fork_release",
         lambda: ("v1.0.2b7-wenwen.9", None, None),
     )
-    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_source_dir", lambda: None)
+    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
     monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     captured: dict[str, object] = {}
@@ -561,7 +562,8 @@ async def test_trigger_upgrade_defaults_to_fork_latest(
         "fetch_fork_release",
         lambda: ("v1.0.2b7-wenwen.9", None, None),
     )
-    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_source_dir", lambda: None)
+    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
     monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     captured: dict[str, object] = {}
@@ -595,7 +597,6 @@ async def test_trigger_upgrade_defaults_to_fork_latest(
 async def test_trigger_upgrade_refuses_source_install(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(update_router, "is_source_install", lambda: True)
     monkeypatch.setattr(update_router, "get_source_dir", lambda: "/src/wenwen-ai")
     monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
 
@@ -620,7 +621,8 @@ async def test_trigger_upgrade_refuses_source_install(
 async def test_trigger_upgrade_rejects_non_newer_target_without_starting_task(
     monkeypatch: pytest.MonkeyPatch, requested: str
 ) -> None:
-    monkeypatch.setattr(update_router, "is_source_install", lambda: False)
+    monkeypatch.setattr(update_router, "get_source_dir", lambda: None)
+    monkeypatch.setattr(update_router, "get_editable_path", lambda: None)
     monkeypatch.setattr(update_router, "get_wenwen_version", lambda: "1.0.2b7-wenwen.8")
 
     async def unexpected_task() -> None:

@@ -285,13 +285,13 @@ def test_build_upgrade_command_pins_stable_without_pre(
     python = "/home/user/.octop/venv/bin/python"
     uv_cmd = build_upgrade_command("uv", python, version="0.9.33")
     assert uv_cmd is not None
-    assert "wenwen-ai @ git+https://github.com/" in uv_cmd
-    assert "@v0.9.33" in uv_cmd
+    assert any("wenwen-ai @ git+https://github.com/" in arg for arg in uv_cmd)
+    assert any("@v0.9.33" in arg for arg in uv_cmd)
     assert "--prerelease" not in uv_cmd
     monkeypatch.setattr("octop.infra.setup.self_update.has_pip", lambda _: True)
     pip_cmd = build_upgrade_command("pip", python, version="0.9.33")
     assert pip_cmd is not None
-    assert "wenwen-ai @ git+https://github.com/" in pip_cmd
+    assert any("wenwen-ai @ git+https://github.com/" in arg for arg in pip_cmd)
     assert "--pre" not in pip_cmd
 
 
@@ -950,7 +950,7 @@ def test_pip_target_upgrade_with_stale_metadata_succeeds_without_retry(
         if "download" in cmd:
             assert kwargs["timeout"] == 90
             assert "--no-deps" in cmd and "--only-binary=:all:" in cmd
-            assert "--pre" in cmd and cmd[-1] == "octop==1.0.2b5"
+            assert "--pre" in cmd and cmd[-1].startswith("wenwen-ai @ ") and "@v1.0.2b5" in cmd[-1]
             assert self_update.get_local_version() == "1.0.2b4"
             directory = Path(cmd[cmd.index("--dest") + 1])
             downloads.append(directory)

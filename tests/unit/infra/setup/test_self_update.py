@@ -961,7 +961,7 @@ def test_pip_target_upgrade_with_stale_metadata_succeeds_without_retry(
         assert cmd[:4] == [sys.executable, "-m", "pip", "install"]
         assert cmd[cmd.index("--target") + 1] == str(tmp_path)
         assert "--no-index" in cmd and "--no-deps" in cmd
-        assert Path(cmd[-1]) == downloads[0] / "octop-1.0.2b5-py3-none-any.whl"
+        assert Path(cmd[-1]) == downloads[0] / "wenwen-ai-1.0.2b5-py3-none-any.whl"
         calls.append(label)
         _write_octop_metadata(tmp_path, "1.0.2b5")
         _write_octop_package(tmp_path, "1.0.2b5")

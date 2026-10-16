@@ -11,6 +11,21 @@
 
 ---
 
+## [1.0.2b8-wenwen.12] - 2026-10-16
+
+合入上游 `v1.0.2b8`（对话中途转向、专家记忆备份/恢复与存储维护、
+Telegram 频道可限制用户 ID、语雀网关连接器、bridge 多 peer 与隧道传附件，
+以及 Windows 记忆备份恢复、微信定时任务、知识库上限等多项修复）：
+- `pyproject.toml`：保留 `name = "wenwen-ai"` 与品牌描述，取上游
+  `version = "1.0.2b8"` 与依赖变更（octop-harness→1.0.3、octop-gateway→1.0.2、
+  新增 firecrawl-anydoc 等）；`uv.lock` 同步
+- README / 前端新文案冲突均按"取上游功能、刷 WenWen AI 品牌"解决，
+  branding 脚本重新全量刷过
+- **剔除 b8 新增的 COS 上传**：`octop-desktop.yml` / `fnos-build-fpk.yml` 的
+  `upload-cos` job、`upload-release-cos.yml`、`scripts/ci/upload_release_cos.sh`
+  全部删除（fork 无 COS 凭证，且 `Octop-*` 文件名模式匹配不到 `WenWenAI-*`
+  产物，留着每轮构建必红）；branding 脚本加锁定规则防上游合回
+
 ## [1.0.2b7-wenwen.11] - 2026-10-16
 
 桌面包视觉品牌补完（用户下载安装包验证发现残留旧红色 Octop 图标与标题）：

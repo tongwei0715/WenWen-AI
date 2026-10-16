@@ -1,8 +1,9 @@
 name: WenWen AI Desktop Package
 
 # 正式发版：Auto Tag 在打 v* 后与 Release / Docker Publish 一并 dispatch。
-# 产物 upsert 到同一 GitHub Release。手工补包：workflow_dispatch + release_tag
-# （不必跑在 v* ref 上）。attach_from_run 只挂已有 artifact、不重打。
+# 产物 upsert 到同一 GitHub Release，再上传到 COS octop/release/<version>/。
+# 手工补包：workflow_dispatch + release_tag（不必跑在 v* ref 上）。
+# attach_from_run 只挂已有 artifact、不重打。
 
 on:
   push:
@@ -316,6 +317,8 @@ jobs:
   release:
     name: Attach zips to GitHub Release
     needs: package
+    outputs:
+      tag: ${{ steps.rel.outputs.tag }}
     # always(): still run when package was skipped (attach_from_run rebuild skip).
     if: >-
       always() &&
@@ -382,3 +385,4 @@ jobs:
           fail_on_unmatched_files: true
           # Upsert: works whether Release workflow already created the release.
           generate_release_notes: false
+

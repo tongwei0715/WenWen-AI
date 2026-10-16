@@ -984,6 +984,34 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # Upstream b8 added an `upload-cos` job (desktop + FnOS workflows) plus a
+    # reusable upload-release-cos.yml workflow and scripts/ci/upload_release_cos.sh.
+    # The fork has no COS credentials and the Octop-* filename patterns never
+    # match WenWenAI-* artifacts, so the job always fails — strip it on every
+    # run so upstream merges can't bring it back.
+    for wf in (
+        ".github/workflows/octop-desktop.yml",
+        ".github/workflows/fnos-build-fpk.yml",
+    ):
+        p = ROOT / wf
+        if p.exists():
+            text = p.read_text(encoding="utf-8")
+            orig = text
+            text = re.sub(
+                r"\n  upload-cos:\n(?:.*\n)*?(?=\n  [a-zA-Z0-9_-]+:|\Z)",
+                "\n",
+                text,
+            )
+            if text != orig:
+                write(p, text)
+    for dead in (
+        ".github/workflows/upload-release-cos.yml",
+        "scripts/ci/upload_release_cos.sh",
+    ):
+        p = ROOT / dead
+        if p.exists():
+            p.unlink()
+
     # Portable packaging: the wheel is now wenwen_ai-*.whl (distribution
     # renamed), but the script looked for octop-*.whl and aborted.
     p = ROOT / "desktop/portable/package.sh"

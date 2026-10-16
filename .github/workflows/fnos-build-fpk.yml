@@ -20,6 +20,7 @@ name: Build WenWenAI FPK
 #           ↘ native-arm64（ubuntu-24.04-arm 装 aarch64 site-packages）
 #             → native-arm64-pack（amd64 上用 fnpack 打 WenWenAI-fnos-native-arm64-*.fpk）
 #           → release（把 .fpk 挂到已有的 v* GitHub Release）
+#           → upload-cos（把已挂上的 Octop-fnos-*.fpk 上传到 COS octop/release/<version>/）
 
 on:
   workflow_dispatch:
@@ -484,3 +485,4 @@ jobs:
           generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

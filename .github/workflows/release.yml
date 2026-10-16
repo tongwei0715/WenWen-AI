@@ -68,7 +68,6 @@ jobs:
     needs: build
     # WenWen AI fork: PyPI is optional. The fork's upgrade path uses git URLs,
     # not PyPI. Skip gracefully when no token is configured instead of failing.
-    if: ${{ secrets.PYPI_API_TOKEN != '' }}
     runs-on: ubuntu-latest
     environment: pypi
     steps:
@@ -79,6 +78,8 @@ jobs:
           path: dist/
 
       - name: Publish package
+        # Skip when PYPI_API_TOKEN is not configured (fork default).
+        if: ${{ secrets.PYPI_API_TOKEN != '' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}

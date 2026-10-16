@@ -1016,18 +1016,20 @@ def apply_desktop() -> None:
             p.unlink()
 
     # WenWen AI fork: PyPI publish is optional (upgrade path uses git URLs).
-    # Skip gracefully when PYPI_API_TOKEN is unset instead of failing the
-    # release; github-release then runs off build directly. Re-apply on every
-    # run so upstream merges can't revert it.
+    # Skip the publish step when PYPI_API_TOKEN is unset instead of failing.
+    # github-release runs off build directly. Re-apply on every run so
+    # upstream merges can't revert it.
     p = ROOT / ".github/workflows/release.yml"
     if p.exists():
         text = p.read_text(encoding="utf-8")
         orig = text
         if "secrets.PYPI_API_TOKEN != ''" not in text:
             text = text.replace(
-                "  publish:\n    name: Publish to PyPI\n    needs: build\n",
-                "  publish:\n    name: Publish to PyPI\n    needs: build\n"
-                "    if: ${{ secrets.PYPI_API_TOKEN != '' }}\n",
+                "      - name: Publish package\n"
+                "        uses: pypa/gh-action-pypi-publish@release/v1\n",
+                "      - name: Publish package\n"
+                "        if: ${{ secrets.PYPI_API_TOKEN != '' }}\n"
+                "        uses: pypa/gh-action-pypi-publish@release/v1\n",
             )
         # github-release must not hard-depend on the optional publish job.
         text = text.replace(

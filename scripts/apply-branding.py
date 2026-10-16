@@ -1015,27 +1015,21 @@ def apply_desktop() -> None:
         if p.exists():
             p.unlink()
 
-    # WenWen AI fork: PyPI publish is optional (upgrade path uses git URLs).
-    # Skip the publish step when PYPI_API_TOKEN is unset instead of failing.
-    # github-release runs off build directly. Re-apply on every run so
-    # upstream merges can't revert it.
+    # WenWen AI fork: PyPI publish is not used (upgrade path uses git URLs,
+    # not PyPI). Strip the publish job entirely so a missing PYPI_API_TOKEN
+    # can't fail the release. Re-apply on every run so upstream merges can't
+    # bring it back. github-release runs off build directly.
     p = ROOT / ".github/workflows/release.yml"
     if p.exists():
         text = p.read_text(encoding="utf-8")
         orig = text
-        if "secrets.PYPI_API_TOKEN != ''" not in text:
-            text = text.replace(
-                "      - name: Publish package\n"
-                "        uses: pypa/gh-action-pypi-publish@release/v1\n",
-                "      - name: Publish package\n"
-                "        if: ${{ secrets.PYPI_API_TOKEN != '' }}\n"
-                "        uses: pypa/gh-action-pypi-publish@release/v1\n",
-            )
-        # github-release must not hard-depend on the optional publish job.
+        start = text.find("  publish:\n")
+        end = text.find("  github-release:\n")
+        if start != -1 and end != -1 and start < end:
+            text = text[:start] + text[end:]
         text = text.replace(
             "  github-release:\n    name: Create GitHub Release\n    needs: publish\n",
-            "  github-release:\n    name: Create GitHub Release\n    needs: build\n"
-            "    if: ${{ always() && needs.build.result == 'success' }}\n",
+            "  github-release:\n    name: Create GitHub Release\n    needs: build\n",
         )
         if text != orig:
             write(p, text)

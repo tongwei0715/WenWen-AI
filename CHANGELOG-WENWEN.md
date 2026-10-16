@@ -11,6 +11,20 @@
 
 ---
 
+## [1.0.2b7-wenwen.11] - 2026-10-16
+
+桌面包视觉品牌补完（用户下载安装包验证发现残留旧红色 Octop 图标与标题）：
+- 应用图标换成黑白 WenWen AI：`desktop/src/build/appicon.png`、
+  `appicon-macos.png`（新增可复现生成脚本 `branding/make-desktop-assets.py`）
+- Windows：exe 文件属性、`info.json`、NSIS 安装标题/产品名、manifest identity
+- macOS：`Info.plist`/`Info.dev.plist` 应用名与 bundle ID、DMG 背景文案
+  （"Drag WenWen AI to your Applications folder"）
+- 修复两个 macOS 真 bug：`CFBundleExecutable` 与实际 `WenWenAI` 二进制名不
+  一致导致 Finder 可能无法启动；Resources 内 portable zip 仍为
+  `Octop-darwin-*` 而程序只找 `WenWenAI-*`，导致找不到 runtime
+- Actions workflow 显示名 `Octop Desktop Package` → `WenWen AI Desktop Package`
+- branding 脚本加锁定规则，防上游合并回退以上改动。
+
 ## [1.0.2b7-wenwen.10] - 2026-10-14
 
 桌面版 CI workflow fork 化：`octop-desktop.yml` 仍在找上游 `Octop-*`

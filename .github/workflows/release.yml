@@ -66,8 +66,6 @@ jobs:
   publish:
     name: Publish to PyPI
     needs: build
-    # WenWen AI fork: PyPI is optional. The fork's upgrade path uses git URLs,
-    # not PyPI. Skip gracefully when no token is configured instead of failing.
     runs-on: ubuntu-latest
     environment: pypi
     steps:
@@ -78,7 +76,6 @@ jobs:
           path: dist/
 
       - name: Publish package
-        # Skip when PYPI_API_TOKEN is not configured (fork default).
         if: ${{ secrets.PYPI_API_TOKEN != '' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -86,9 +83,7 @@ jobs:
 
   github-release:
     name: Create GitHub Release
-    # Run after build; publish is optional (see above).
-    needs: build
-    if: ${{ always() && needs.build.result == 'success' }}
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

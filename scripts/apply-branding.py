@@ -1154,7 +1154,8 @@ def apply_desktop_build_metadata() -> None:
 
     Upstream stamps Octop branding into the installer/exe/.app metadata;
     the fork must read WenWen AI everywhere. Binary assets (appicon.png,
-    appicon-macos.png, dmg-background.jpeg) are generated from
+    appicon-macos.png, dmg-background.jpeg, tray-icon.png,
+    tray-icon-template.png) are generated from
     branding/make-desktop-assets.py and are not touched here.
     """
     # Windows exe version resource (stamp_version.py only sets versions).

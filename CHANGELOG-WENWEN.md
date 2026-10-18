@@ -13,6 +13,10 @@
 
 ## [Unreleased]
 
+- 修复 Windows 任务栏图标仍为旧 Octop 红标：`desktop/src/assets/tray-icon.png`
+  一直是上游的红色图标（Wails 用它做任务栏/窗口图标），`make-desktop-assets.py`
+  漏了它；现已用黑白品牌重绘，并一并重绘 macOS 用的 `tray-icon-template.png`，
+  生成器与 branding 脚本注释已同步
 - 新增 `.github/workflows/upstream-sync.yml`：每周一 09:00（CST）自动检查
   上游 `TencentCloud/Octop` 新提交并试合并；能干净合并则跑 branding +
   `make test` 验证，任一环节失败则 run 标红。只检测、不开 PR、不建 issue、

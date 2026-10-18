@@ -104,10 +104,26 @@ def make_dmg_background() -> None:
     img.save(BUILD / "darwin/dmg-background.jpeg", quality=92)
 
 
+def make_tray_icons() -> None:
+    assets = ROOT / "desktop/src/assets"
+    # Windows/Linux tray + taskbar icon: full black-white brand mark
+    draw_icon(96).save(assets / "tray-icon.png")
+    # macOS menu-bar template: solid black silhouette, alpha preserved
+    icon = draw_icon(88)
+    px = icon.load()
+    for y in range(icon.height):
+        for x in range(icon.width):
+            r, g, b, a = px[x, y]
+            if a > 0:
+                px[x, y] = (0, 0, 0, a)
+    icon.save(assets / "tray-icon-template.png")
+
+
 def main() -> None:
     draw_icon(1024).save(BUILD / "appicon-macos.png")
     draw_icon(512).save(BUILD / "appicon.png")
     make_dmg_background()
+    make_tray_icons()
     print("desktop assets regenerated")
 
 

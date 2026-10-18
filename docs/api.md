@@ -527,9 +527,9 @@ discovery.
 |--------|------|------|-------|
 | `POST`/`GET`/… | `/internal/mcp/*` | public (mTLS / network-isolated) | MCP gateway used by octop-harness agents (not the dashboard) |
 
-## Octop Agent MCP Gateway
+## WenWen AI Agent MCP Gateway
 
-External agents call installed Octop experts through the authenticated
+External agents call installed WenWen AI experts through the authenticated
 Streamable HTTP endpoint:
 
 `POST/GET/DELETE /mcp/agents`
@@ -546,7 +546,7 @@ The server exposes three tools:
 | `resume_octop_expert` | Resume a call that stopped for tool approval or user input |
 
 `call_octop_expert` returns `thread_id`. Store this value in the external
-agent's working state. Pass it only when the next task must use the same Octop
+agent's working state. Pass it only when the next task must use the same WenWen AI
 conversation. Omit it for a new task. MCP threads cannot attach to dashboard,
 CLI, or IM threads.
 

@@ -982,7 +982,7 @@
     "error_command": "Command failed (exit {exit_code}): {command}",
     "error_spawn": "Could not start {command}: {error}",
     "error_missing_bin": "The install finished, but laya-serve was not found.",
-    "error_health": "Laya did not become ready in time. Copy the log and send it to Octop.",
+    "error_health": "Laya did not become ready in time. Copy the log and send it to WenWen AI.",
     "error_exited": "laya-serve exited before it was ready.",
     "error_not_installed": "Laya is not installed yet.",
     "error_stalled": "The install produced no result for too long and was stopped."

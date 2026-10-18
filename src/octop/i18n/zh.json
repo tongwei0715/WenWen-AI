@@ -982,7 +982,7 @@
     "error_command": "命令失败（退出码 {exit_code}）：{command}",
     "error_spawn": "无法启动 {command}：{error}",
     "error_missing_bin": "安装结束了，但没有找到 laya-serve。",
-    "error_health": "Laya 没有在限定时间内就绪。请复制日志交给 Octop 继续排查。",
+    "error_health": "Laya 没有在限定时间内就绪。请复制日志交给 WenWen AI 继续排查。",
     "error_exited": "laya-serve 在就绪前退出了。",
     "error_not_installed": "尚未安装 Laya。",
     "error_stalled": "安装长时间没有结果，已停止。"

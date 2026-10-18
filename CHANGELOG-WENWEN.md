@@ -11,6 +11,22 @@
 
 ---
 
+## [1.0.2b9-wenwen.13] - 2026-10-18
+
+合入上游 `v1.0.2b9`（39 个提交）：
+- ONNX 模型离线加载（不依赖 Hugging Face API）
+- 中文优先的业务流程专家、技能包导出为 ZIP、记忆手动画像与冲突复核
+- 通道插件安装与运行生命周期打通、技能/工具/团队决策模型
+- Agent 健康感知的模型故障转移、Agent MCP 网关
+- Docker 镜像包含本地知识库运行时；FnOS beta 版本编码修复应用商店升级
+- Dashboard：对话专家置顶、远程插件缺失提示
+- 修复：fd 限制、grep 防 OOM、peer composer 默认值等
+- 冲突解决（4 个文件）：docker README 保留 `--name wenwen` 并取上游
+  `--ulimit`；`pyproject.toml` 保留 `name = "wenwen-ai"` 取上游
+  `version = "1.0.2b9"` 与依赖升级（octop-harness→1.0.4、
+  octop-gateway→1.0.3）；`uv.lock` 重生成
+- branding 脚本全量重刷，`--check` 干净
+
 ## [Unreleased]
 
 - 修复 Windows 任务栏图标仍为旧 Octop 红标：`desktop/src/assets/tray-icon.png`

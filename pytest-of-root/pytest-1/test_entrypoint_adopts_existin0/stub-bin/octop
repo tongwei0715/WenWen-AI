@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$OCTOP_STUB_LOG"
+if [ "$1" = "init" ]; then
+    if [ "${OCTOP_STUB_INIT_FAIL:-0}" = "1" ]; then
+        echo "unexpected database error" >&2
+        exit 1
+    fi
+    if [ "${OCTOP_STUB_INIT_ALREADY_EXISTS:-0}" = "1" ]; then
+        printf "  admin user 'octop' already exists, skipping.\n"
+    fi
+fi
+exit 0

@@ -1,0 +1,150 @@
+name: Upstream Sync
+
+# 每周检查上游 TencentCloud/Octop 的新提交：
+# - 能干净合并 + branding + 测试全过 → 自动开 PR，等人工合入
+# - 有冲突或测试挂 → 开 issue 说明情况，等人工处理
+# 绝不直接推 main。
+
+on:
+  schedule:
+    # 每周一 09:00 CST (01:00 UTC)
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/TencentCloud/Octop.git 2>/dev/null || true
+          git fetch upstream --tags
+
+      - name: Check for new upstream commits
+        id: check
+        run: |
+          NEW=$(git rev-list --count HEAD..upstream/main)
+          echo "new_commits=$NEW" >> "$GITHUB_OUTPUT"
+          echo "upstream new commits: $NEW"
+          if [ "$NEW" != "0" ]; then
+            git log --oneline HEAD..upstream/main | head -20
+          fi
+
+      - name: Skip if sync PR already open
+        id: existing
+        if: steps.check.outputs.new_commits != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OPEN=$(gh pr list --state open --head "sync/upstream-" --json number --jq length)
+          echo "open_prs=$OPEN" >> "$GITHUB_OUTPUT"
+          echo "open sync PRs: $OPEN"
+
+      - name: Create sync branch and try merge
+        if: steps.check.outputs.new_commits != '0' && steps.existing.outputs.open_prs == '0'
+        id: merge
+        run: |
+          BRANCH="sync/upstream-$(date +%Y%m%d)"
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git checkout -b "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          if git merge --no-ff upstream/main -m "chore: merge upstream/main ($(date +%Y-%m-%d))"; then
+            echo "conflict=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+            git merge --abort || true
+            git diff --name-only --diff-filter=U | head -20 > /tmp/conflict_files.txt || true
+          fi
+
+      - name: Apply WenWen AI branding
+        if: steps.merge.outputs.conflict == 'false'
+        id: branding
+        run: |
+          python3 scripts/apply-branding.py
+          python3 scripts/apply-branding.py --check
+
+      - name: Run backend tests
+        if: steps.merge.outputs.conflict == 'false'
+        id: tests
+        continue-on-error: true
+        run: make test
+
+      - name: Push sync branch
+        if: steps.merge.outputs.conflict == 'false'
+        run: git push -u origin "${{ steps.merge.outputs.branch }}" --force
+
+      - name: Open PR for review (all green)
+        if: >
+          steps.merge.outputs.conflict == 'false' &&
+          steps.tests.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ steps.merge.outputs.branch }}"
+          NEW="${{ steps.check.outputs.new_commits }}"
+          COMMITS=$(git log --oneline HEAD~${NEW}..HEAD | head -30 || git log --oneline -30)
+          gh pr create \
+            --base main --head "$BRANCH" \
+            --title "chore: sync upstream TencentCloud/Octop ($NEW commits)" \
+            --body "## 上游同步 PR
+
+          - 上游新提交数：$NEW
+          - 合并：干净，无冲突
+          - branding 脚本：已跑过且 --check 通过
+          - 后端测试：\`make test\` 全过
+
+          ### 上游提交列表
+          \`\`\`
+          $COMMITS
+          \`\`\`
+
+          ### 合入后事项
+          - [ ] 确认 CHANGELOG-WENWEN.md 已更新
+          - [ ] 合并后打 tag（如 \`v1.0.2b8-wenwen.13\`）触发 Release 构建
+          "
+
+      - name: Open issue (merge conflict)
+        if: steps.merge.outputs.conflict == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FILES=$(cat /tmp/conflict_files.txt 2>/dev/null | head -20 || echo "(unknown)")
+          gh issue create \
+            --title "上游同步需要人工处理：合并冲突 ($(date +%Y-%m-%d))" \
+            --body "## 上游有新提交，但自动合并出现冲突
+
+          - 上游新提交数：${{ steps.check.outputs.new_commits }}
+          - 冲突文件：
+          \`\`\`
+          $FILES
+          \`\`\`
+
+          需要人工在本地解决冲突后推送。
+          "
+
+      - name: Open issue (tests failing)
+        if: >
+          steps.merge.outputs.conflict == 'false' &&
+          steps.tests.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "上游同步需要人工处理：测试未通过 ($(date +%Y-%m-%d))" \
+            --body "## 上游合并干净，但测试没过
+
+          - 分支：\`${{ steps.merge.outputs.branch }}\`（已推送）
+          - 上游新提交数：${{ steps.check.outputs.new_commits }}
+          - 失败环节：\`make test\`
+
+          请查看本次 run 的日志定位失败的测试，修复后再合入。
+          "

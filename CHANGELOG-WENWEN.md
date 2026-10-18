@@ -11,6 +11,13 @@
 
 ---
 
+## [Unreleased]
+
+- 新增 `.github/workflows/upstream-sync.yml`：每周一 09:00（CST）自动检查
+  上游 `TencentCloud/Octop` 新提交；能干净合并且 branding + `make test`
+  全过则自动开 PR 待人工合入，有冲突或测试挂则开 issue 说明情况；
+  绝不直接推 main
+
 ## [1.0.2b8-wenwen.12] - 2026-10-16
 
 合入上游 `v1.0.2b8`（对话中途转向、专家记忆备份/恢复与存储维护、

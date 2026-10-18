@@ -963,6 +963,21 @@ def apply_desktop() -> None:
         if text != orig:
             write(p, text)
 
+    # Release download-links test asserts the fork's repo + WenWenAI-* asset
+    # names (the script was rebranded). Upstream uses TencentCloud/Octop and
+    # Octop-*; keep the fork assertions or CI goes red on every merge.
+    p = ROOT / "tests/unit/test_release_download_links.py"
+    if p.exists():
+        text = p.read_text(encoding="utf-8")
+        orig = text
+        text = text.replace("https://github.com/TencentCloud/Octop/releases/download/",
+                            "https://github.com/tongwei0715/WenWen-AI/releases/download/")
+        text = text.replace("/Octop-desktop-", "/WenWenAI-desktop-")
+        text = text.replace("/Octop-portable-", "/WenWenAI-portable-")
+        text = text.replace("/Octop-fnos-", "/WenWenAI-fnos-")
+        if text != orig:
+            write(p, text)
+
     # Desktop CI workflow: artifact names must match what the (rebranded)
     # packaging scripts actually produce, or the workflow fails on
     # if-no-files-found. Upstream uses Octop-*; the fork uses WenWenAI-*.

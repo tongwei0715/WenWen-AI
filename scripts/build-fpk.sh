@@ -19,6 +19,13 @@
 #                    并写入 manifest platform=arm（fnpack 只认 x86/arm/all）。空或其它值保持现有 x86 包名。
 #                    fnpack 官方只有 linux-amd64，ARM 包应在 amd64 主机上打包
 #                    （site-packages 先在 aarch64 上装好再拷过来）。
+#   FPK_VERSION      覆盖版本号（默认从 pyproject.toml 解析）。
+#                    fork 发版时传入完整 fork 版本（如 1.0.2b9-wenwen.13），
+#                    使包名/镜像标签与 Release tag 对齐；manifest 写入的商店
+#                    可比版本会自动剥掉 -wenwen.N 后缀再编码。
+#   FPK_IMAGE        Docker 版 compose 镜像完整地址（repo:tag），
+#                    默认 "ghcr.io/tencentcloud/octop:<tag>"（上游行为不变）。
+#                    fork 构建时传入如 ghcr.io/tongwei0715/wenwen-ai:1.0.2b9-wenwen.13。
 #
 # 说明：
 #   - Linux CI 下会自动下载 fnpack（版本见 FNPACK_VERSION，默认 1.2.3）；
@@ -40,8 +47,10 @@ cleanup() { rm -rf "$TMP" >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 
 # Accept full PEP 440 strings in quotes (e.g. 1.0.2b1), not digits-only.
-VER="$(sed -nE 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' "$ROOT/pyproject.toml" | head -1)"
-[ -n "$VER" ] || { echo "无法从 pyproject.toml 解析版本"; exit 1; }
+# FPK_VERSION overrides the parsed version (fork releases pass the full
+# fork version, e.g. 1.0.2b9-wenwen.13, so artifact names match the tag).
+VER="${FPK_VERSION:-$(sed -nE 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' "$ROOT/pyproject.toml" | head -1)}"
+[ -n "$VER" ] || { echo "无法解析版本（pyproject.toml 或 FPK_VERSION）"; exit 1; }
 case "$VER" in
   *[[:space:]]*|*[\"\']*)
     echo "解析到的版本非法: $VER"
@@ -50,7 +59,9 @@ case "$VER" in
 esac
 # shellcheck source=scripts/fnos/store_version.sh
 source "$ROOT/scripts/fnos/store_version.sh"
-STORE_VER="$(fnos_store_version "$VER")"
+# 商店版本只认 X.Y.Z / X.Y.ZbN：fork 后缀（-wenwen.N）先剥掉再编码，
+# manifest 写 1.0.209 这类可比版本；包名与镜像标签仍用完整 $VER。
+STORE_VER="$(fnos_store_version "${VER%%-wenwen.*}")"
 echo "[build-fpk] Octop 版本: $VER (飞牛商店: $STORE_VER)"
 
 # 输出文件名前缀与迭代号（由 CI 传入，实现 Octop-fnos-docker-0.9.30.fpk 风格）
@@ -161,13 +172,16 @@ build_one() {
     echo "[build-fpk] native cmd/fpk-arch=$packed_arch"
   fi
 
-  # Docker 版 compose 钉与本包相同的镜像标签；测试包可用 FPK_IMAGE_TAG=latest 覆盖。
+  # Docker 版 compose 钉镜像。默认与本包同版本的上游地址；测试包可用
+  # FPK_IMAGE_TAG=latest 只覆盖标签；fork 用 FPK_IMAGE=<完整 repo:tag>
+  # 直接覆盖整个地址（未设置时保持上游默认行为）。
   if [ "$KIND" = "docker" ]; then
-    local compose="$BUILD/app/docker/docker-compose.yaml" image_tag="${FPK_IMAGE_TAG:-$VER}"
+    local compose="$BUILD/app/docker/docker-compose.yaml"
+    local image_ref="${FPK_IMAGE:-ghcr.io/tencentcloud/octop:${FPK_IMAGE_TAG:-$VER}}"
     if [ -f "$compose" ]; then
-      sed -i.bak -E "s#ghcr.io/tencentcloud/octop:[^[:space:]]+#ghcr.io/tencentcloud/octop:${image_tag}#" "$compose"
+      sed -i.bak -E "s#image:[[:space:]]*ghcr\.io/[^[:space:]\'\"]+#image: ${image_ref}#" "$compose"
       rm -f "${compose}.bak"
-      echo "[build-fpk] compose 镜像: ghcr.io/tencentcloud/octop:${image_tag}"
+      echo "[build-fpk] compose 镜像: ${image_ref}"
     fi
   fi
 

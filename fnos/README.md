@@ -33,7 +33,7 @@ wenwen backup --help     # 备份/恢复
 
 | 版本 | 包名 | 体积 | 运行方式 | 依赖 |
 |------|------|------|----------|------|
-| **Docker 版（推荐，尤其是 ARM）** | `WenWenAI-fnos-docker-<ver>.fpk` | ~340 KB | 飞牛拉取 `ghcr.io/tencentcloud/octop:<本包版本>`（`amd64` / `arm64` 多架构），重启不再重拉 | 宿主需有 Docker，且能访问 `ghcr.io` |
+| **Docker 版（推荐，尤其是 ARM）** | `WenWenAI-fnos-docker-<ver>.fpk` | ~340 KB | 飞牛拉取 `ghcr.io/tongwei0715/wenwen-ai:<本包版本>`（`amd64` / `arm64` 多架构），重启不再重拉 | 宿主需有 Docker，且能访问 `ghcr.io` |
 | **本地版 x86_64** | `WenWenAI-fnos-native-<ver>.fpk` | ~200 MB | 复用飞牛「Python 3.12」+ 包内核心依赖与前端 | 无需 Docker |
 | **本地版 ARM64** | `WenWenAI-fnos-native-arm64-<ver>.fpk` | ~200 MB | 同上，site-packages 为 aarch64；勿装到 x86 | 无需 Docker；ARM 飞牛无 Docker 时再用 |
 
@@ -62,7 +62,7 @@ fnos/
 │   │   └── uninstall     # 卸载向导（数据清理方式）
 │   ├── app/
 │   │   ├── docker/
-│   │   │   └── docker-compose.yaml   # 引用 ghcr.io/tencentcloud/octop:<version>；卷挂 TRIM_DATA_SHARE_PATHS
+│   │   │   └── docker-compose.yaml   # 引用 ghcr.io/tongwei0715/wenwen-ai:<version>；卷挂 TRIM_DATA_SHARE_PATHS
 │   │   └── ui/
 │   │       ├── config                # 桌面图标入口
 │   │       └── images/icon-{64,256}.png
@@ -83,8 +83,8 @@ fnos/
 ## 工作机制
 
 1. **发版链路**：`v*` tag → `release.yml`（PyPI + GitHub Release）与 `docker-publish.yml`（GHCR / Hub）并行；Release 成功后自动 `workflow_dispatch` 本工作流。
-2. **镜像复用**：不再重新 build 镜像；`ensure-image` 轮询等待 `ghcr.io/tencentcloud/octop:{version}`（由 docker-publish 推送的 amd64+arm64 清单）。Docker 版 `.fpk` 仅打包 compose，运行时拉取该镜像。
-3. **Wheel 复用**：Native 版优先从同版本 GitHub Release（`v*`）下载 `octop-*.whl`；若缺失再回退源码构建前端 + wheel。
+2. **镜像复用**：不再重新 build 镜像；`ensure-image` 轮询等待 `ghcr.io/tongwei0715/wenwen-ai:{version}`（由 docker-publish 推送的 amd64+arm64 清单）。Docker 版 `.fpk` 仅打包 compose，运行时拉取该镜像。
+3. **Wheel 复用**：Native 版优先从同版本 GitHub Release（`v*`）下载 `wenwen_ai-*.whl`；若缺失再回退源码构建前端 + wheel。
 4. **安装包构建**：`fpk` / `native` / `native-arm64` job 用 `scripts/build-fpk.sh` 打包。官方 fnpack 只有 linux-amd64，ARM 本地版先在 `ubuntu-24.04-arm` 上装好 aarch64 `site-packages`，再回到 amd64 runner 打包。产物挂到同一个 `v*` GitHub Release（与 wheel、桌面包并列）。
 
 ## 本地构建 .fpk（无需 Docker）

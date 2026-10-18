@@ -8,8 +8,9 @@ name: Build WenWenAI FPK
 #
 # 制品复用：
 #   - Docker 镜像：不再重建，等待 docker-publish 推送的
-#     ghcr.io/tencentcloud/octop:{version|latest}
-#   - Native wheel：优先从同版本 GitHub Release（v*）下载；
+#     ghcr.io/<fork 小写仓库>:<完整 fork 版本>
+#     （如 ghcr.io/tongwei0715/wenwen-ai:1.0.2b9-wenwen.13）
+#   - Native wheel（wenwen_ai-*.whl）：优先从同版本 GitHub Release（v*）下载；
 #     缺失时再回退到本仓源码构建
 #   - fnpack：fpk / native 用 Actions cache 复用 .verify/fnpack（key 含 FNPACK_VERSION）
 #   - 产物挂到同一个 v* GitHub Release（与 wheel / 桌面包并列），不再单独打 fnos-* tag
@@ -54,10 +55,15 @@ jobs:
       - name: Read version and image name
         id: ver
         run: |
-          # Same as octop-desktop.yml: keep full PEP 440 (e.g. 1.0.2b1), not digits-only.
-          VER=$(sed -nE 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' pyproject.toml | head -1)
+          # WenWen AI fork: prefer the full fork version (e.g. 1.0.2b9-wenwen.13)
+          # from wenwen_version.py so FPK names / image tags match the release
+          # tag; fall back to pyproject (upstream behavior).
+          VER=$(sed -nE 's/^WENWEN_VERSION[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' src/octop/wenwen_version.py | head -1)
           if [ -z "$VER" ]; then
-            echo "::error::Failed to parse version from pyproject.toml"
+            VER=$(sed -nE 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' pyproject.toml | head -1)
+          fi
+          if [ -z "$VER" ]; then
+            echo "::error::Failed to parse version from wenwen_version.py / pyproject.toml"
             exit 1
           fi
           case "$VER" in
@@ -127,6 +133,8 @@ jobs:
       - name: Build Docker FPK
         env:
           FPK_NAME_PREFIX: WenWenAI-fnos
+          FPK_IMAGE: ${{ needs.version.outputs.image }}:${{ needs.version.outputs.version }}
+          FPK_VERSION: ${{ needs.version.outputs.version }}
         run: bash scripts/build-fpk.sh docker
 
       - name: Upload docker fpk artifact
@@ -163,8 +171,8 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           REL_TAG="v${VER}"
-          if gh release download "$REL_TAG" --repo "${{ github.repository }}" -p 'octop-*.whl' -D dist 2>/tmp/wheel-dl.err; then
-            ls -lh dist/octop-*.whl
+          if gh release download "$REL_TAG" --repo "${{ github.repository }}" -p 'wenwen_ai-*.whl' -D dist 2>/tmp/wheel-dl.err; then
+            ls -lh dist/wenwen_ai-*.whl
             echo "source=release" >> "$GITHUB_OUTPUT"
             echo "Reusing wheel from GitHub Release ${REL_TAG}"
           else
@@ -201,7 +209,7 @@ jobs:
           python3 -m pip install --quiet build
           python3 -m build --wheel
           echo "=== built wheel ==="
-          ls -lh dist/octop-*.whl
+          ls -lh dist/wenwen_ai-*.whl
 
       - name: Install WenWenAI core into app/site-packages (no Chromium, no preinstalled skills)
         id: install_core
@@ -218,7 +226,7 @@ jobs:
           {
             python3 -m pip install --quiet uv
             python3 -m uv pip install --python python3.12 \
-              --target "$SP" --no-cache "$(ls dist/octop-*.whl | head -1)"
+              --target "$SP" --no-cache "$(ls dist/wenwen_ai-*.whl | head -1)"
             rm -rf "$SP/mcp" "$SP"/mcp-*.dist-info \
                    "$SP/langchain_mcp_adapters" "$SP"/langchain_mcp_adapters-*.dist-info
             mkdir -p /tmp/octop-pinned
@@ -228,7 +236,9 @@ jobs:
               echo "Extracting pinned wheel: $whl"
               python3.12 -m zipfile -e "$whl" "$SP"
             done
-            cp dist/octop-*.whl "$SP/octop.whl"
+            # 包内保留合法 wheel 文件名（pip 不接受 octop.whl 这类名字）；
+            # fnos/native/app/bin/octop{,-cli} 按 wenwen_ai-*.whl 查找。
+            cp dist/wenwen_ai-*.whl "$SP/"
             mkdir -p "$SP/octop_harness/backends"
             cp "${{ github.workspace }}/scripts/fnos/vendor/storage_errors.py" \
               "$SP/octop_harness/backends/storage_errors.py"
@@ -241,6 +251,7 @@ jobs:
         id: build_native
         env:
           FPK_NAME_PREFIX: WenWenAI-fnos
+          FPK_VERSION: ${{ needs.version.outputs.version }}
         run: bash scripts/build-fpk.sh native
 
       - name: Show native fpk size
@@ -283,8 +294,8 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           REL_TAG="v${VER}"
-          if gh release download "$REL_TAG" --repo "${{ github.repository }}" -p 'octop-*.whl' -D dist 2>/tmp/wheel-dl.err; then
-            ls -lh dist/octop-*.whl
+          if gh release download "$REL_TAG" --repo "${{ github.repository }}" -p 'wenwen_ai-*.whl' -D dist 2>/tmp/wheel-dl.err; then
+            ls -lh dist/wenwen_ai-*.whl
             echo "source=release" >> "$GITHUB_OUTPUT"
             echo "Reusing wheel from GitHub Release ${REL_TAG}"
           else
@@ -321,7 +332,7 @@ jobs:
           python3 -m pip install --quiet build
           python3 -m build --wheel
           echo "=== built wheel ==="
-          ls -lh dist/octop-*.whl
+          ls -lh dist/wenwen_ai-*.whl
 
       - name: Install WenWenAI core into app/site-packages (aarch64)
         id: install_core
@@ -342,7 +353,7 @@ jobs:
             # esdk-obs-python is sdist-only; --only-binary :all: fails the resolver.
             python3 -m uv pip install --python python3.12 \
               --target "$SP" --no-cache \
-              "$(ls dist/octop-*.whl | head -1)"
+              "$(ls dist/wenwen_ai-*.whl | head -1)"
             rm -rf "$SP/mcp" "$SP"/mcp-*.dist-info \
                    "$SP/langchain_mcp_adapters" "$SP"/langchain_mcp_adapters-*.dist-info
             mkdir -p /tmp/octop-pinned
@@ -353,7 +364,9 @@ jobs:
               echo "Extracting pinned wheel: $whl"
               python3.12 -m zipfile -e "$whl" "$SP"
             done
-            cp dist/octop-*.whl "$SP/octop.whl"
+            # 包内保留合法 wheel 文件名（pip 不接受 octop.whl 这类名字）；
+            # fnos/native/app/bin/octop{,-cli} 按 wenwen_ai-*.whl 查找。
+            cp dist/wenwen_ai-*.whl "$SP/"
             mkdir -p "$SP/octop_harness/backends"
             cp "${{ github.workspace }}/scripts/fnos/vendor/storage_errors.py" \
               "$SP/octop_harness/backends/storage_errors.py"
@@ -404,6 +417,7 @@ jobs:
         env:
           FPK_NAME_PREFIX: WenWenAI-fnos
           FPK_ARCH: arm64
+          FPK_VERSION: ${{ needs.version.outputs.version }}
         run: |
           set -euo pipefail
           test -d fnos/native/app/site-packages/octop

@@ -87,9 +87,16 @@ export OCTOP_FPK_SITE_PACKAGES="$SITE_PACKAGES"
 # 兜底：若包内 site-packages 中未检测到 octop（升级异常 / 损坏等），
 # 用内置核心 whl 就地离线安装，避免用户联网下载。
 if ! "$PY" -c "import octop" >/dev/null 2>&1; then
+    # fork 产物是合法 wheel 文件名（wenwen_ai-<ver>-py3-none-any.whl）；
+    # pip 不接受重命名后的 octop.whl，按 glob 查找包内自带的 wheel。
+    WENWEN_WHL="$(ls "$SITE_PACKAGES"/wenwen_ai-*.whl 2>/dev/null | head -1 || true)"
+    if [ -z "$WENWEN_WHL" ]; then
+        echo "[octop-native] 错误：包内未找到 wenwen_ai-*.whl，无法离线安装。" >&2
+        exit 1
+    fi
     echo "[octop-native] 未检测到已安装的 Octop，正在用内置核心 whl 离线安装 ..."
-    "$PY" -m pip install --no-cache --no-index --find-links "$SITE_PACKAGES" "$SITE_PACKAGES/octop.whl" >/dev/null 2>&1 || {
-        echo "[octop-native] 离线安装失败，请检查网络或手动执行：$PY -m pip install $SITE_PACKAGES/octop.whl" >&2
+    "$PY" -m pip install --no-cache --no-index --find-links "$SITE_PACKAGES" "$WENWEN_WHL" >/dev/null 2>&1 || {
+        echo "[octop-native] 离线安装失败，请检查网络或手动执行：$PY -m pip install $WENWEN_WHL" >&2
         exit 1
     }
 fi

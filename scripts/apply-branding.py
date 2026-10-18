@@ -1257,6 +1257,11 @@ def apply_desktop_build_metadata() -> None:
 
 
 def apply_docs() -> None:
+    # Fork GHCR image address for docs (e.g. fnos/README.md describing what the
+    # fork's FPK pulls). Functional compose templates are intentionally NOT
+    # rewritten: scripts/build-fpk.sh pins the image at FPK build time via
+    # FPK_IMAGE, and its default must stay the upstream address.
+    fork_image = f"ghcr.io/{_wenwen_repo_slug().lower()}"
     roots = [ROOT / "README.md", ROOT / "README_CN.md", ROOT / "CONTRIBUTING.md",
              ROOT / "SECURITY.md", ROOT / "docs", ROOT / "desktop",
              ROOT / "docker", ROOT / "fnos", ROOT / "plugins"]
@@ -1271,6 +1276,11 @@ def apply_docs() -> None:
             if "CHANGELOG" in f.name:
                 continue  # historical record; leave untouched
             prose_file(f)
+            text = f.read_text(encoding="utf-8")
+            orig = text
+            text = text.replace("ghcr.io/tencentcloud/octop", fork_image)
+            if text != orig:
+                write(f, text)
     # Standalone intro page: rename once, then rebrand content
     old_intro = ROOT / "docs/octop-introduction.html"
     new_intro = ROOT / "docs/wenwen-introduction.html"

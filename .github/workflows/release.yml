@@ -102,7 +102,7 @@ jobs:
               echo "## Install"
               echo ""
               echo '```bash'
-              echo "pip install octop==$version"
+              echo "pip install \"wenwen-ai @ git+https://github.com/${{ github.repository }}@v$version\""
               echo '```'
             } > .release-notes.md
           fi

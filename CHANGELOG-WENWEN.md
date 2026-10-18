@@ -37,7 +37,7 @@
   上游 `TencentCloud/Octop` 新提交并试合并；能干净合并则跑 branding +
   `make test` 验证，任一环节失败则 run 标红。只检测、不开 PR、不建 issue、
   绝不直接推 main；通知由外部盯哨读取 run 结果后发出
-- FnOS FPK 构建与 Release 页面修复方案（计划中，代码尚未落地）：
+- FnOS FPK 构建与 Release 页面修复（已落地）：
   - `scripts/build-fpk.sh` 新增 `FPK_IMAGE`（完整 repo:tag 覆盖上游镜像地址）
     与 `FPK_VERSION`（覆盖版本号解析），默认保持上游行为不变
   - `fnos/native/app/bin/octop{,-cli}` 按 `wenwen_ai-*.whl` 查找内置 wheel

@@ -14,9 +14,19 @@
 ## [Unreleased]
 
 - 新增 `.github/workflows/upstream-sync.yml`：每周一 09:00（CST）自动检查
-  上游 `TencentCloud/Octop` 新提交；能干净合并且 branding + `make test`
-  全过则自动开 PR 待人工合入，有冲突或测试挂则开 issue 说明情况；
-  绝不直接推 main
+  上游 `TencentCloud/Octop` 新提交并试合并；能干净合并则跑 branding +
+  `make test` 验证，任一环节失败则 run 标红。只检测、不开 PR、不建 issue、
+  绝不直接推 main；通知由外部盯哨读取 run 结果后发出
+- FnOS FPK 构建与 Release 页面修复方案（计划中，代码尚未落地）：
+  - `scripts/build-fpk.sh` 新增 `FPK_IMAGE`（完整 repo:tag 覆盖上游镜像地址）
+    与 `FPK_VERSION`（覆盖版本号解析），默认保持上游行为不变
+  - `fnos/native/app/bin/octop{,-cli}` 按 `wenwen_ai-*.whl` 查找内置 wheel
+    （pip 要求合法 wheel 文件名，不能像上游那样重命名为 `octop.whl`）
+  - `fnos-build-fpk.yml` 把 workflow 已算好的 fork 镜像名传给 `FPK_IMAGE`；
+    `apply-branding.py` 加镜像地址规则
+  - `release.yml` Release 说明的安装命令改为
+    `pip install "wenwen-ai @ git+https://github.com/tongwei0715/WenWen-AI@v<tag>"`；
+    `scripts/release_download_links.py` 仓库指向 fork、产物文件名 `WenWenAI-*`
 
 ## [1.0.2b8-wenwen.12] - 2026-10-16
 

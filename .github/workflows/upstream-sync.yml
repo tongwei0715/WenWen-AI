@@ -45,7 +45,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          OPEN=$(gh pr list --state open --head "sync/upstream-" --json number --jq length)
+          OPEN=$(gh pr list --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("sync/upstream-"))] | length')
           echo "open_prs=$OPEN" >> "$GITHUB_OUTPUT"
           echo "open sync PRs: $OPEN"
 
@@ -53,6 +53,8 @@ jobs:
         if: steps.check.outputs.new_commits != '0' && steps.existing.outputs.open_prs == '0'
         id: merge
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           BRANCH="sync/upstream-$(date +%Y%m%d)"
           git branch -D "$BRANCH" 2>/dev/null || true
           git checkout -b "$BRANCH"
@@ -61,9 +63,21 @@ jobs:
             echo "conflict=false" >> "$GITHUB_OUTPUT"
           else
             echo "conflict=true" >> "$GITHUB_OUTPUT"
-            git merge --abort || true
             git diff --name-only --diff-filter=U | head -20 > /tmp/conflict_files.txt || true
+            git merge --abort || true
           fi
+
+      - name: Set up uv + Python
+        if: steps.merge.outputs.conflict == 'false'
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        if: steps.merge.outputs.conflict == 'false'
+        run: |
+          uv python install 3.12
+          make install
 
       - name: Apply WenWen AI branding
         if: steps.merge.outputs.conflict == 'false'

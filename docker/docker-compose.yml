@@ -28,6 +28,10 @@ services:
     image: wenwen-ai:latest
     container_name: wenwen-ai
     restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     ports:
       - "${OCTOP_PORT:-8088}:${OCTOP_PORT:-8088}"
     volumes:

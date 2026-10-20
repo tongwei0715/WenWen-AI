@@ -6,5 +6,5 @@ Managed by ``scripts/apply-branding.py`` — do not edit by hand.
 (override at runtime with the ``WENWEN_REPO`` environment variable).
 """
 
-WENWEN_VERSION = "1.0.2b9-wenwen.13"
+WENWEN_VERSION = "1.0.2-wenwen.14"
 WENWEN_REPO = "tongwei0715/WenWen-AI"

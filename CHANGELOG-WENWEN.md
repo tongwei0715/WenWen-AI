@@ -11,6 +11,19 @@
 
 ---
 
+## [1.0.2-wenwen.14] - 2026-10-20
+
+合入上游 `1.0.2` 正式版（10 个提交）：one-shot 一次性任务、钉钉 CLI（dws）连接器（设备登录）、
+5 项修复（grep/shell 输出按宿主机代码页解码、QQ 群策略后置到凭证之后、团队成员流刷新保持、
+Edge TTS 语速四舍五入、知识库 .doc 预览与上传进度）。
+
+冲突面（4 个文件，均在本地验证解法）：
+- `dashboard/src/locales/zh.json` / `en.json`：上游新增云端协同引导文案，取上游新内容后重跑品牌脚本
+- `pyproject.toml`：保留 `name = "wenwen-ai"` 与品牌描述，版本号取上游 `1.0.2`
+- `uv.lock`：按新 pyproject 重新生成（`wenwen-ai v1.0.2`）
+
+其余文档（api.md、cli.md、configuration.md、connectors.md）自动合并无冲突。
+
 ## [1.0.2b9-wenwen.13] - 2026-10-18
 
 合入上游 `v1.0.2b9`（39 个提交）：

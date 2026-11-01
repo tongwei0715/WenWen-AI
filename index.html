@@ -92,13 +92,9 @@
     transition: transform .2s, box-shadow .2s;
   }
   .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.07); }
-  .card .icon {
-    width: 42px; height: 42px; border-radius: 12px;
-    background: var(--ink); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
-  }
-  .card .icon svg { width: 22px; height: 22px; }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .card-head h3 { font-size: 17px; margin-bottom: 0; }
+  .card-head svg { width: 20px; height: 20px; flex-shrink: 0; }
   .card h3 { font-size: 17px; margin-bottom: 8px; }
   .card p { font-size: 14.5px; color: var(--muted); }
 
@@ -137,7 +133,7 @@
     background: var(--ink); color: #fff; font-weight: 700;
     display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;
   }
-  .step h4 { font-size: 16px; margin-bottom: 6px; }
+  .step h3 { font-size: 16px; margin-bottom: 6px; }
   .step p { font-size: 14px; color: var(--muted); }
 
   /* Download */
@@ -152,7 +148,7 @@
 
   /* Mobile — dark, grand-minimal */
   section.mobile-dark { background: #111; color: #fff; padding: 110px 0; }
-  .mobile-eyebrow { text-align: center; font-size: 12px; letter-spacing: 4px; color: #999; margin-bottom: 18px; }
+  .mobile-eyebrow { text-align: center; font-size: 12px; letter-spacing: 4px; color: #aaa; margin-bottom: 18px; }
   .mobile-dark .sec-title { color: #fff; font-size: clamp(32px, 5vw, 48px); }
   .mobile-dark .sec-desc { color: #aaa; max-width: 560px; margin-left: auto; margin-right: auto; }
   .mobile-wrap { margin-top: 64px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 72px; align-items: center; }
@@ -180,7 +176,7 @@
   .tool-card { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; margin-bottom: 12px; background: #fff; }
   .tool-card b { display: block; margin-bottom: 2px; }
   .tool-card span { color: var(--muted); }
-  .phone-input { margin-top: 16px; border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; font-size: 13.5px; color: #999; }
+  .phone-input { margin-top: 16px; border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; font-size: 13.5px; color: #767676; }
 
   /* Footer */
   footer { border-top: 1px solid var(--line); padding: 48px 0; }
@@ -189,7 +185,7 @@
   .foot-brand svg { width: 26px; height: 26px; }
   .foot-links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
   .foot-links a:hover { color: var(--ink); }
-  .copyright { width: 100%; margin-top: 24px; font-size: 13px; color: #999; }
+  .copyright { width: 100%; margin-top: 24px; font-size: 13px; color: #767676; }
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.visible { opacity: 1; transform: none; }
@@ -234,7 +230,7 @@
   .mock-nav-item.active { background: #111; color: #fff; font-weight: 600; }
   .mock-nav-item .dot-ic { width: 16px; height: 16px; border-radius: 4px; background: currentColor; opacity: .35; }
   .mock-nav-item.active .dot-ic { opacity: .9; }
-  .mock-side .side-foot { margin-top: auto; padding: 10px 8px; font-size: 12px; color: #999; }
+  .mock-side .side-foot { margin-top: auto; padding: 10px 8px; font-size: 12px; color: #767676; }
   .mock-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .mock-chat-head {
     padding: 16px 24px; border-bottom: 1px solid #f0f0f0;
@@ -257,7 +253,6 @@
   .mock-input {
     margin: 0 24px 22px; border: 1px solid #e2e2e2; border-radius: 14px;
     padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 4px 16px rgba(0,0,0,.05);
   }
   .mock-input .ph { color: #aaa; font-size: 13.5px; }
   .mock-input .send {
@@ -284,14 +279,14 @@
     border: 1px solid #e8e8e8; box-shadow: 0 6px 20px rgba(0,0,0,.06);
     padding: 14px; display: flex; flex-direction: column; gap: 10px;
   }
-  .mini .m-row { display: flex; gap: 8px; align-items: center; }
+  .mini .m-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .mini .m-ava { width: 26px; height: 26px; border-radius: 50%; background: #111; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
   .mini .m-line { height: 8px; border-radius: 4px; background: #eee; }
   .mini .m-line.w60 { width: 60%; } .mini .m-line.w80 { width: 80%; } .mini .m-line.w40 { width: 40%; }
-  .mini .m-chip { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #111; color: #fff; font-size: 10.5px; font-weight: 600; }
+  .mini .m-chip { display: inline-block; padding: 5px 11px; border-radius: 999px; background: #111; color: #fff; font-size: 12px; font-weight: 600; }
   .mini .m-chip.ghost { background: #f0f0f0; color: #555; }
   .shot-body { padding: 22px 24px; }
-  .shot-body h3 { font-size: 16.5px; margin-bottom: 6px; }
+  .shot-body h2 { font-size: 16.5px; margin-bottom: 6px; }
   .shot-body p { font-size: 13.5px; color: var(--muted); }
 </style>
 </head>
@@ -403,7 +398,7 @@
           </div>
         </div>
         <div class="shot-body">
-          <h3>专家一键切换</h3>
+          <h2>专家一键切换</h2>
           <p>内置专家库与专家市场，按场景切换专业角色，每个专家都有独立的记忆与技能。</p>
         </div>
       </div>
@@ -417,7 +412,7 @@
           </div>
         </div>
         <div class="shot-body">
-          <h3>定时任务</h3>
+          <h2>定时任务</h2>
           <p>每天自动推送日报、定时提醒、周期性检查，像有个不知疲倦的助理。</p>
         </div>
       </div>
@@ -430,7 +425,7 @@
           </div>
         </div>
         <div class="shot-body">
-          <h3>全通道接入</h3>
+          <h2>全通道接入</h2>
           <p>飞书、钉钉、QQ、微信、企业微信，或 API 对接，随时随地呼唤你的 AI。</p>
         </div>
       </div>
@@ -444,28 +439,22 @@
     <p class="sec-desc reveal">不只是对话工具，而是可并行运作的数字生命体</p>
     <div class="grid">
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3>多用户多 Agent</h3><p>一人管理，全家共用。内置专家库与专家市场，按场景一键切换专业角色。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>多用户多 Agent</h3></div><p>一人管理，全家共用。内置专家库与专家市场，按场景一键切换专业角色。</p>
       </div>
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <h3>IM 全通道</h3><p>飞书、钉钉、QQ、微信、企业微信，或 HTTP / SSE / WebSocket API，随时随地对话。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><h3>IM 全通道</h3></div><p>飞书、钉钉、QQ、微信、企业微信，或 HTTP / SSE / WebSocket API，随时随地对话。</p>
       </div>
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-        <h3>隐私优先</h3><p>JWT 多用户隔离、工具审批、Shell 防护与敏感信息脱敏。对话与数据只留在本地。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><h3>隐私优先</h3></div><p>JWT 多用户隔离、工具审批、Shell 防护与敏感信息脱敏。对话与数据只留在本地。</p>
       </div>
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-        <h3>Connector 生态</h3><p>一键接入腾讯文档、会议等常用服务，OAuth 与 MCP 网关轻松扩展能力边界。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><h3>Connector 生态</h3></div><p>一键接入腾讯文档、会议等常用服务，OAuth 与 MCP 网关轻松扩展能力边界。</p>
       </div>
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>记忆与知识库</h3><p>可迁移的记忆系统 + 基于文档的 RAG 检索，让回答锚定你的私有知识。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><h3>记忆与知识库</h3></div><p>可迁移的记忆系统 + 基于文档的 RAG 检索，让回答锚定你的私有知识。</p>
       </div>
       <div class="card reveal">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-        <h3>开发者增效</h3><p>ACP 双向集成 IDE 与终端 AI，浏览器 AI+ 与远程桌面搞定网页自动化。</p>
+        <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><h3>开发者增效</h3></div><p>ACP 双向集成 IDE 与终端 AI，浏览器 AI+ 与远程桌面搞定网页自动化。</p>
       </div>
     </div>
   </div>
@@ -560,9 +549,9 @@
       </div>
     </div>
     <div class="steps">
-      <div class="step reveal"><div class="num">1</div><h4>安装</h4><p>一条脚本完成依赖与构建</p></div>
-      <div class="step reveal"><div class="num">2</div><h4>初始化</h4><p>向导式配置，创建管理员账号</p></div>
-      <div class="step reveal"><div class="num">3</div><h4>运行</h4><p>打开浏览器，遇事不决问问 AI</p></div>
+      <div class="step reveal"><div class="num">1</div><h3>安装</h3><p>一条脚本完成依赖与构建</p></div>
+      <div class="step reveal"><div class="num">2</div><h3>初始化</h3><p>向导式配置，创建管理员账号</p></div>
+      <div class="step reveal"><div class="num">3</div><h3>运行</h3><p>打开浏览器，遇事不决问问 AI</p></div>
     </div>
   </div>
 </section>

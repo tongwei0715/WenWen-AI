@@ -288,6 +288,70 @@
   .shot-body { padding: 22px 24px; }
   .shot-body h2 { font-size: 16.5px; margin-bottom: 6px; }
   .shot-body p { font-size: 13.5px; color: var(--muted); }
+
+  /* ===== BOLDER TRIAL (2026-11-01): editorial, de-carded, black-white peaks ===== */
+  nav { background: #111; border-bottom: 1px solid #222; }
+  nav .brand { color: #fff; }
+  nav .nav-links { color: #aaa; }
+  nav .nav-links a:hover { color: #fff; }
+  nav .btn { background: #fff; color: #111; border-color: #fff; }
+  .hero { text-align: left; padding: 150px 24px 120px; background: #111; color: #fff; position: relative; overflow: hidden; }
+  .hero-mark { position: absolute; right: -90px; top: 50%; transform: translateY(-50%); width: 560px; height: 560px; opacity: .08; pointer-events: none; }
+  .hero-mark svg { width: 100%; height: 100%; }
+  .hero-logo { margin: 0 0 36px; position: relative; }
+  .hero-logo svg { width: 120px; height: 120px; }
+  .hero h1 { font-size: clamp(56px, 9vw, 118px); line-height: 1.05; letter-spacing: -2px; position: relative; }
+  .hero p.sub { margin: 28px 0 0; max-width: 640px; font-size: 20px; color: #aaa; position: relative; }
+  .hero-cta { justify-content: flex-start; position: relative; }
+  .hero-badges { justify-content: flex-start; position: relative; }
+  .hero .badge { background: transparent; border-color: #333; color: #ccc; }
+  .hero .btn { background: #fff; color: #111; border-color: #fff; }
+  .hero .btn-ghost { background: transparent; color: #fff; border-color: #444; }
+  .hero .btn:hover, nav .btn:hover { background: #e8e8e8; color: #111; }
+  .hero .btn-ghost:hover, .hero .btn.btn-ghost:hover { background: #222; color: #fff; }
+  .sec-title { text-align: left; font-size: clamp(36px, 5vw, 58px); letter-spacing: -1.5px; line-height: 1.15; }
+  .sec-desc { text-align: left; font-size: 18px; margin-top: 14px; }
+  .showcase { padding: 90px 0 110px; }
+  #features { background: #111; color: #fff; }
+  #features .sec-desc { color: #aaa; }
+  .grid { display: block; margin-top: 56px; }
+  .card { border: none; border-top: 1px solid #2a2a2a; border-radius: 0; padding: 30px 0; background: transparent; display: grid; grid-template-columns: 56px 1fr; gap: 24px; transition: none; }
+  .card:last-child { border-bottom: 1px solid #2a2a2a; }
+  .card:hover { transform: none; box-shadow: none; }
+  .feat-num { font-size: 14px; color: #777; padding-top: 8px; }
+  .card-head h3 { font-size: 26px; }
+  .card-head svg { width: 24px; height: 24px; }
+  .card p { font-size: 16px; color: #aaa; max-width: 640px; }
+  .cases { display: block; margin-top: 56px; }
+  .case { border: none; border-top: 1px solid var(--line); border-radius: 0; padding: 30px 0; background: transparent; display: grid; grid-template-columns: 120px 1fr; gap: 24px; }
+  .case:last-child { border-bottom: 1px solid var(--line); }
+  .case h3 { font-size: 26px; }
+  .case p { font-size: 16px; max-width: 640px; }
+  .case .tag { margin-bottom: 0; align-self: start; }
+  .shot-card { border: none; border-top: 1px solid var(--line); border-radius: 0; }
+  .shot-card:hover { transform: none; box-shadow: none; }
+  .shot-thumb { background: #f7f7f7; border-bottom: none; height: 220px; }
+  .shot-body { padding: 22px 0; }
+  .shot-body h2 { font-size: 22px; }
+  .shots { gap: 32px; }
+  .mobile-dark .sec-title { font-size: clamp(40px, 5vw, 64px); }
+  .phone { width: 340px; }
+  .terminal { max-width: none; }
+  .step { text-align: left; }
+  .step .num { width: 48px; height: 48px; font-size: 18px; }
+  .step h3 { font-size: 20px; }
+  .dl-grid { display: block; margin-top: 56px; }
+  .dl-card { border: none; border-top: 1px solid var(--line); border-radius: 0; padding: 28px 0; text-align: left; background: transparent; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+  .dl-card:last-child { border-bottom: 1px solid var(--line); }
+  .dl-card h3 { font-size: 24px; }
+  .dl-card p { margin-bottom: 0; max-width: 560px; }
+  .dl-card .btn { justify-self: end; }
+  @media (max-width: 720px) {
+    .hero-mark { width: 320px; height: 320px; right: -120px; }
+    .card, .case { grid-template-columns: 1fr; gap: 12px; }
+    .dl-card { grid-template-columns: 1fr; }
+    .dl-card .btn { justify-self: start; }
+  }
 </style>
 </head>
 <body>
@@ -295,7 +359,7 @@
 <nav>
   <div class="wrap nav-inner">
     <a class="brand" href="#top">
-      <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#111111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text></svg>
+      <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#ffffff"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#ffffff"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#111111" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#ffffff" stroke="#111111" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#111111" text-anchor="middle">ai</text></svg>
       WenWen AI
     </a>
     <div class="nav-links">
@@ -311,10 +375,11 @@
 </nav>
 
 <header class="hero" id="top">
+  <div class="hero-mark" aria-hidden="true"><svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#ffffff"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#ffffff"/></svg></div>
   <div class="hero-logo">
-    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#111111"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#111111"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#FFFFFF" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#111111" stroke="#FFFFFF" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="middle">ai</text></svg>
+    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M168 344 L138 436 L238 344 Z" fill="#ffffff"/><rect x="92" y="112" width="328" height="244" rx="76" fill="#ffffff"/><path d="M172 192 L214 296 L256 212 L298 296 L340 192" stroke="#111111" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="412" cy="118" r="44" fill="#ffffff" stroke="#111111" stroke-width="6"/><text x="412" y="134" font-family="sans-serif" font-size="40" font-weight="700" fill="#111111" text-anchor="middle">ai</text></svg>
   </div>
-  <h1>遇事不决，问问ai！</h1>
+  <h1>遇事不决，<br>问问ai！</h1>
   <p class="sub">WenWen AI — 支持多用户、多 Agent 的自托管 AI 助手。数据留在你的机器上，一条命令即可运行 Web 控制台、CLI、IM 通道与定时任务。</p>
   <div class="hero-cta">
     <a class="btn" href="#start">快速开始</a>
@@ -438,7 +503,7 @@
     <h2 class="sec-title reveal">一个助手，一支专家团</h2>
     <p class="sec-desc reveal">不只是对话工具，而是可并行运作的数字生命体</p>
     <div class="grid">
-      <div class="card reveal">
+      <div class="card reveal"><span class="feat-num">06</span><span class="feat-num">05</span><span class="feat-num">04</span><span class="feat-num">03</span><span class="feat-num">02</span><span class="feat-num">01</span>
         <div class="card-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>多用户多 Agent</h3></div><p>一人管理，全家共用。内置专家库与专家市场，按场景一键切换专业角色。</p>
       </div>
       <div class="card reveal">

@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "packageName": "io.github.jackwener.dsh",
+  "versionCode": 29,
+  "versionName": "0.3.11",
+  "minSdk": 29,
+  "apk": {
+    "name": "WenWen-0.3.11-arm64.apk",
+    "size": 101196306,
+    "sha256": "8d64a12a3cbfbdd691c5b7f0d7b35c7d5dac2f0eaf047f397bc37ebcaf46441d",
+    "urls": [
+      "https://github.com/tongwei0715/DSH-Android/releases/download/v0.3.11/WenWen-0.3.11-arm64.apk",
+      "https://wenwenai.cn/releases/WenWen-0.3.11-arm64.apk"
+    ]
+  },
+  "signerSha256": "4a8b209dffbd4883972f3204cd245d4eebacf60c07f874a50d5e8397da4998a9",
+  "notes": {
+    "zh": "- **遇事不决，问问Ai**（官方网站 https://wenwenai.cn · 同步自上游 v0.3.11）\n- 内嵌 Node.js 24.22.1 完整端侧 Agent 引擎，支持 Shizuku 隐形后台屏与 44 项原生工具\n- 支持应用内通过 wenwenai.cn 与 GitHub/jsDelivr 多镜像自动检测并覆盖升级",
+    "en": "- **Ask Wenwen.ai** (https://wenwenai.cn · synced with upstream v0.3.11)\n- Embedded Node.js 24.22.1 on-device AI Agent runtime with 44 native Android tools"
+  },
+  "publishedAt": "2026-11-11T17:04:16Z"
+}

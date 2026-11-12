@@ -113,7 +113,7 @@
         </button>
         <a href="#download" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold bg-wenBlue hover:bg-blue-600 text-white shadow-md shadow-wenBlue/25 transition-all">
           <span>下载 APK</span>
-          <span class="text-wenYellow text-xs">v0.3.11</span>
+          <span class="text-wenYellow text-xs">v1.0.15</span>
         </a>
         <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200" aria-label="展开导航菜单">
           ☰
@@ -140,7 +140,7 @@
         <div class="lg:col-span-7 space-y-6">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-wenBlue/10 dark:bg-wenBlue/20 border border-wenBlue/25 text-wenBlue dark:text-wenYellow text-xs font-bold">
             <span class="w-2 h-2 rounded-full bg-wenYellow animate-ping"></span>
-            <span>基于 DeepSeek Harness 生态构建 · 免 Root 内嵌 Node.js 24 原生引擎</span>
+            <span>基于 DeepSeek Harness 生态构建 · 免 Root 内置 Ubuntu 环境</span>
           </div>
 
           <div class="flex items-center gap-4">
@@ -164,13 +164,13 @@
                 遇事不决，<span class="text-wenBlue dark:text-wenYellow">问问Ai！</span>
               </h1>
               <p class="text-sm sm:text-base font-semibold text-slate-500 dark:text-slate-400 mt-1">
-                官方域名：<span class="font-mono text-wenBlue dark:text-wenYellow">wenwenai.cn</span> · 包名：<span class="font-mono">io.github.jackwener.dsh</span> · 版本：<span class="font-mono">v0.3.11 (29)</span>
+                官方域名：<span class="font-mono text-wenBlue dark:text-wenYellow">wenwenai.cn</span> · 包名：<span class="font-mono">cn.wenwenai.app</span>
               </p>
             </div>
           </div>
 
           <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-            把完整的全能 AI Agent 装进你的安卓口袋。无需 Root、无需配置 Termux，在手机本机直接运行原生编译的 <strong class="text-wenNavy dark:text-white">Node.js 24.22.1 + DSH 引擎 + ripgrep</strong>，内置 <strong class="text-wenNavy dark:text-white">10 大能力组 44 项原生工具、Shizuku 隐形后台虚拟屏与 18 款主流 App 知识库</strong>。更有四状态像素桌宠「问问仔」全程陪你操控手机与自动办公。
+            把完整的全能 AI Agent 装进你的安卓口袋。无需 Root、无需额外配置 Termux，在手机本机直接运行内置的 <strong class="text-wenNavy dark:text-white">Ubuntu + Node.js + DSH 引擎</strong>，也能通过 SSH 或 DSHarness Remote 一键接管你电脑上的长任务。更有四状态像素桌宠「问问仔」全程陪你写代码、跑脚本、自动化操控手机。
           </p>
 
           <!-- 核心行动按钮组 -->
@@ -191,23 +191,23 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
             <div class="p-3.5 rounded-2xl bg-white dark:bg-wenCardDark border border-slate-200/80 dark:border-slate-800 shadow-sm">
               <div class="text-xs text-slate-500 dark:text-slate-400">系统要求</div>
-              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">Android 10+</div>
-              <div class="text-[11px] text-wenBlue dark:text-wenYellow">API 29 · arm64-v8a</div>
+              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">Android 8.0+</div>
+              <div class="text-[11px] text-wenBlue dark:text-wenYellow">API 26 及以上</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white dark:bg-wenCardDark border border-slate-200/80 dark:border-slate-800 shadow-sm">
-              <div class="text-xs text-slate-500 dark:text-slate-400">内嵌原生引擎</div>
-              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">Node.js 24.22.1</div>
-              <div class="text-[11px] text-emerald-600 dark:text-emerald-400">双进程 + 私有能力桥</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">本机运行环境</div>
+              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">免 Root / PRoot</div>
+              <div class="text-[11px] text-emerald-600 dark:text-emerald-400">内置 Ubuntu + Node</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white dark:bg-wenCardDark border border-slate-200/80 dark:border-slate-800 shadow-sm">
-              <div class="text-xs text-slate-500 dark:text-slate-400">手机原生能力</div>
-              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">10 组 44 工具</div>
-              <div class="text-[11px] text-wenBlue dark:text-wenYellow">Shizuku 隐形后台屏</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">引擎平滑升级</div>
+              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">保留 Linux 环境</div>
+              <div class="text-[11px] text-wenBlue dark:text-wenYellow">apt/npm/pip 不丢失</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white dark:bg-wenCardDark border border-slate-200/80 dark:border-slate-800 shadow-sm">
-              <div class="text-xs text-slate-500 dark:text-slate-400">内置经验手册</div>
-              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">18 款主流 App</div>
-              <div class="text-[11px] text-slate-500 dark:text-slate-400">每日自动同步上游</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">开源合规协议</div>
+              <div class="text-base font-extrabold text-wenNavy dark:text-white mt-0.5">AGPL-3.0</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">同步上游 Releases</div>
             </div>
           </div>
         </div>
@@ -243,7 +243,7 @@
                 <div>
                   <div class="text-xs font-extrabold text-wenNavy dark:text-white flex items-center gap-1.5">
                     <span>问问Ai</span>
-                    <span id="sim-host-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-mono">本机 :engine</span>
+                    <span id="sim-host-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-mono">本机 PRoot</span>
                   </div>
                   <div class="text-[10px] text-slate-400">DeepSeek-V4-Pro · 思考深度：高</div>
                 </div>
@@ -251,7 +251,7 @@
               <!-- 切换本机/远程主机按钮 -->
               <div class="flex items-center gap-1">
                 <button id="sim-toggle-host-btn" type="button" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-wenBlue/10 text-wenBlue dark:bg-wenBlue/25 dark:text-wenYellow hover:bg-wenBlue hover:text-white transition-colors">
-                  ⇄ 切换屏幕模式
+                  ⇄ 切换主机
                 </button>
               </div>
             </div>
@@ -261,13 +261,13 @@
               <div class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5">👇 点击体验「问问Ai」不同场景任务：</div>
               <div class="flex gap-1.5 overflow-x-auto pb-1">
                 <button type="button" data-scenario="local_csv" class="sim-scenario-btn shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-wenBlue text-white shadow-sm">
-                  💬 后台虚拟屏发微信
+                  📊 本机跑 Python 分析报表
                 </button>
                 <button type="button" data-scenario="phone_ctrl" class="sim-scenario-btn shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white dark:bg-wenCardDark text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
                   📱 手机无障碍操控定闹钟
                 </button>
                 <button type="button" data-scenario="remote_pc" class="sim-scenario-btn shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white dark:bg-wenCardDark text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-                  📄 本机检索解析 PDF 合同
+                  💻 远程接管电脑端任务
                 </button>
               </div>
             </div>
@@ -309,7 +309,7 @@
         不只是聊天窗口，而是口袋里的全能 Agent 工作站
       </h2>
       <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2">
-        基于开源 DSH-Android (DeepSeek Harness) 架构深度定制，将内嵌 Node.js 24 引擎、44 项手机原生能力与 Shizuku 隐形后台虚拟屏融为一体。
+        基于开源 DeepSeek Harness 架构深度定制，将桌面级 Linux 终端、跨设备协同与原生安卓无障碍操控融为一体。
       </p>
     </div>
 
@@ -319,9 +319,9 @@
         <div class="w-12 h-12 rounded-2xl bg-wenBlue/10 dark:bg-wenBlue/20 text-wenBlue dark:text-wenYellow flex items-center justify-center text-2xl font-bold mb-4">
           🐧
         </div>
-        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">内嵌 Node 24 原生引擎，免 Root 即开即用</h3>
+        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">内置 Ubuntu 环境，免 Root 即开即用</h3>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-          App 将 Node.js 24.22.1 编译为 Bionic 共享库 <code>libnode.so</code>，在独立 <code>:engine</code> 进程中原生运行 DSH 引擎，内置 <code>librg.so</code> (ripgrep) 与 <code>pnpm 11.28.9</code>，免 Root 免 Termux 开箱即用。
+          App 内置完整打包的 Ubuntu、Node.js 与 DSH 运行时（默认使用 PRoot 兼容启动），无需 Root 手机或单独配置 Termux，即可在本地跑 Python 脚本、解析文档与构建代码。
         </p>
       </div>
 
@@ -330,9 +330,9 @@
         <div class="w-12 h-12 rounded-2xl bg-wenYellow/20 text-wenNavy dark:text-wenYellow flex items-center justify-center text-2xl font-bold mb-4">
           💻
         </div>
-        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">Shizuku 隐形后台虚拟屏，不抢占主屏</h3>
+        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">本机 + 远程电脑双模式无缝切换</h3>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-          APK 内置官方未修改版 Shizuku 13.6.0 一键安装授权。开启后智能体在看不见的后台虚拟屏（<code>screen: agent</code>）上打开并操作 App，你的主屏继续刷视频聊工作，互不打扰。
+          既能在手机本机独立执行轻量任务，也能通过 SSH 或 DSHarness Remote 一键接入家中或办公室电脑上的 DSH 实例，出门在外随时查看进度、补充指令。
         </p>
       </div>
 
@@ -341,9 +341,9 @@
         <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold mb-4">
           🛡️
         </div>
-        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">10 大组 44 项原生工具与硬底线防护</h3>
+        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">手机屏幕操控与三档安全确认</h3>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-          涵盖屏幕手势、文件与 PDF/Office 解析、系统设置、通讯日程、内置无头浏览器、通知秒回与自动化触发器；内置 <code>plugin-guard</code> 18 类不可绕过的 Shell 硬底线与 4 级风险审批。
+          开启无障碍权限后可帮你读屏、点按、定闹钟或建日程。内置严格的三档安全确认机制，银行、支付与密码等高敏操作默认交还给你手动确认，支持 Android 14+ 后台不打扰模式。
         </p>
       </div>
 
@@ -363,9 +363,9 @@
         <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl font-bold mb-4">
           🔄
         </div>
-        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">内置 18 款主流 App 知识库与经验自学习</h3>
+        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">原生界面与官方网页版一键切换</h3>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-          预置微信、抖音、小红书、飞书、B站、知乎、闲鱼、BOSS直聘等 18 款高频 App 页面结构手册；每次任务后自动运行复盘提炼入口（entry）与避坑（trap）存入本地经验库。
+          支持在流畅的 Flutter 原生界面与完整 Web 工作台模式之间一键切换，始终停留在同一段对话；横屏手机与平板设备自动重排为常驻侧栏布局，弹出键盘也不拥挤。
         </p>
       </div>
 
@@ -374,9 +374,9 @@
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-2xl font-bold mb-4">
           🔐
         </div>
-        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">13+ 模型服务商路由与 Keystore 硬件加密</h3>
+        <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">端到端加密回放链接与平滑升级</h3>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-          支持 DeepSeek 账号 OAuth 免 Key 登录，以及 OpenAI、Claude、Gemini、Kimi、智谱、通义、豆包、MiniMax 等 13+ 服务商（支持 Chat Completions 与 Responses 协议），密钥经 AndroidKeyStore AES-GCM 硬件加密。
+          整段对话可生成端到端加密分享链接（密钥仅在链接中），在浏览器里逐帧回放。应用内更新仅替换受管引擎目录，完整保留你用 <code class="font-mono">apt</code>、<code class="font-mono">npm</code>、<code class="font-mono">pip</code> 安装的包与工作区。
         </p>
       </div>
     </div>
@@ -525,11 +525,11 @@
             <span class="text-[11px] font-normal px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">实时生成专属下载与更新链接</span>
           </h3>
           <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            输入你的 GitHub 仓库路径（默认绑定 <code class="font-mono">tongwei0715/DSH-Android</code> 与 <code class="font-mono">wenwenai.cn/update/latest.json</code>），下方下载按钮与 <code class="font-mono">update.json</code> 清单会自动同步为你自己的地址。
+            输入你的 GitHub 仓库路径（默认绑定 <code class="font-mono">tongwei0715/dsh-Go</code> 与 <code class="font-mono">wenwenai.cn/dsh-go/update.json</code>），下方下载按钮与 <code class="font-mono">update.json</code> 清单会自动同步为你自己的地址。
           </p>
         </div>
         <div class="flex items-center gap-2">
-          <input id="custom-repo-input" type="text" value="tongwei0715/DSH-Android" class="text-xs font-mono px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-wenNavy dark:text-white w-52 focus:outline-none focus:border-wenBlue" placeholder="owner/repo" />
+          <input id="custom-repo-input" type="text" value="tongwei0715/dsh-Go" class="text-xs font-mono px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-wenNavy dark:text-white w-52 focus:outline-none focus:border-wenBlue" placeholder="owner/repo" />
           <button id="apply-repo-btn" type="button" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-wenBlue hover:bg-blue-600 text-white shrink-0">
             更新地址
           </button>
@@ -544,7 +544,7 @@
           📱 ARM64 主流手机版 (arm64-v8a · 推荐)
         </button>
         <button type="button" data-arch="x64" class="arch-tab-btn px-5 py-2.5 rounded-2xl text-sm font-bold bg-white dark:bg-wenCardDark text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
-          🌐 官网镜像直链 (wenwenai.cn)
+          ⚡ 轻量原生版 (v0.3.11 · 96.5MB)
         </button>
         <button type="button" data-arch="update_json" class="arch-tab-btn px-5 py-2.5 rounded-2xl text-sm font-bold bg-white dark:bg-wenCardDark text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
           🔄 自动更新清单 (update.json)
@@ -567,7 +567,7 @@
         <div class="lg:col-span-5 space-y-4">
           <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-wenBlue/10 text-wenBlue dark:bg-wenYellow/20 dark:text-wenYellow">Open Source & Attribution</span>
           <h2 class="text-2xl sm:text-3xl font-black text-wenNavy dark:text-white">
-            开源透明，每日自动同步上游 Releases
+            开源透明，严格遵循 AGPL-3.0 协议
           </h2>
           <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
             「问问Ai（wenwenai.cn）」是基于社区开源项目进行品牌重塑与持续集成的客户端版本，完整保留上游版权与开源协议声明：
@@ -578,7 +578,7 @@
               <span class="text-wenBlue dark:text-wenYellow font-bold">●</span>
               <div>
                 <strong class="text-wenNavy dark:text-white">上游主仓库与原作者：</strong>
-                衍生自 <a href="https://github.com/jackwener/DSH-Android" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline font-semibold">jackwener/DSH-Android</a>（原作者：<a href="https://github.com/jackwener" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline">jackwener</a>），本仓库 <a href="https://github.com/tongwei0715/DSH-Android" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline font-semibold">tongwei0715/DSH-Android</a> 每日通过 GitHub Actions 自动同步上游并构建发布。
+                衍生自 <a href="https://github.com/ccch1mneyyy/dsh-go" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline font-semibold">ccch1mneyyy/dsh-go</a>（原作者：<a href="https://github.com/ccch1mneyyy" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline">ccch1mneyyy</a>）。
               </div>
             </div>
             <div class="flex items-start gap-2.5">
@@ -592,7 +592,7 @@
               <span class="text-wenBlue dark:text-wenYellow font-bold">●</span>
               <div>
                 <strong class="text-wenNavy dark:text-white">独立品牌与视觉资产合规：</strong>
-                本版本已将应用名称、桌面自适应图标、内部全彩矢量 Logo、口号「遇事不决，问问Ai」及应用内自动更新源（<code>wenwenai.cn/update/latest.json</code>）全面定制为问问Ai专属资产。
+                遵照上游 <a href="https://github.com/ccch1mneyyy/dsh-go/blob/main/ASSETS.md" target="_blank" rel="noopener noreferrer" class="text-wenBlue dark:text-wenYellow underline">ASSETS.md</a> 条款，本版本已将应用名称、Logo 图标及桌宠形象全面替换为「问问Ai」与「问问仔」原创资产，不冒用原版名称或吉祥物。
               </div>
             </div>
           </div>
@@ -629,13 +629,13 @@
         </svg>
         <div>
           <div class="font-bold text-white">问问Ai (wenwenai.cn) — 遇事不决，问问Ai！</div>
-          <div class="text-[11px] text-slate-400">基于开源项目 <a href="https://github.com/jackwener/DSH-Android" target="_blank" rel="noopener noreferrer" class="text-wenYellow underline">jackwener/DSH-Android</a> 二次开发 · 官方仓库 <a href="https://github.com/tongwei0715/DSH-Android" target="_blank" rel="noopener noreferrer" class="text-wenYellow underline">tongwei0715/DSH-Android</a></div>
+          <div class="text-[11px] text-slate-400">基于开源项目 <a href="https://github.com/ccch1mneyyy/dsh-go" target="_blank" rel="noopener noreferrer" class="text-wenYellow underline">ccch1mneyyy/dsh-go</a> (AGPL-3.0) 二次开发 · 非 DeepSeek 官方出品</div>
         </div>
       </div>
       <div class="flex items-center gap-4">
         <a href="#top" class="hover:text-white transition-colors">回到顶部 ↑</a>
         <a href="#download" class="hover:text-wenYellow transition-colors">下载 APK</a>
-        <a href="https://github.com/tongwei0715/DSH-Android/releases" target="_blank" rel="noopener noreferrer" class="hover:text-wenYellow transition-colors">GitHub Releases</a>
+        <a href="https://github.com/ccch1mneyyy/dsh-go" target="_blank" rel="noopener noreferrer" class="hover:text-wenYellow transition-colors">上游 GitHub</a>
       </div>
     </div>
   </footer>
@@ -649,7 +649,7 @@
       currentPetState: 'working',
       simHostMode: 'local', // 'local' | 'remote'
       simScenario: 'local_csv',
-      githubRepo: 'tongwei0715/DSH-Android',
+      githubRepo: 'tongwei0715/dsh-Go',
       selectedArch: 'arm64',
       faqQuery: '',
       openFaqIndex: 0
@@ -693,9 +693,9 @@
         host: 'local',
         petState: 'completed',
         messages: [
-          { role: 'user', text: '帮我在后台打开微信，给「文件传输助手」发一句：今晚 8 点准时复盘，不要打断我现在看视频。' },
-          { role: 'thought', text: 'app_launch(com.tencent.mm, screen="agent") → screen_tap → screen_type' },
-          { role: 'ai', text: '已在 Shizuku 隐形后台虚拟屏完成微信消息发送！全程在独立虚拟屏操作，未抢占你的主屏幕。' }
+          { role: 'user', text: '帮我读取手机 Download 目录下的 sales_2026.csv，用 Python 算出各季度增长率并生成摘要。' },
+          { role: 'thought', text: '已折叠 3 步工具调用：bash(python3 pandas 聚合计算) → 耗时 1.8s' },
+          { role: 'ai', text: '已在手机本机 Ubuntu 环境解析完毕！2026 Q3 环比增长 +18.4%，需要我进一步导出为带图表的 PDF 分享卡吗？' }
         ]
       },
       phone_ctrl: {
@@ -711,9 +711,9 @@
         host: 'remote',
         petState: 'working',
         messages: [
-          { role: 'user', text: '搜索手机 Download 目录里所有 PDF 合同，把甲方名称和金额汇总成 Markdown 表格。' },
-          { role: 'thought', text: 'file_search(librg.so 命中 4 份 PDF) → file_read(pdfbox 抽取文本) → file_write' },
-          { role: 'ai', text: '已在本机提取 4 份 PDF 合同核心条款并生成汇总表，保存在本地工作区 ~/home/contracts_summary.md！' }
+          { role: 'user', text: '切换到家里电脑 Workstation，看看昨晚跑的构建任务通过了吗？' },
+          { role: 'thought', text: '已通过 DSHarness Remote 同步远程主机回放日志 · 延迟 14ms' },
+          { role: 'ai', text: '已连接到你的远程电脑！`build-apk.sh -f arm64` 已成功生成安装包（201 MB），正在为你拉取构建诊断摘要...' }
         ]
       }
     };
@@ -721,20 +721,20 @@
     // FAQ 接地数据
     const FAQ_ITEMS = [
       {
-        q: '为什么「问问Ai」能每天自动跟进上游新版本，同时不冲掉我的品牌、图标和签名？',
-        a: '因为我们在 GitHub 仓库 tongwei0715/DSH-Android 中内置了幂等品牌重塑脚本 scripts/rebrand_wenwenai.py 与每日定时工作流 sync-and-release.yml。每当上游发布新版本时，云端自动拉取合并、运行脚本注入问问Ai全套图标/标语/wenwenai.cn更新源，并使用 GitHub Secrets 中的固定永久密钥签名发布，全程零人工干预。'
+        q: '为什么「问问Ai」更新版本时不会清空我已经装好的 Linux 软件和对话？',
+        a: '从 v1.0.15 架构起，应用内更新仅替换 App 管理的引擎组件目录（DSH、Node、pnpm 与桥接层），你通过 apt 安装的工具、默认位置的 npm 全局包、Python/pip 包以及工作区文件都会完整保留。只要使用本仓库同一签名密钥构建的 APK 即可直接覆盖安装。'
       },
       {
-        q: '手机上运行需要 Root 权限或单独配置 Termux 吗？',
-        a: '完全不需要！App 内置了交叉编译为 Bionic 共享库的 Node.js 24.22.1 (libnode.so)、ripgrep (librg.so)、离线中英文 OCR 模型以及官方未修改的 Shizuku 13.6.0 安装包，安装即用。'
+        q: '手机上本机运行需要 Root 权限或单独安装 Termux 吗？',
+        a: '完全不需要！App 内部已经打包了免 Root 的 Ubuntu 与 Node.js 运行环境（默认采用 PRoot 兼容启动），预留约 750 MB 至 1 GB 存储空间即可在手机本机独立运行。如果你只用来远程遥控电脑上的 DSH，甚至无需安装本机运行环境。'
       },
       {
-        q: '什么是 Shizuku 隐形后台虚拟屏？怎么开启？',
-        a: '配合 App 内置一键安装的 Shizuku 授权后，问问Ai 在调用 app_launch 打开微信、小红书、抖音等应用时，会自动创建一个看不见的后台虚拟屏幕（AgentScreen）。智能体在后台屏里点按输入，你的手机主屏幕可以继续正常聊天或看视频，互不抢占焦点。'
+        q: '开启「手机操控」安全吗？会误点支付或隐私应用吗？',
+        a: '系统内置严格隔离与三档确认策略：银行、券商、支付类 App 默认禁止自动化操作；敏感动作默认弹窗交还给你亲自确认。在 Android 14 及以上设备上，还可以配合 Shizuku 或自连 ADB 开启「后台不打扰模式」，在虚拟屏幕执行任务而不抢占你当前的手机画面。'
       },
       {
-        q: '以前装过旧签名的 0.3.9 版本，怎么升级到现在的 v0.3.11 正式版？',
-        a: '如果手机上之前安装过不同签名证书的旧包，首次切换只需卸载旧包并安装本页提供的 WenWen-0.3.11-arm64.apk（证书指纹 4a8b209d...da4998a9）。从此次安装起，未来所有新版本均使用同一把永久密钥签名，可在「设置 → 关于 → 检查更新」中直接一键覆盖升级，完整保留全部对话、经验库与 API 密钥。'
+        q: '如何让我的 GitHub 仓库每天自动同步上游 ccch1mneyyy/dsh-go 的新版本？',
+        a: '只需使用我们提供的 wenwenai-dsh-go-kit.zip 套件，其中的 .github/workflows/sync-and-release.yml 会每天定时拉取上游最新 Release Tag，自动运行 rebrand_wenwenai.py 替换问问Ai图标与问问仔桌宠，并用你的固定密钥签名打包发布到你的 GitHub Releases。'
       }
     ];
 
@@ -807,10 +807,10 @@
       const scenario = SIM_SCENARIOS[state.simScenario];
       const hostBadge = document.getElementById('sim-host-badge');
       if (state.simHostMode === 'local') {
-        hostBadge.textContent = '本机 :engine';
+        hostBadge.textContent = '本机 PRoot';
         hostBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-mono';
       } else {
-        hostBadge.textContent = 'Shizuku 后台屏';
+        hostBadge.textContent = '远程 Workstation';
         hostBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-wenBlue/15 text-wenBlue dark:text-wenYellow font-mono';
       }
 
@@ -878,38 +878,32 @@
       });
 
       const container = document.getElementById('download-card-body');
-      const repo = state.githubRepo.trim() || 'tongwei0715/DSH-Android';
-      const tag = 'v0.3.11';
-      const apkName = 'WenWen-0.3.11-arm64.apk';
-      const sha = '8d64a12a3cbfbdd691c5b7f0d7b35c7d5dac2f0eaf047f397bc37ebcaf46441d';
-      const signerSha = '4a8b209dffbd4883972f3204cd245d4eebacf60c07f874a50d5e8397da4998a9';
+      const repo = state.githubRepo.trim() || 'tongwei0715/dsh-Go';
 
-      if (state.selectedArch === 'arm64' || state.selectedArch === 'x64') {
-        const isGithub = state.selectedArch === 'arm64';
-        const archTitle = isGithub
-          ? 'ARM64 正式签名版 (GitHub Releases 高速源)'
-          : 'ARM64 官网镜像源 (wenwenai.cn + jsDelivr 全球加速)';
-        const sizeText = '96.5 MB (101,196,306 字节)';
+      if (state.selectedArch === 'arm64') {
+        const tag = 'v1.0.15';
+        const apkName = 'wenwen-ai-1.0.15-arm64.apk';
+        const sha = '901ca7c1759f0877db6bcf036a3b1f144f1a5cade8035484ef448e47a13d9383';
         const dlUrl = `https://github.com/${repo}/releases/download/${tag}/${apkName}`;
 
         container.innerHTML = `
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="space-y-2">
               <div class="inline-flex flex-wrap items-center gap-2 text-xs font-bold text-wenBlue dark:text-wenYellow">
-                <span>最新版本：${tag} (versionCode 29)</span>
+                <span>最新版本：v1.0.15+11121056</span>
                 <span>·</span>
-                <span>包名：io.github.jackwener.dsh</span>
+                <span>独立包名：cn.wenwenai.app</span>
                 <span>·</span>
-                <span>引擎：dsh 0.2.1-rc.5 (Node 24.22.1)</span>
+                <span>内核：Ubuntu 24.04 + Node 24.22.1 + 问问仔桌宠</span>
               </div>
-              <h3 class="text-xl sm:text-2xl font-black text-wenNavy dark:text-white">${archTitle}</h3>
+              <h3 class="text-xl sm:text-2xl font-black text-wenNavy dark:text-white">全能 Linux 容器 + 问问仔像素桌宠版 (arm64-v8a · 主推)</h3>
               <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                安装包体积 <strong>${sizeText}</strong> · 支持 Android 10 (API 29) 及以上 64 位机型 · v1+v2+v3 三重正式签名，后续新版本可直接应用内覆盖升级。
+                安装包体积 <strong>198.2 MB (207,857,949 字节)</strong> · 支持 Android 8.0 (API 26) 及以上 · 独立包名可与原版共存，v1+v2+v3 永久签名支持平滑覆盖升级并保留 apt/npm/pip 环境。
               </p>
               <div class="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
                 <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 break-all">SHA256: ${sha.slice(0, 24)}...</span>
                 <button type="button" id="copy-sha-btn" class="px-2.5 py-1 rounded-lg bg-wenBlue/10 text-wenBlue dark:text-wenYellow font-sans font-semibold hover:bg-wenBlue hover:text-white transition-colors">复制完整 SHA256</button>
-                <a href="update/latest.json" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-sans font-semibold hover:underline">查看线上 latest.json ↗</a>
+                <a href="dsh-go/update.json" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-sans font-semibold hover:underline">查看 dsh-go/update.json ↗</a>
               </div>
             </div>
             <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0">
@@ -924,35 +918,68 @@
         `;
         document.getElementById('copy-sha-btn').addEventListener('click', () => copyText(sha, ' SHA256 校验值'));
         document.getElementById('copy-dl-url-btn').addEventListener('click', () => copyText(dlUrl, ' APK 下载直链'));
+      } else if (state.selectedArch === 'x64') {
+        const tag = 'v0.3.11';
+        const apkName = 'WenWen-0.3.11-arm64.apk';
+        const sha = '8d64a12a3cbfbdd691c5b7f0d7b35c7d5dac2f0eaf047f397bc37ebcaf46441d';
+        const dlUrl = `https://github.com/tongwei0715/DSH-Android/releases/download/${tag}/${apkName}`;
+
+        container.innerHTML = `
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2">
+              <div class="inline-flex flex-wrap items-center gap-2 text-xs font-bold text-wenBlue dark:text-wenYellow">
+                <span>版本：v0.3.11 (versionCode 29)</span>
+                <span>·</span>
+                <span>包名：io.github.jackwener.dsh</span>
+                <span>·</span>
+                <span>内核：Bionic Node 24.22.1 + 44 项原生工具</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-wenNavy dark:text-white">轻量原生版 (DSH-Android 架构 · 96.5 MB)</h3>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                无需解压 Linux 容器，内嵌 <code>libnode.so</code> 与 18 款主流 App 自动化知识库，支持 Android 10 (API 29) 及以上 64 位手机。
+              </p>
+              <div class="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 break-all">SHA256: ${sha.slice(0, 24)}...</span>
+                <button type="button" id="copy-sha-btn" class="px-2.5 py-1 rounded-lg bg-wenBlue/10 text-wenBlue dark:text-wenYellow font-sans font-semibold hover:bg-wenBlue hover:text-white transition-colors">复制完整 SHA256</button>
+                <a href="update/latest.json" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-sans font-semibold hover:underline">查看 update/latest.json ↗</a>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0">
+              <a href="${dlUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold bg-wenBlue hover:bg-blue-600 text-white shadow-lg shadow-wenBlue/25 text-sm">
+                <span>⬇️ 下载轻量版 ${apkName}</span>
+              </a>
+              <button type="button" id="copy-dl-url-btn" class="px-4 py-2.5 rounded-xl text-xs font-semibold border border-slate-300 dark:border-slate-700 hover:border-wenBlue text-slate-700 dark:text-slate-200">
+                📋 复制轻量版直链
+              </button>
+            </div>
+          </div>
+        `;
+        document.getElementById('copy-sha-btn').addEventListener('click', () => copyText(sha, ' SHA256 校验值'));
+        document.getElementById('copy-dl-url-btn').addEventListener('click', () => copyText(dlUrl, ' APK 下载直链'));
       } else {
         const jsonText = JSON.stringify({
-          format: 1,
-          packageName: "io.github.jackwener.dsh",
-          versionCode: 29,
-          versionName: "0.3.11",
-          minSdk: 29,
-          apk: {
-            name: apkName,
-            size: 101196306,
-            sha256: sha,
-            urls: [
-              `https://github.com/${repo}/releases/download/${tag}/${apkName}`,
-              `https://wenwenai.cn/releases/${apkName}`
-            ]
-          },
-          signerSha256: signerSha,
-          notes: {
-            zh: "- 遇事不决，问问Ai（官方网站 https://wenwenai.cn · 同步自上游 v0.3.11）\n- 内嵌 Node.js 24.22.1 完整端侧 Agent 引擎，支持 Shizuku 隐形后台屏与 44 项原生工具\n- 支持应用内通过 wenwenai.cn 与 GitHub/jsDelivr 多镜像自动检测并覆盖升级"
-          },
-          publishedAt: "2026-11-11T17:04:16Z"
+          schema: 1,
+          version: "1.0.15+11121056",
+          tag: "v1.0.15",
+          title: "问问Ai 1.0.15",
+          publishedAt: "2026-11-12T03:09:03Z",
+          page: `https://github.com/${repo}/releases/tag/v1.0.15`,
+          assets: {
+            arm64: {
+              name: "dsh-go-1.0.15-arm64.apk",
+              url: `https://github.com/${repo}/releases/download/v1.0.15/dsh-go-1.0.15-arm64.apk`,
+              size: 207857949,
+              sha256: "901ca7c1759f0877db6bcf036a3b1f144f1a5cade8035484ef448e47a13d9383"
+            }
+          }
         }, null, 2);
 
         container.innerHTML = `
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">应用内自动更新清单 (update/latest.json)</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">已同步部署在 https://wenwenai.cn/update/latest.json 与 GitHub Releases / jsDelivr CDN</p>
+                <h3 class="text-lg font-extrabold text-wenNavy dark:text-white">应用内自动更新清单 (dsh-go/update.json)</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">已同步部署在 https://wenwenai.cn/dsh-go/update.json 与 GitHub Releases</p>
               </div>
               <button type="button" id="copy-update-json-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-wenBlue text-white hover:bg-blue-600">
                 复制 JSON
@@ -961,7 +988,7 @@
             <pre class="p-4 rounded-2xl bg-slate-950 text-emerald-400 font-mono text-xs overflow-x-auto">${jsonText}</pre>
           </div>
         `;
-        document.getElementById('copy-update-json-btn').addEventListener('click', () => copyText(jsonText, ' latest.json 配置'));
+        document.getElementById('copy-update-json-btn').addEventListener('click', () => copyText(jsonText, ' update.json 配置'));
       }
     }
 

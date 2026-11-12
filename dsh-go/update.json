@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "version": "1.0.15+11121056",
+  "tag": "v1.0.15",
+  "title": "问问Ai 1.0.15",
+  "publishedAt": "2026-11-12T03:09:03Z",
+  "notes": "### 问问Ai v1.0.15 — 遇事不决，问问Ai！（官方网站 https://wenwenai.cn）\n- **全能内置 Linux 容器**：免 Root、免 Termux，手机本机直接运行 Ubuntu 24.04 + Node.js 24.22.1 + DSH 引擎，支持远程接管电脑主机。\n- **专属四状态像素桌宠「问问仔」**：干活敲代码、完成欢呼、敏感操作举手待确认、待机休眠打盹，支持 App 外桌面悬浮窗陪伴。\n- **平滑覆盖升级**：使用固定永久证书签名，升级仅替换受管引擎目录，完整保留已安装的 apt/npm/pip 工具包与对话数据。\n- **开源致谢**：基于上游 [ccch1mneyyy/dsh-Go](https://github.com/ccch1mneyyy/dsh-Go) (v1.0.15) 同步构建，遵循 GNU AGPL-3.0 协议。",
+  "page": "https://github.com/tongwei0715/dsh-Go/releases/tag/v1.0.15",
+  "assets": {
+    "arm64": {
+      "name": "dsh-go-1.0.15-arm64.apk",
+      "size": 207857949,
+      "sha256": "901ca7c1759f0877db6bcf036a3b1f144f1a5cade8035484ef448e47a13d9383",
+      "url": "https://github.com/tongwei0715/dsh-Go/releases/download/v1.0.15/dsh-go-1.0.15-arm64.apk"
+    }
+  }
+}

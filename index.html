@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>问问Ai (wenwenai.cn) — 遇事不决，问问Ai！</title>
   <meta name="description" content="遇事不决，问问Ai（wenwenai.cn）。万物皆插件，现在随身而行。不用电脑，手机自己就能干活；问问仔替你读屏点按、离线语音听写、连上家里电脑、浏览插件市场。" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%232F5BFF'/%3E%3Cpath d='M26 62h14L24 78z' fill='%23FFC93C'/%3E%3Crect x='18' y='20' width='58' height='46' rx='16' fill='%23FFC93C'/%3E%3Cpath d='M72 90h20l2 16z' fill='%23fff'/%3E%3Crect x='40' y='44' width='62' height='48' rx='17' fill='%23fff'/%3E%3Cpath d='M62 62c0-8 18-8 18 1 0 7-9 7-9 14' fill='none' stroke='%232F5BFF' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='71' cy='85' r='3.2' fill='%232F5BFF'/%3E%3Crect x='74' y='12' width='36' height='22' rx='11' fill='%2314213D'/%3E%3Cg fill='none' stroke='%23FFC93C' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='88.5' cy='23.2' r='4.2'/%3E%3Cpath d='M92.7 18.4v9.6M99.5 18.4v9.6'/%3E%3C/g%3E%3Ccircle cx='99.5' cy='14.8' r='1.6' fill='%23FFC93C'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='28' fill='%232F5BFF'/><path d='M24 37C24 29.82 29.82 24 37 24H61C68.18 24 74 29.82 74 37V49C74 56.18 68.18 62 61 62H37L26.5 70C25.2 71 24 70 24 68.4V37Z' fill='%23FFC93C'/><line x1='36' y1='39' x2='60' y2='39' stroke='%2314213D' stroke-width='4.5' stroke-linecap='round'/><line x1='36' y1='48' x2='50' y2='48' stroke='%2314213D' stroke-width='4.5' stroke-linecap='round'/><path d='M46 56C46 48.82 51.82 43 59 43H83C90.18 43 96 48.82 96 56V70C96 77.18 90.18 83 83 83H82L91 91.5C92.2 92.6 90.5 94.2 89 93.4L74 83H59C51.82 83 46 77.18 46 70V56Z' fill='%23fff'/><path d='M64.5 57.5C64.5 52.5 77.5 52.5 77.5 58.8C77.5 63.5 71 64 71 68.5' fill='none' stroke='%232F5BFF' stroke-width='5' stroke-linecap='round'/><circle cx='71' cy='75.8' r='3.1' fill='%232F5BFF'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
@@ -73,20 +73,23 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="#top" class="flex items-center gap-3 group focus:outline-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-10 h-10 rounded-xl shadow-md shadow-wenBlue/25 group-hover:scale-105 transition-transform">
-          <title>问问Ai Wenwen.ai</title>
-          <rect width="120" height="120" rx="28" fill="#2F5BFF"/>
-          <path d="M26 62h14L24 78z" fill="#FFC93C"/>
-          <rect x="18" y="20" width="58" height="46" rx="16" fill="#FFC93C"/>
-          <path d="M72 90h20l2 16z" fill="#fff"/>
-          <rect x="40" y="44" width="62" height="48" rx="17" fill="#fff"/>
-          <path d="M62 62c0-8 18-8 18 1 0 7-9 7-9 14" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="71" cy="85" r="3.2" fill="#2F5BFF"/>
-          <rect x="74" y="12" width="36" height="22" rx="11" fill="#14213D"/>
-          <g fill="none" stroke="#FFC93C" stroke-width="2.6" stroke-linecap="round">
-            <circle cx="88.5" cy="23.2" r="4.2"/>
-            <path d="M92.7 18.4v9.6M99.5 18.4v9.6"/>
-          </g>
-          <circle cx="99.5" cy="14.8" r="1.6" fill="#FFC93C"/>
+          <defs>
+            <linearGradient id="bgC" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3B66FF"/>
+              <stop offset="100%" stop-color="#1E40AF"/>
+            </linearGradient>
+            <linearGradient id="goldC" x1="24" y1="24" x2="74" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFD859"/>
+              <stop offset="100%" stop-color="#F5B118"/>
+            </linearGradient>
+          </defs>
+          <rect width="120" height="120" rx="28" fill="url(#bgC)"/>
+          <path d="M24 37C24 29.82 29.82 24 37 24H61C68.18 24 74 29.82 74 37V49C74 56.18 68.18 62 61 62H37L26.5 70C25.2 71 24 70 24 68.4V37Z" fill="url(#goldC)"/>
+          <line x1="36" y1="39" x2="60" y2="39" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="36" y1="48" x2="50" y2="48" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M46 56C46 48.82 51.82 43 59 43H83C90.18 43 96 48.82 96 56V70C96 77.18 90.18 83 83 83H82L91 91.5C92.2 92.6 90.5 94.2 89 93.4L74 83H59C51.82 83 46 77.18 46 70V56Z" fill="#FFFFFF"/>
+          <path d="M64.5 57.5C64.5 52.5 77.5 52.5 77.5 58.8C77.5 63.5 71 64 71 68.5" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="71" cy="75.8" r="3.1" fill="#2F5BFF"/>
         </svg>
         <div>
           <div class="flex items-center gap-2">
@@ -147,20 +150,24 @@
 
           <div class="flex items-center gap-4">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-xl shadow-wenBlue/30 shrink-0">
-              <rect width="120" height="120" rx="28" fill="#2F5BFF"/>
-              <path d="M26 62h14L24 78z" fill="#FFC93C"/>
-              <rect x="18" y="20" width="58" height="46" rx="16" fill="#FFC93C"/>
-              <path d="M72 90h20l2 16z" fill="#fff"/>
-              <rect x="40" y="44" width="62" height="48" rx="17" fill="#fff"/>
-              <path d="M62 62c0-8 18-8 18 1 0 7-9 7-9 14" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
-              <circle cx="71" cy="85" r="3.2" fill="#2F5BFF"/>
-              <rect x="74" y="12" width="36" height="22" rx="11" fill="#14213D"/>
-              <g fill="none" stroke="#FFC93C" stroke-width="2.6" stroke-linecap="round">
-                <circle cx="88.5" cy="23.2" r="4.2"/>
-                <path d="M92.7 18.4v9.6M99.5 18.4v9.6"/>
-              </g>
-              <circle cx="99.5" cy="14.8" r="1.6" fill="#FFC93C"/>
-            </svg>
+          <defs>
+            <linearGradient id="bgC" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3B66FF"/>
+              <stop offset="100%" stop-color="#1E40AF"/>
+            </linearGradient>
+            <linearGradient id="goldC" x1="24" y1="24" x2="74" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFD859"/>
+              <stop offset="100%" stop-color="#F5B118"/>
+            </linearGradient>
+          </defs>
+          <rect width="120" height="120" rx="28" fill="url(#bgC)"/>
+          <path d="M24 37C24 29.82 29.82 24 37 24H61C68.18 24 74 29.82 74 37V49C74 56.18 68.18 62 61 62H37L26.5 70C25.2 71 24 70 24 68.4V37Z" fill="url(#goldC)"/>
+          <line x1="36" y1="39" x2="60" y2="39" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="36" y1="48" x2="50" y2="48" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M46 56C46 48.82 51.82 43 59 43H83C90.18 43 96 48.82 96 56V70C96 77.18 90.18 83 83 83H82L91 91.5C92.2 92.6 90.5 94.2 89 93.4L74 83H59C51.82 83 46 77.18 46 70V56Z" fill="#FFFFFF"/>
+          <path d="M64.5 57.5C64.5 52.5 77.5 52.5 77.5 58.8C77.5 63.5 71 64 71 68.5" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="71" cy="75.8" r="3.1" fill="#2F5BFF"/>
+        </svg>
             <div>
               <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-wenNavy dark:text-white leading-tight">
                 遇事不决，<span class="text-wenBlue dark:text-wenYellow">问问Ai！</span>
@@ -232,14 +239,24 @@
             <div class="bg-white dark:bg-wenCardDark px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-7 h-7 rounded-lg">
-                  <rect width="120" height="120" rx="28" fill="#2F5BFF"/>
-                  <path d="M26 62h14L24 78z" fill="#FFC93C"/>
-                  <rect x="18" y="20" width="58" height="46" rx="16" fill="#FFC93C"/>
-                  <path d="M72 90h20l2 16z" fill="#fff"/>
-                  <rect x="40" y="44" width="62" height="48" rx="17" fill="#fff"/>
-                  <path d="M62 62c0-8 18-8 18 1 0 7-9 7-9 14" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
-                  <circle cx="71" cy="85" r="3.2" fill="#2F5BFF"/>
-                </svg>
+          <defs>
+            <linearGradient id="bgC" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3B66FF"/>
+              <stop offset="100%" stop-color="#1E40AF"/>
+            </linearGradient>
+            <linearGradient id="goldC" x1="24" y1="24" x2="74" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFD859"/>
+              <stop offset="100%" stop-color="#F5B118"/>
+            </linearGradient>
+          </defs>
+          <rect width="120" height="120" rx="28" fill="url(#bgC)"/>
+          <path d="M24 37C24 29.82 29.82 24 37 24H61C68.18 24 74 29.82 74 37V49C74 56.18 68.18 62 61 62H37L26.5 70C25.2 71 24 70 24 68.4V37Z" fill="url(#goldC)"/>
+          <line x1="36" y1="39" x2="60" y2="39" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="36" y1="48" x2="50" y2="48" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M46 56C46 48.82 51.82 43 59 43H83C90.18 43 96 48.82 96 56V70C96 77.18 90.18 83 83 83H82L91 91.5C92.2 92.6 90.5 94.2 89 93.4L74 83H59C51.82 83 46 77.18 46 70V56Z" fill="#FFFFFF"/>
+          <path d="M64.5 57.5C64.5 52.5 77.5 52.5 77.5 58.8C77.5 63.5 71 64 71 68.5" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="71" cy="75.8" r="3.1" fill="#2F5BFF"/>
+        </svg>
                 <div>
                   <div class="text-xs font-extrabold text-wenNavy dark:text-white flex items-center gap-1.5">
                     <span>问问Ai</span>
@@ -638,8 +655,11 @@
           </div>
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">
-          <a href="https://github.com/tongwei0715/dsh-Go/releases/download/v1.0.15/wenwen-ai-1.0.15-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold bg-wenBlue hover:bg-blue-600 text-white shadow-lg shadow-wenBlue/25 text-sm transition-all">
-            <span>⬇️ 下载全能版 APK (v1.0.15)</span>
+          <a href="https://ghfast.top/https://github.com/tongwei0715/dsh-Go/releases/download/v1.0.15/wenwen-ai-1.0.15-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold bg-wenBlue hover:bg-blue-600 text-white shadow-lg shadow-wenBlue/25 text-sm transition-all">
+            <span>⚡ 国内极速下载全能版 APK (v1.0.15)</span>
+          </a>
+          <a href="https://github.com/tongwei0715/dsh-Go/releases/download/v1.0.15/wenwen-ai-1.0.15-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-slate-300 dark:border-slate-700 hover:border-wenBlue text-slate-700 dark:text-slate-200 text-xs transition-all">
+            <span>🌐 GitHub 官方源下载 (v1.0.15)</span>
           </a>
         </div>
       </div>
@@ -660,8 +680,11 @@
           </div>
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">
-          <a href="https://github.com/tongwei0715/DSH-Android/releases/download/v0.3.11/WenWen-0.3.11-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold bg-slate-900 dark:bg-slate-800 hover:bg-wenBlue text-white text-sm transition-all">
-            <span>⬇️ 下载轻量版 APK (v0.3.11)</span>
+          <a href="https://ghfast.top/https://github.com/tongwei0715/DSH-Android/releases/download/v0.3.11/WenWen-0.3.11-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold bg-slate-900 dark:bg-slate-800 hover:bg-wenBlue text-white text-sm transition-all">
+            <span>⚡ 国内极速下载轻量版 APK (v0.3.11)</span>
+          </a>
+          <a href="https://github.com/tongwei0715/DSH-Android/releases/download/v0.3.11/WenWen-0.3.11-arm64.apk" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-slate-300 dark:border-slate-700 hover:border-wenBlue text-slate-700 dark:text-slate-200 text-xs transition-all">
+            <span>🌐 GitHub 官方源下载 (v0.3.11)</span>
           </a>
         </div>
       </div>
@@ -673,13 +696,23 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-8 h-8 rounded-lg">
-          <rect width="120" height="120" rx="28" fill="#2F5BFF"/>
-          <path d="M26 62h14L24 78z" fill="#FFC93C"/>
-          <rect x="18" y="20" width="58" height="46" rx="16" fill="#FFC93C"/>
-          <path d="M72 90h20l2 16z" fill="#fff"/>
-          <rect x="40" y="44" width="62" height="48" rx="17" fill="#fff"/>
-          <path d="M62 62c0-8 18-8 18 1 0 7-9 7-9 14" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="71" cy="85" r="3.2" fill="#2F5BFF"/>
+          <defs>
+            <linearGradient id="bgC" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3B66FF"/>
+              <stop offset="100%" stop-color="#1E40AF"/>
+            </linearGradient>
+            <linearGradient id="goldC" x1="24" y1="24" x2="74" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFD859"/>
+              <stop offset="100%" stop-color="#F5B118"/>
+            </linearGradient>
+          </defs>
+          <rect width="120" height="120" rx="28" fill="url(#bgC)"/>
+          <path d="M24 37C24 29.82 29.82 24 37 24H61C68.18 24 74 29.82 74 37V49C74 56.18 68.18 62 61 62H37L26.5 70C25.2 71 24 70 24 68.4V37Z" fill="url(#goldC)"/>
+          <line x1="36" y1="39" x2="60" y2="39" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="36" y1="48" x2="50" y2="48" stroke="#14213D" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M46 56C46 48.82 51.82 43 59 43H83C90.18 43 96 48.82 96 56V70C96 77.18 90.18 83 83 83H82L91 91.5C92.2 92.6 90.5 94.2 89 93.4L74 83H59C51.82 83 46 77.18 46 70V56Z" fill="#FFFFFF"/>
+          <path d="M64.5 57.5C64.5 52.5 77.5 52.5 77.5 58.8C77.5 63.5 71 64 71 68.5" fill="none" stroke="#2F5BFF" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="71" cy="75.8" r="3.1" fill="#2F5BFF"/>
         </svg>
         <div>
           <div class="font-bold text-white">问问Ai (wenwenai.cn) — 遇事不决，问问Ai！</div>

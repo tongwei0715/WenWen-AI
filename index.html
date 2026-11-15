@@ -103,6 +103,7 @@
         <a href="#features" data-i18n="nav_features" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">核心细节</a>
         <a href="#playground" data-i18n="nav_playground" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">真机演练</a>
         <a href="#mascot" data-i18n="nav_mascot" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">问问仔桌宠</a>
+        <a href="#changelog" data-i18n="nav_changelog" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">本期更新</a>
         <a href="#faq" data-i18n="nav_faq" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">常见问题</a>
         <a href="#download" data-i18n="nav_download" class="hover:text-wenBlue dark:hover:text-wenYellow transition-colors">立即下载</a>
       </nav>
@@ -132,6 +133,7 @@
       <a href="#features" data-i18n="nav_features" class="mobile-nav-link block py-1.5 text-slate-700 dark:text-slate-200 hover:text-wenBlue">核心功能细节</a>
       <a href="#playground" data-i18n="nav_playground" class="mobile-nav-link block py-1.5 text-slate-700 dark:text-slate-200 hover:text-wenBlue">真机交互演练</a>
       <a href="#mascot" data-i18n="nav_mascot" class="mobile-nav-link block py-1.5 text-slate-700 dark:text-slate-200 hover:text-wenBlue">问问仔像素桌宠</a>
+      <a href="#changelog" data-i18n="nav_changelog" class="mobile-nav-link block py-1.5 text-slate-700 dark:text-slate-200 hover:text-wenBlue">本期更新内容</a>
       <a href="#faq" data-i18n="nav_faq" class="mobile-nav-link block py-1.5 text-slate-700 dark:text-slate-200 hover:text-wenBlue">常见问题解答</a>
       <a href="#download" data-i18n="nav_download" class="mobile-nav-link block py-1.5 text-wenBlue dark:text-wenYellow font-bold">立即下载客户端</a>
     </div>
@@ -636,7 +638,7 @@
           </p>
           <div class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
             <div data-i18n="dl1_meta1">版本：v1.1.0 · Android 8.0+ (ARM64)</div>
-            <div data-i18n="dl1_meta2">体积：198.2 MB · 独立包名 cn.wenwenai.app</div>
+            <div data-i18n="dl1_meta2">体积：222.0 MB · 独立包名 cn.wenwenai.app</div>
           </div>
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2.5">
@@ -673,6 +675,28 @@
           </a>
         </div>
       </div>
+    </div>
+
+    <!-- 本期版本更新内容 (#changelog) -->
+    <div id="changelog" class="mt-10 p-6 sm:p-8 rounded-3xl bg-white dark:bg-wenCardDark border border-slate-200/90 dark:border-slate-800 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span data-i18n="cl_badge">持续维护演进 · 本期版本更新内容</span>
+          </div>
+          <h3 id="cl-version-title" class="text-xl sm:text-2xl font-black text-wenNavy dark:text-white mt-2">
+            问问Ai v1.1.0 本期更新内容
+          </h3>
+        </div>
+        <div class="flex items-center gap-2 self-start sm:self-center">
+          <span id="cl-date-badge" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 font-mono text-xs font-semibold">
+            📅 最近更新：2026-11-15
+          </span>
+        </div>
+      </div>
+
+      <div id="cl-items-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
     </div>
   </section>
 
@@ -731,7 +755,9 @@
         nav_features: '核心细节',
         nav_playground: '真机演练',
         nav_mascot: '问问仔桌宠',
+        nav_changelog: '本期更新',
         nav_faq: '常见问题',
+        cl_badge: '持续维护演进 · 本期版本更新内容',
         nav_download: '立即下载',
         nav_cta: '下载问问Ai',
         hero_pill: '万物皆插件，现在随身而行 · 让每一份灵感随时出发',
@@ -796,9 +822,9 @@
         dl1_title: '问问Ai 全能工作站版',
         dl1_desc: '内置免 Root 的完整 Ubuntu 与 Node.js 运行环境、问问仔四状态像素桌宠、本机离线语音听写、手机屏幕操控与远程电脑连接，原生与网页双界面一键切换。',
         dl1_meta1: '版本：v1.1.0 · Android 8.0+ (ARM64)',
-        dl1_meta2: '体积：198.2 MB · 独立包名 cn.wenwenai.app',
+        dl1_meta2: '体积：222.0 MB · 独立包名 cn.wenwenai.app',
         dl1_btn_fast: '⚡ 国内极速下载全能版 APK (v1.1.0)',
-        dl1_btn_gh: '🌐 GitHub 国际源下载 (v1.0.16)',
+        dl1_btn_gh: '🌐 GitHub 国际源下载 (v1.1.0)',
         dl2_badge: '⚡ 轻量极速版 · 18 款主流 App 操控手册',
         dl2_title: '问问Ai 轻量操控版',
         dl2_desc: '无需解压容器，直接内嵌 Bionic Node.js 24 引擎、10 大能力组 44 项手机原生工具与 18 款主流 App 自动化操作手册，支持 Shizuku 隐形后台虚拟屏与条件触发自动化。',
@@ -817,7 +843,9 @@
         nav_features: 'Features',
         nav_playground: 'Live Demo',
         nav_mascot: 'Pixel Pet',
+        nav_changelog: "What's New",
         nav_faq: 'FAQ',
+        cl_badge: 'Actively Maintained · What\'s New in This Release',
         nav_download: 'Download',
         nav_cta: 'Get App',
         hero_pill: 'Everything is a Plugin, Now in Your Pocket · Start Anywhere',
@@ -882,9 +910,9 @@
         dl1_title: 'Wenwen.ai Full Workstation Edition',
         dl1_desc: 'Includes root-free Ubuntu & Node.js runtime, 4-state pixel companion WenWen Bot, offline voice dictation, smart screen control, remote PC pairing, and Native/Web dual UI.',
         dl1_meta1: 'Version: v1.1.0 · Android 8.0+ (ARM64)',
-        dl1_meta2: 'Size: 198.2 MB · Package: cn.wenwenai.app',
-        dl1_btn_fast: '⚡ High-Speed Mirror Download (v1.0.16)',
-        dl1_btn_gh: '🌐 GitHub Global Download (v1.0.16)',
+        dl1_meta2: 'Size: 222.0 MB · Package: cn.wenwenai.app',
+        dl1_btn_fast: '⚡ High-Speed Mirror Download (v1.1.0)',
+        dl1_btn_gh: '🌐 GitHub Global Download (v1.1.0)',
         dl2_badge: '⚡ Lightweight · 18 Built-in App Playbooks',
         dl2_title: 'Wenwen.ai Lightweight Edition',
         dl2_desc: 'No container extraction required — embeds Bionic Node.js 24, 44 native Android tools across 10 groups, and 18 popular app automation guides with Shizuku virtual screen.',
@@ -897,6 +925,86 @@
         foot_top: 'Back to Top ↑'
       }
     };
+
+    // AUTO_RELEASE_INFO_START
+    let RELEASE_INFO = {"version": "1.1.0+11152251", "tag": "v1.1.0", "publishedAt": "2026-11-15T15:04:05Z", "size": 232736547, "notes": "### 问问Ai v1.1.0 更新内容（官方网站 https://wenwenai.cn）\n\n### 中文\n\n- **语音：朗读、语音输入和语音通话。** 回复可以用 DeepSeek 的声音朗读，输入框可以说话输入，也可以直接和她语音通话。通话里能随时打断她，她会自己判断你说完了再接话，有实时字幕；「停顿多久算说完」可以选，默认多等一会儿。通话中可以换声音和识别方式。用账号登录时语音接口不认账号，会改用 API Key。\n- **酒馆：玩法包和做卡工具。** 新增玩法包；做卡时可以让 AI 改卡、挑着应用改动、看历史版本、看最终提示词，还能先试玩。长对话不再越聊越卡（显示、用量统计、读对话都快了很多）。支持工具回合和自定义模型渠道，数值可以手填；回复长到顶栏下面时顶栏会加遮罩。\n- **手机操控：悬浮条和不打扰模式。** 操控时屏幕边缘换成柔和的色带；悬浮条可以拖动、贴边，小球闲置时半藏在边上。不打扰模式选好通道、连上就能用，不再被一整套准入检查拦住；主屏读不到当前应用时改成确认一次，不再直接拒绝。\n- **使用统计 v3。** 新增酒馆、伙伴小屋、语音通话和 token 用量。\n- **桌宠更活泼。** 反应有多种动画，彩蛋在各种状态下都能触发，新增「搬东西」动作。\n- 其他新功能：创意工坊的投稿改用 GitHub 账号登录，默认连接 wenwenai.cn；自定义启动画面在填满模式下可以缩放和调整位置；新增九个界面特效。\n- **修复。** 进语音通话闪退；发给模型的内部提示不再出现在对话里；远程连接点「重连」立刻重连；伙伴小屋在旧版系统 WebView 上打不开、记忆保存的回包丢了列表不刷新；悬浮宠物在系统重新允许动画后不动；从系统设置打开实时活动回来后不补发；自动检查更新时中途关掉仍弹更新页；深色模式下分段选择器的滑块看不见；子代理都停了标题栏的忙碌点还在转；DeepSeek 图片附件丢失被当成网络错误。引擎运行时的 proot 升到 5.1.107.102（主要是硬链接模拟的修复）。\n\n### English\n\n- **Voice: read aloud, voice input and voice calls.** Replies can be read aloud in DeepSeek's voice, you can dictate in the input box, or call her directly. During a call you can interrupt her at any time; she works out when you've finished before answering, with live captions. How long a pause counts as finished is adjustable and defaults to waiting a little longer. You can change the voice and the recognition method mid-call. When signed in with an account the speech service won't accept, it falls back to your API key.\n- **Tavern: play packs and card authoring.** Play packs are new. While making a card you can have the AI revise it, pick which changes to apply, browse past versions, see the final prompt and try it out first. Long chats no longer slow down as they grow (display, usage and loading are all much faster). Tool turns and custom model providers are supported, numbers can be typed in, and the top bar gets a scrim when a long reply scrolls under it.\n- **Phone control: overlay bar and Do Not Disturb.** The screen edge shows a soft band while the app is in control; the overlay bar can be dragged and docked to an edge, and the ball tucks half away when idle. Do Not Disturb works as soon as a channel is chosen and connected, without the old admission checks; when the home screen can't tell which app is in front, it asks you once instead of refusing.\n- **Usage stats v3.** Adds Tavern, the companion room, voice calls and token usage.\n- **Livelier pets.** Reactions have several animations, easter eggs trigger in every state, and there's a new carrying action.\n- Other new features: Creative Workshop submissions now sign in with GitHub, and the workshop connects to wenwenai.cn by default; a custom launch screen in fill mode can be zoomed and repositioned; nine new interface effects.\n- **Fixes.** A crash on entering a voice call; internal notes meant for the model no longer show up in the chat; Reconnect for remote connections reconnects right away; the companion room failing to open on older system WebViews, and its memory list not refreshing when a save reply was lost; the floating pet staying still after the system re-enables animations; the live activity not being re-posted after returning from system settings; the update page still appearing when an automatic check was turned off midway; the segmented control's thumb vanishing in dark mode; the busy dot in the title bar spinning after all sub-agents had stopped; a lost DeepSeek image attachment being reported as a network error. The engine runtime's proot is now 5.1.107.102 (mostly fixes to hard-link emulation)."};
+    // AUTO_RELEASE_INFO_END
+
+
+    function parseNotesByLang(rawNotes, lang) {
+      if (!rawNotes) return [];
+      let section = rawNotes;
+      const zhIdx = rawNotes.indexOf('### 中文');
+      const enIdx = rawNotes.indexOf('### English');
+      if (lang === 'en' && enIdx !== -1) {
+        section = rawNotes.slice(enIdx + '### English'.length);
+      } else if (zhIdx !== -1) {
+        section = enIdx !== -1 ? rawNotes.slice(zhIdx + '### 中文'.length, enIdx) : rawNotes.slice(zhIdx + '### 中文'.length);
+      }
+      const lines = section.split('\n').map(l => l.trim()).filter(l => l.startsWith('- '));
+      return lines.map(line => {
+        const body = line.slice(2).trim();
+        const m = body.match(/^\*\*(.+?)\*\*\s*(.*)$/);
+        if (m) {
+          return { title: m[1].replace(/[。.]$/, ''), desc: m[2] };
+        }
+        return { title: lang === 'en' ? 'New Improvement' : '体验优化与新增特性', desc: body };
+      });
+    }
+
+    function renderChangelog() {
+      const grid = document.getElementById('cl-items-grid');
+      const titleEl = document.getElementById('cl-version-title');
+      const dateEl = document.getElementById('cl-date-badge');
+      if (!grid || !titleEl || !dateEl) return;
+
+      const verClean = (RELEASE_INFO.tag || 'v1.1.0').replace(/^v/, '');
+      const pubDate = (RELEASE_INFO.publishedAt || '2026-11-15').slice(0, 10);
+      if (state.lang === 'en') {
+        titleEl.textContent = `Wenwen.ai v${verClean} — What's New`;
+        dateEl.textContent = `📅 Updated: ${pubDate}`;
+      } else {
+        titleEl.textContent = `问问Ai v${verClean} 本期更新内容`;
+        dateEl.textContent = `📅 最近更新：${pubDate}`;
+      }
+
+      const items = parseNotesByLang(RELEASE_INFO.notes || '', state.lang);
+      grid.innerHTML = '';
+      items.forEach((item, idx) => {
+        const icons = ['🎙️', '🍺', '📱', '📊', '🐾', '✨', '🛠️', '🚀'];
+        const icon = icons[idx % icons.length];
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-1.5';
+        card.innerHTML = `
+          <div class="flex items-center gap-2 font-extrabold text-sm text-wenNavy dark:text-white">
+            <span>${icon}</span>
+            <span></span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+        `;
+        card.querySelector('span:last-child').textContent = item.title;
+        card.querySelector('p').textContent = item.desc;
+        grid.appendChild(card);
+      });
+    }
+
+    async function syncLiveReleaseInfo() {
+      try {
+        const resp = await fetch('./dsh-go/update.json?t=' + Date.now());
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (data && data.notes) {
+          RELEASE_INFO = {
+            version: data.version || RELEASE_INFO.version,
+            tag: data.tag || RELEASE_INFO.tag,
+            publishedAt: data.publishedAt || RELEASE_INFO.publishedAt,
+            size: (data.assets && data.assets.arm64 && data.assets.arm64.size) || RELEASE_INFO.size,
+            notes: data.notes
+          };
+          renderChangelog();
+        }
+      } catch (_) {}
+    }
 
     const PET_STATES = {
       working: {
@@ -1122,6 +1230,7 @@
       renderPetState();
       renderSimulator();
       renderFaqList();
+      renderChangelog();
     }
 
     function renderPetState() {
@@ -1380,6 +1489,7 @@
       });
 
       applyLanguage();
+      syncLiveReleaseInfo();
     });
   </script>
 </body>

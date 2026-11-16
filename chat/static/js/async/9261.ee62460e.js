@@ -1,0 +1,1 @@
+"use strict";(self.rspackChunkwenwenai_chat=self.rspackChunkwenwenai_chat||[]).push([[9261],{5820(e,c,a){a.d(c,{createArchitectureServices:()=>r.S});var r=a(3738);a(7127)}}]);
